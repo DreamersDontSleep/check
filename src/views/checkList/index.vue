@@ -1,0 +1,191 @@
+<template>
+	<div>
+		<el-form :inline="true" :model="editForm" ref="editForm" style="float: left;margin-left: 20px;">
+			<el-form-item label="分公司名称:">
+				<template>
+					<el-select v-model="editForm.branchName" style="width: 250px;" placeholder="请选择">
+						<el-option
+							v-for="(item,index) in companySel"
+							:key="item.value"
+							:label="item.label"
+							:value="item.value">
+						</el-option>
+					</el-select>
+				</template>
+			</el-form-item>
+			<el-form-item label="状态:">
+				<template>
+					<el-select v-model="editForm.status" style="width: 250px;" placeholder="请选择">
+						<el-option
+							v-for="(item,index) in checkOr"
+							:key="item.value"
+							:label="item.label"
+							:value="item.value">
+						</el-option>
+					</el-select>
+				</template>
+			</el-form-item>
+			<el-form-item>
+				<el-button @click="searchTable(editForm)">搜索</el-button>
+			</el-form-item>
+		</el-form>
+		<el-form :inline="true" :model="checkForm" ref="checkForm" style="float: left;margin-left: 40px;">
+			<el-form-item label="待审批:">
+				<p style="margin: 0;padding: 0;color: red;">{{checkForm.checkAccount}}</p>
+			</el-form-item>
+		</el-form>
+		<div>
+			<template>
+				<div class="table">
+				  <el-table
+					:data="totalPriceEvaluation"
+					ref="table"
+					tooltip-effect="dark"
+					border
+					stripe
+					style="width: 95%;margin: 0 auto;">
+					<el-table-column label="主体序号">
+						<template slot-scope="scope">
+							{{scope.row.id}}
+						</template>
+					</el-table-column>
+					<el-table-column  label="申请编号" align="center">
+					  <template slot-scope="scope">
+						  {{scope.row.orderNum}}
+					  </template>
+					</el-table-column>
+					<el-table-column label="分公司">
+					  <template slot-scope="scope">
+						{{scope.row.branchOffice}}
+					  </template>
+					</el-table-column>
+					<el-table-column label="评估目的">
+					  <template slot-scope="scope">
+						{{scope.row.assessAim}}
+					  </template>
+					</el-table-column>
+					<el-table-column  label="报告类型">
+					  <template slot-scope="scope">
+						<div v-if="scope.row.reportType == 1">
+							<span style="color: rgba(107, 107, 107, 0.647058823529412);">房地产估价报告</span>
+						</div>
+						<div v-if="scope.row.reportType == 2">
+							<span style="color: #FFAA00;">土地估价报告</span>
+						</div>
+						<div v-if="scope.row.reportType == 3">
+							<span style="color: rgba(255, 0, 0, 0.647058823529412);">资产评估报告</span>
+						</div>
+						<div v-if="scope.row.reportType == 4">
+							<span style="color: rgba(255, 0, 0, 0.647058823529412);">预评估</span>
+						</div>
+					  </template>
+					</el-table-column>
+					<el-table-column label="申请人">
+					  <template slot-scope="scope">
+						{{scope.row.applicant}}
+					  </template>
+					</el-table-column>
+					<el-table-column label="申请时间">
+					  <template slot-scope="scope">
+						{{scope.row.applicationDate}}
+					  </template>
+					</el-table-column>
+					<el-table-column label="操作">
+					  <template slot-scope="scope">
+						<span @click="linkChange(scope.$index,scope.row)" style="color: rgb(51, 153, 204);cursor: pointer;">
+						  审核
+						</span>
+					  </template>
+					</el-table-column>
+				  </el-table>
+				</div>
+			</template>
+		</div>
+	</div>
+</template>
+
+<script>
+import { getCheckList } from '@/api/entry'
+export default {
+  data() {
+		return {
+			editForm:{
+				branchName: '',
+				status: ''
+			},
+			checkForm:{
+				checkAccount: '12个'
+			},
+			editFormVisible: false,
+			checkOr:[{
+					"label": "待审核",
+					"value": "待审核"
+				},{
+					"label": "未审核",
+					"value": "未审核"
+			}],
+			companySel:[{
+					"label": "全部",
+					"value": "全部"
+				},{
+					"label": "分公司1",
+					"value": "分公司1"
+				},{
+					"label": "分公司2",
+					"value": "分公司2"
+			}],
+			totalPriceEvaluation: []
+	  }
+  },
+  mounted() {
+  	this.fetchProjectList()
+  },
+	methods:{
+		fetchProjectList() {
+			getCheckList().then((res) => {
+				this.totalPriceEvaluation = res.data
+				console.log(res);
+			})
+		},
+		searchTable(editForm){
+			this.$refs.editForm.validate((valid) => {
+			  if (valid) {
+					// alert('submit!');
+					console.log(editForm);
+					// let para = {
+					// 	branchOffice: editForm.branchName,
+					// 	state: editForm.status
+					// }
+					let state = editForm.status;
+					let branchOffice = editForm.branchName;
+					getEntryList(state,branchOffice).then((res) => {
+						this.totalPriceEvaluation = res.data
+						console.log(res);
+					})
+			  } else {
+				console.log('error submit!!');
+					return false;
+			  }
+			});
+		},
+		newAdd() {
+			this.editFormVisible = true;
+		},
+		linkChange(index,row){
+			let id = row.id;
+			if(row.reportType == 1){
+				this.$router.push({path:'/checkList/realEstateReport', query: { 'content': row }})
+			}else if(row.reportType == 2){
+				this.$router.push({path:'/checkList/landValuationReport', query: { 'content': row }})
+			}else if(row.reportType == 3){
+				this.$router.push({path:'/checkList/assetsReport', query: { 'content': row }})
+			}else if(row.reportType == 4){
+				this.$router.push({path:'/checkList/preliminaryAssessment', query: { 'content': row }})
+			}
+		}
+	}
+}
+</script>
+
+<style>
+</style>
