@@ -44,9 +44,9 @@ export function getCheckList() {
   })
 }
 
-export function postCheckId(id) {
+export function postCheckId(id,state) {
   return request({
-    url: '/rpt/index/preSubmit?id='+ id,
+    url: '/rpt/index/updateRptState?id='+ id + '&state=' + state,
     method: 'post',
     data: {}
   })

@@ -121,7 +121,7 @@ export const asyncRouterMap = [
 	  },{
 	    path: 'checkSeal',
 	    name: 'CheckSeal',
-			hidden: false,
+			hidden: true,
 	    component: () => import('@/views/checkList/checkSeal'),
 	    meta: { title: '盖章', icon: '', permissions: [''] }
 	  }]

@@ -160,7 +160,7 @@
 
 <script>
 	import {
-		postReportData, getReportData
+		postReportData, getReportData, postCheckId
 	} from '@/api/entry'
 	export default {
 		data() {
@@ -256,10 +256,37 @@
 				this.$router.push({path:'/checkList/index'})
 			},
 			checkSuccess () {
-				alert(1);
+				let id = this.id;
+				let state = 3;
+				this.$confirm('确认审核通过吗?', '提示', {
+					type: 'warning'
+				}).then(() => {
+					postCheckId(id,state).then((res) => {
+						// this.fetchProjectList()
+						console.log(res);
+					});
+				}).catch(() => {
+					
+				});
 			},
 			checkFail () {
-				alert(2);
+				let id = this.id;
+				let state = 4;
+				this.$confirm('确认审核未通过吗?', '提示', {
+					type: 'warning'
+				}).then(() => {
+					postCheckId(id,state).then((res) => {
+						// this.listLoading = false;
+						// this.lookFormVisible = true;
+						// this.searchForm = res.body;
+						// console.log(res.body);
+						// this.fetchProjectList();
+						// this.fetchProjectList()
+						console.log(res);
+					});
+				}).catch(() => {
+					
+				});
 			},
 			sealJump(){
 				console.log(this.estateForm)

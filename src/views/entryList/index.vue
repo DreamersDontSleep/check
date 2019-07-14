@@ -94,13 +94,16 @@
 					</el-table-column>
 					<el-table-column label="状态">
 					  <template slot-scope="scope">
-						  <div v-if="scope.row.state == 1">待审核</div>
-						  <div v-else>{{scope.row.state}}</div>
+						  <div v-if="scope.row.state == 0">未提交</div>
+						  <div v-else-if="scope.row.state == 1">待审核</div>
+						  <div v-else>已审核</div>
 					  </template>
 					</el-table-column>
 					<el-table-column label="审核结果">
 					  <template slot-scope="scope">
-						{{scope.row.checkResult}}
+						<div v-if="scope.row.state == 3" style="color: #409EFF;">审核通过</div>
+						<div v-else-if="scope.row.state == 4" style="color: red;">审核未通过</div>
+						<div v-else>未审核</div>
 					  </template>
 					</el-table-column>
 					<el-table-column label="操作">
@@ -986,10 +989,11 @@ export default {
 		},
 		postList: function(index, row){
 			let id = row.id;
+			let state = 1;
 			this.$confirm('确认提交该记录吗?', '提示', {
 				type: 'warning'
 			}).then(() => {
-				postCheckId(id).then((res) => {
+				postCheckId(id,state).then((res) => {
 					// this.listLoading = false;
 					// this.lookFormVisible = true;
 					// this.searchForm = res.body;

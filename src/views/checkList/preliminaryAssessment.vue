@@ -23,18 +23,22 @@
 						<el-input v-model="estateForm.assessOrg" disabled></el-input>
 					</template>
 				</el-form-item>
-				<el-form-item label="文件上传" class="fl" style="display: block;">
-					<el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview"
+				<el-form-item label="文件上传" class="fl">
+					<el-upload class="upload-demo" action="http://fcpgpre.jstspg.com/rpt/index/upLoad" :on-preview="handlePreview"
 					 accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF,.doc,.docx" :on-remove="handleRemove"
 					 :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
-						<el-button size="small" type="primary">点击上传</el-button>
-						<div slot="tip" class="el-upload__tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg</div>
+						<!-- <el-button size="small" type="primary">点击上传</el-button> -->
+						<!-- <div slot="tip" class="el-upload__tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg</div> -->
 						<!-- <a class='download' :href='downloadhttp' download=""  title="下载">下载</a> -->
 					</el-upload>
+					<el-button type="primary" @click="sealJump()">盖章</el-button>
+					<el-button>转给其他人</el-button>
 				</el-form-item>
 				<el-form-item style="display: block;">
-					<el-button @click="submitForm(estateForm)">提交</el-button>
-					<el-button @click="cancelForm(estateForm)">取消</el-button>
+					<!-- <el-button @click="submitForm(estateForm)">提交</el-button> -->
+					<el-button type="success" @click="checkSuccess()">审核通过</el-button>
+					<el-button type="danger" @click="checkFail()">审核拒绝</el-button>
+					<el-button @click="cancelForm(estateForm)">返回</el-button>
 				</el-form-item>
 			</el-form>
 		</template>
@@ -44,7 +48,7 @@
 <script>
 	import {
 		postReportData,
-		getReportData
+		getReportData, postCheckId
 	} from '@/api/entry'
 	export default {
 		data() {
@@ -55,11 +59,8 @@
 				},
 				editFormVisible: false,
 				fileList: [{
-					name: 'food.jpeg',
-					url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-				}, {
-					name: 'food2.jpeg',
-					url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+					name: '',
+					url:''
 				}],
 				assessAimList: [{
 					"label": "出让",
@@ -102,6 +103,12 @@
 				getReportData(id,reportType).then((res) => {
 					console.log(res);
 					this.estateForm = res.data;
+					let fileUrl = res.data.wordUri;
+					let fileIndex = fileUrl.lastIndexOf('\/');
+					let fileName = fileUrl.substring(fileIndex + 1, fileUrl.length);
+					console.log(fileName)
+					this.fileList[0].name = fileName;
+					this.fileList[0].url = fileUrl;
 				});
 			},
 			searchTable(editForm) {
@@ -135,15 +142,44 @@
 				});
 			},
 			cancelForm(estateForm) {
-				this.$refs.estateForm.validate((valid) => {
-					if (valid) {
-						alert('submit!');
-						console.log(estateForm);
-					} else {
-						console.log('error submit!!');
-						return false;
-					}
+				this.$router.push({path:'/checkList/index'})
+			},
+			checkSuccess () {
+				let id = this.id;
+				let state = 3;
+				this.$confirm('确认审核通过吗?', '提示', {
+					type: 'warning'
+				}).then(() => {
+					postCheckId(id,state).then((res) => {
+						// this.fetchProjectList()
+						console.log(res);
+					});
+				}).catch(() => {
+					
 				});
+			},
+			checkFail () {
+				let id = this.id;
+				let state = 4;
+				this.$confirm('确认审核未通过吗?', '提示', {
+					type: 'warning'
+				}).then(() => {
+					postCheckId(id,state).then((res) => {
+						// this.listLoading = false;
+						// this.lookFormVisible = true;
+						// this.searchForm = res.body;
+						// console.log(res.body);
+						// this.fetchProjectList();
+						// this.fetchProjectList()
+						console.log(res);
+					});
+				}).catch(() => {
+					
+				});
+			},
+			sealJump(){
+				console.log(this.estateForm)
+				this.$router.push({path:'/checkList/checkSeal', query: { 'content': this.estateForm }})
 			},
 			handleRemove(file, fileList) {
 				console.log(file, fileList);
