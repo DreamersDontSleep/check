@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import { getProjectList } from '@/api/project'
 import { isvalidUsername } from '@/utils/validate'
 
 export default {
@@ -78,11 +77,6 @@ export default {
       },
       immediate: true
     }
-  },
-  mounted() {
-    getProjectList().then(res => {
-      console.log('测试接口', res)
-    })
   },
   methods: {
     showPwd() {

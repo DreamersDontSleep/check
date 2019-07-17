@@ -17,7 +17,13 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
         }
-      }
+      },
+			'/auth': {
+			  target: 'http://fcpgpre.jstspg.com',
+			  changeOrigin: true,
+			  pathRewrite: {
+			  }
+			}
     },
 
     // Various Dev Server settings

@@ -36,29 +36,17 @@ const user = {
   actions: {
     // 登录
     Login({ commit }, userInfo) {
-      // const username = userInfo.username.trim()
+      const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        // 登陆模拟
-        const response = {
-          'status': 1,
-          'msg': '请求成功',
-          'data': {
-            'token': 'JWT-TOKEN'
-          }
-        }
-        const data = response.data
-        setToken(data.token)
-        commit('SET_TOKEN', data.token)
-        resolve()
-        // login(username, userInfo.password)
-        //   .then(response => {
-        //     const data = response.data
-        //     setToken(data.token)
-        //     commit('SET_TOKEN', data.token)
-        //     resolve()
-        //   }).catch(error => {
-        //     reject(error)
-        //   })
+        login(username, userInfo.password)
+          .then(response => {
+            const data = response.data
+            setToken(data.token)
+            commit('SET_TOKEN', data.token)
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
       })
     },
 
@@ -75,7 +63,7 @@ const user = {
             'nick_name': 'admin',
             'pwd': null,
             'job_number': '9527',
-            'user_name': '杜娇',
+            'user_name': 'admin',
             'position': '董事长',
             'sex': 'man',
             'sex_name': '男',
@@ -164,21 +152,21 @@ const user = {
 
         resolve(response)
 
-        // getInfo()
-        //   .then(response => {
-        //     const data = response.data
-        //     commit('SET_NAME', data.user_name)
-        //     commit('SET_ROLE', data.role.code)
-        //     // commit('SET_AVATAR', data.avatar)
-        //     commit('SET_ROLE_PERMISSIONS', getPermissionFromUserRole(data.role))
-
-        //     // ! 存储用户信息
-        //     commit('SET_USER_INFO', data)
-
-        //     resolve(response)
-        //   }).catch(error => {
-        //     reject(error)
-        //   })
+//          getInfo()
+//            .then(response => {
+//              const data = response.data
+//              commit('SET_NAME', data.user_name)
+//              commit('SET_ROLE', data.role.code)
+//              // commit('SET_AVATAR', data.avatar)
+//              commit('SET_ROLE_PERMISSIONS', getPermissionFromUserRole(data.role))
+// 
+//             // ! 存储用户信息
+//              commit('SET_USER_INFO', data)
+// 
+//              resolve(response)
+//            }).catch(error => {
+//              reject(error)
+//           })
       })
     },
 

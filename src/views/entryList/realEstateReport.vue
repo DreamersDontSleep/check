@@ -22,18 +22,20 @@
 				</el-form-item>
 				<el-form-item label="估价作业开始时间:" style="width: 40%;" prop="assessStartTime">
 					<template>
-						<el-input v-model="estateForm.assessStartTime" ></el-input>
-						<!-- <el-date-picker v-model="estateForm.assessStartTime" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker> -->
+						<!-- <el-input v-model="estateForm.assessStartTime" ></el-input> -->
+						<el-date-picker v-model="estateForm.assessStartTime" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
 					</template>
 				</el-form-item>
 				<el-form-item label="估价作业结束时间:" style="width: 40%;" prop="assessEndTime">
 					<template>
-						<el-input v-model="estateForm.assessEndTime" ></el-input>
+						<!-- <el-input v-model="estateForm.assessEndTime" ></el-input> -->
+						<el-date-picker v-model="estateForm.assessEndTime" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
 					</template>
 				</el-form-item>
 				<el-form-item label="估价时点:" style="width: 40%;" prop="valueTime">
 					<template>
-						<el-input v-model="estateForm.valueTime" ></el-input>
+						<!-- <el-input v-model="estateForm.valueTime" ></el-input> -->
+						<el-date-picker v-model="estateForm.valueTime" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
 					</template>
 				</el-form-item>
 				<el-form-item label="估价对象:" style="width: 40%;" prop="assessObject">
@@ -137,12 +139,12 @@
 					</template>
 				</el-form-item>
 				<el-form-item label="文件上传" class="fl">
-					<el-upload class="upload-demo" action="http://fcpgpre.jstspg.com/rpt/index/upLoad" :on-preview="handlePreview"
+					<el-upload class="upload-demo" ref="upload" name="file" :action="UploadUrl ()" :data="uploadData" :on-preview="handlePreview"
 					 accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF,.doc,.docx" :on-remove="handleRemove"
-					 :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
-						<el-button size="small" type="primary">点击上传</el-button>
+					 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange" multiple :limit="1" :on-exceed="handleExceed"
+					 :file-list="fileList">
+						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
 						<div slot="tip" class="el-upload__tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg</div>
-						<!-- <a class='download' :href='downloadhttp' download=""  title="下载">下载</a> -->
 					</el-upload>
 				</el-form-item>
 				<el-form-item style="display: block;">

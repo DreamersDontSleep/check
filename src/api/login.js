@@ -2,19 +2,16 @@ import request from '@/utils/request'
 
 export function login(username, password) {
   return request({
-    url: '/user/login',
+    url: '/auth/signin/local?signName=' + username + '&passwd=' + password,
     method: 'post',
-    data: {
-      loginName: username,
-      pwd: password
-    }
+    data: {}
   })
 }
 
 export function logout() {
   return request({
-    url: '/user/logout',
-    method: 'post',
+    url: '/auth/signout',
+    method: 'get',
     data: {}
   })
 }
