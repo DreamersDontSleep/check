@@ -21,7 +21,11 @@ import Layout from '../views/layout/Layout'
   }
 **/
 export const constantRouterMap = [
-  { path: '/login', component: () => import('@/views/login/index'), hidden: true },
+  {
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true
+  },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
   {
     path: '/',
@@ -29,11 +33,13 @@ export const constantRouterMap = [
     redirect: '/home',
     name: 'Home',
     // hidden: true,
-    children: [{
-      path: 'home',
-      component: () => import('@/views/home/index'),
-      meta: { title: '首页', icon: '', permissions: [] }
-    }]
+    children: [
+      {
+        path: 'home',
+        component: () => import('@/views/home/index'),
+        meta: { title: '首页', icon: '', permissions: [] }
+      }
+    ]
   }
 ]
 
@@ -44,88 +50,102 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-	{
-	  path: '/entryList',
-	  component: Layout,
-	  meta: { title: '录入列表', icon: '', permissions: [''] },
-	  children: [{
-	    path: 'index',
-	    name: 'Data',
-	    component: () => import('@/views/entryList/index'),
-	    meta: { title: '录入列表', icon: '', permissions: [''] }
-	  },{
-	    path: 'landValuationReport',
-	    name: 'LandValuationReport',
-			hidden: true,
-	    component: () => import('@/views/entryList/landValuationReport'),
-	    meta: { title: '土地估价报告', icon: '', permissions: [''] }
-	  },{
-	    path: 'realEstateReport',
-	    name: 'RealEstateReport',
-			hidden: true,
-	    component: () => import('@/views/entryList/realEstateReport'),
-	    meta: { title: '房地产估计报告', icon: '', permissions: [''] }
-	  },{
-	    path: 'assetsReport',
-	    name: 'AssetsReport',
-			hidden: true,
-	    component: () => import('@/views/entryList/assetsReport'),
-	    meta: { title: '资产评估报告', icon: '', permissions: [''] }
-	  },{
-	    path: 'preliminaryAssessment',
-	    name: 'PreliminaryAssessment',
-			hidden: true,
-	    component: () => import('@/views/entryList/preliminaryAssessment'),
-	    meta: { title: '预评估', icon: '', permissions: [''] }
-	  },{
-	    path: 'checkIndex',
-	    name: 'CheckIndex',
-			hidden: true,
-	    component: () => import('@/views/entryList/checkIndex'),
-	    meta: { title: '审核', icon: '', permissions: [''] }
-	  }]
-	},
-	{
-	  path: '/checkList',
-	  component: Layout,
-	  meta: { title: '审核列表', icon: '', permissions: [''] },
-	  children: [{
-	    path: 'index',
-	    name: 'Data',
-	    component: () => import('@/views/checkList/index'),
-	    meta: { title: '审核列表', icon: '', permissions: [''] }
-	  },{
-	    path: 'landValuationReport',
-	    name: 'LandValuationReport',
-			hidden: true,
-	    component: () => import('@/views/checkList/landValuationReport'),
-	    meta: { title: '土地估价报告', icon: '', permissions: [''] }
-	  },{
-	    path: 'realEstateReport',
-	    name: 'RealEstateReport',
-			hidden: true,
-	    component: () => import('@/views/checkList/realEstateReport'),
-	    meta: { title: '房地产估计报告', icon: '', permissions: [''] }
-	  },{
-	    path: 'assetsReport',
-	    name: 'AssetsReport',
-			hidden: true,
-	    component: () => import('@/views/checkList/assetsReport'),
-	    meta: { title: '资产评估报告', icon: '', permissions: [''] }
-	  },{
-	    path: 'preliminaryAssessment',
-	    name: 'PreliminaryAssessment',
-			hidden: true,
-	    component: () => import('@/views/checkList/preliminaryAssessment'),
-	    meta: { title: '预评估', icon: '', permissions: [''] }
-	  },{
-	    path: 'checkSeal',
-	    name: 'CheckSeal',
-			hidden: true,
-	    component: () => import('@/views/checkList/checkSeal'),
-	    meta: { title: '盖章', icon: '', permissions: [''] }
-	  }]
-	},
+  {
+    path: '/entryList',
+    component: Layout,
+    meta: { title: '录入列表', icon: '', permissions: [296, 297, 298, 299, 300] },
+    children: [
+      {
+        path: 'index',
+        name: 'Data',
+        component: () => import('@/views/entryList/index'),
+        meta: { title: '录入列表', icon: '', permissions: [296, 297, 298, 299, 300] }
+      },
+      {
+        path: 'landValuationReport',
+        name: 'LandValuationReport',
+        hidden: true,
+        component: () => import('@/views/entryList/landValuationReport'),
+        meta: { title: '土地估价报告', icon: '', permissions: [296, 297, 298, 299, 300] }
+      },
+      {
+        path: 'realEstateReport',
+        name: 'RealEstateReport',
+        hidden: true,
+        component: () => import('@/views/entryList/realEstateReport'),
+        meta: { title: '房地产估计报告', icon: '', permissions: [296, 297, 298, 299, 300] }
+      },
+      {
+        path: 'assetsReport',
+        name: 'AssetsReport',
+        hidden: true,
+        component: () => import('@/views/entryList/assetsReport'),
+        meta: { title: '资产评估报告', icon: '', permissions: [296, 297, 298, 299, 300] }
+      },
+      {
+        path: 'preliminaryAssessment',
+        name: 'PreliminaryAssessment',
+        hidden: true,
+        component: () => import('@/views/entryList/preliminaryAssessment'),
+        meta: { title: '预评估', icon: '', permissions: [296, 297, 298, 299, 300] }
+      },
+      {
+        path: 'checkIndex',
+        name: 'CheckIndex',
+        hidden: true,
+        component: () => import('@/views/entryList/checkIndex'),
+        meta: { title: '审核', icon: '', permissions: [296, 297, 298, 299, 300] }
+      }
+    ]
+  },
+  {
+    path: '/checkList',
+    component: Layout,
+    meta: { title: '审核列表', icon: '', permissions: [302, 303] },
+    children: [
+      {
+        path: 'index',
+        name: 'Data',
+        component: () => import('@/views/checkList/index'),
+        meta: { title: '审核列表', icon: '', permissions: [302, 303] }
+      },
+      {
+        path: 'landValuationReport',
+        name: 'LandValuationReport',
+        hidden: true,
+        component: () => import('@/views/checkList/landValuationReport'),
+        meta: { title: '土地估价报告', icon: '', permissions: [302, 303] }
+      },
+      {
+        path: 'realEstateReport',
+        name: 'RealEstateReport',
+        hidden: true,
+        component: () => import('@/views/checkList/realEstateReport'),
+        meta: { title: '房地产估计报告', icon: '', permissions: [302, 303] }
+      },
+      {
+        path: 'assetsReport',
+        name: 'AssetsReport',
+        hidden: true,
+        component: () => import('@/views/checkList/assetsReport'),
+        meta: { title: '资产评估报告', icon: '', permissions: [302, 303] }
+      },
+      {
+        path: 'preliminaryAssessment',
+        name: 'PreliminaryAssessment',
+        hidden: true,
+        component: () => import('@/views/checkList/preliminaryAssessment'),
+        meta: { title: '预评估', icon: '', permissions: [302, 303] }
+      },
+      {
+        path: 'checkSeal',
+        name: 'CheckSeal',
+        hidden: true,
+        component: () => import('@/views/checkList/checkSeal'),
+        meta: { title: '盖章', icon: '', permissions: [302, 303] }
+      }
+    ]
+  },
   {
     path: '/system',
     component: Layout,
@@ -133,18 +153,20 @@ export const asyncRouterMap = [
     redirect: '/system/user/index',
     name: 'System',
     meta: { title: '系统管理', permissions: ['role.view', 'user.view'] },
-    children: [{
-      path: 'user/index',
-      name: 'User',
-      component: () => import('@/views/user/index'),
-      meta: { title: '用户管理', permissions: ['user.view'] }
-    },
-    {
-      path: 'role/index',
-      name: 'Role',
-      component: () => import('@/views/role/index'),
-      meta: { title: '角色管理', permissions: ['role.view'] }
-    }]
+    children: [
+      {
+        path: 'user/index',
+        name: 'User',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户管理', permissions: ['user.view'] }
+      },
+      {
+        path: 'role/index',
+        name: 'Role',
+        component: () => import('@/views/role/index'),
+        meta: { title: '角色管理', permissions: ['role.view'] }
+      }
+    ]
   },
   { path: '*', redirect: '/404', hidden: true }
 ]

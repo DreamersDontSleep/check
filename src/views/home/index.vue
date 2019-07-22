@@ -1,6 +1,7 @@
 <template>
   <div class="home-container">
-    <el-form ref="userInfo" :model="userInfo" :rules="rules" label-width="120px">
+    首页
+    <!-- <el-form ref="userInfo" :model="userInfo" :rules="rules" label-width="120px">
       <el-form-item label="用户名" prop="nick_name">
         <el-input v-model="userInfo.nick_name"/>
       </el-form-item>
@@ -53,7 +54,7 @@
         <el-button type="primary" @click="submitForm('userInfo')">提交</el-button>
         <el-button @click="resetForm('userInfo')">重置</el-button>
       </el-form-item>
-    </el-form>
+    </el-form> -->
   </div>
 </template>
 

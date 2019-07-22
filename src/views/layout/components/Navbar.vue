@@ -4,9 +4,9 @@
       <img class="company-logo" src="https://picsum.photos/50/50" alt="logo">
       <h2 class="company-title">江苏天圣房屋审核系统</h2>
     </router-link>
-    <el-tooltip :open-delay="150" class="msg-container" content="此处显示通知消息" placement="bottom" effect="light">
+    <!-- <el-tooltip :open-delay="150" class="msg-container" content="此处显示通知消息" placement="bottom" effect="light">
       <el-button type="text" style="color: #000"><svg-icon icon-class="msg"/></el-button>
-    </el-tooltip>
+    </el-tooltip> -->
     <el-dropdown class="avatar-container" trigger="click">
       <!-- <div class="avatar-wrapper">
         <img src="http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/images/20180607/timg.jpg" class="user-avatar">

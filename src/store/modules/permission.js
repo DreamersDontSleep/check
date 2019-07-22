@@ -48,8 +48,9 @@ const permission = {
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
         const { role, rolePermissions } = data
+        console.log('测试权限数据', data)
         let accessedRouters
-        if (role === 'admin') {
+        if (role === '超级管理员') {
           accessedRouters = asyncRouterMap
         } else {
           accessedRouters = filterAsyncRouter(asyncRouterMap, rolePermissions)

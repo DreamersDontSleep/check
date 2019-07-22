@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/login'
+import { login, logout, getInfoList } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { getPermissionFromUserRole } from '@/utils/index'
 
@@ -7,7 +7,6 @@ const user = {
     token: getToken(),
     name: '',
     role: '',
-    // avatar: '',
     userInfo: '',
     rolePermissions: []
   },
@@ -19,9 +18,6 @@ const user = {
     SET_NAME: (state, name) => {
       state.name = name
     },
-    // SET_AVATAR: (state, avatar) => {
-    //   state.avatar = avatar
-    // },
     SET_USER_INFO: (state, userInfo) => {
       state.userInfo = userInfo
     },
@@ -44,7 +40,8 @@ const user = {
             setToken(data.token)
             commit('SET_TOKEN', data.token)
             resolve()
-          }).catch(error => {
+          })
+          .catch(error => {
             reject(error)
           })
       })
@@ -53,136 +50,87 @@ const user = {
     // 获取用户信息
     GetInfo({ commit }) {
       return new Promise((resolve, reject) => {
-        const response = {
-          'status': 1,
-          'msg': '请求成功',
-          'data': {
-            'create_time': null,
-            'modify_time': null,
-            'id': 1,
-            'nick_name': 'admin',
-            'pwd': null,
-            'job_number': '9527',
-            'user_name': 'admin',
-            'position': '董事长',
-            'sex': 'man',
-            'sex_name': '男',
-            'birth_date': '1990-1-1',
-            'hire_date': '2008-8-8',
-            'connact': '18104042345',
-            'emergency_contact': '18962435867',
-            'identity_number': '327498199001013452',
-            'in_service_state_name': '在职',
-            'in_service_state': 1,
-            'role_id': 1,
-            'role_name': '管理员',
-            'role': {
-              'create_time': null,
-              'modify_time': null,
-              'id': 1,
-              'code': 'admin',
-              'name': '管理员',
-              'description': null,
-              'state': 0,
-              'permissions': [
-                {
-                  'key': 0,
-                  'value': 'user.view',
-                  'label': '用户管理',
-                  'children': [
-                    {
-                      'key': 2,
-                      'value': 'user.add',
-                      'label': '新增用户',
-                      'children': []
-                    },
-                    {
-                      'key': 3,
-                      'value': 'user.edit',
-                      'label': '编辑用户',
-                      'children': []
-                    },
-                    {
-                      'key': 4,
-                      'value': 'user.delete',
-                      'label': '删除用户',
-                      'children': []
-                    }
-                  ]
-                },
-                {
-                  'key': 5,
-                  'value': 'role.view',
-                  'label': '角色管理',
-                  'children': [
-                    {
-                      'key': 6,
-                      'value': 'role.add',
-                      'label': '新增角色',
-                      'children': []
-                    },
-                    {
-                      'key': 7,
-                      'value': 'role.edit',
-                      'label': '编辑角色',
-                      'children': []
-                    },
-                    {
-                      'key': 8,
-                      'value': 'role.delete',
-                      'label': '删除角色',
-                      'children': []
-                    }
-                  ]
+        getInfoList()
+          .then(response => {
+            const data = response.data
+            console.log('权限数据', data)
+            const { resources, profile } = data
+            const [routes, children] = [[], []]
+
+            resources.forEach(el => {
+              if (el.parentId === 0) {
+                routes.push(el)
+              } else {
+                children.push(el)
+              }
+            })
+            console.log('根权限1', routes)
+            console.log('子权限', children)
+            routes.forEach(item => {
+              item.children = []
+              children.forEach(el => {
+                if (el.parentId === item.id) {
+                  item.children.push(el)
                 }
-              ]
-            },
-            'supplementary_limit': ''
-          }
-        }
+              })
+            })
+            console.log('根权限2', routes)
 
-        const data = response.data
-        commit('SET_NAME', data.user_name)
-        commit('SET_ROLE', data.role.code)
-        // commit('SET_AVATAR', data.avatar)
-        commit('SET_ROLE_PERMISSIONS', getPermissionFromUserRole(data.role))
+            // 权限处理
+            const permissions = []
+            routes.forEach(item => {
+              if (item.openFlag === 0) {
+                const { id, name, children } = item
+                const child = []
+                children.forEach(el => {
+                  if (el.openFlag === 0) {
+                    const { id, name } = el
+                    child.push({ key: id, value: name })
+                  }
+                })
+                permissions.push({ key: id, value: name, children: child })
+              }
+            })
 
-        // ! 存储用户信息
-        commit('SET_USER_INFO', data)
+            console.log('根权限3', permissions)
 
-        resolve(response)
+            const { nickName, realName } = profile
+            const userInfo = { ...profile, role: { nickName, realName, permissions }}
 
-//          getInfo()
-//            .then(response => {
-//              const data = response.data
-//              commit('SET_NAME', data.user_name)
-//              commit('SET_ROLE', data.role.code)
-//              // commit('SET_AVATAR', data.avatar)
-//              commit('SET_ROLE_PERMISSIONS', getPermissionFromUserRole(data.role))
-// 
-//             // ! 存储用户信息
-//              commit('SET_USER_INFO', data)
-// 
-//              resolve(response)
-//            }).catch(error => {
-//              reject(error)
-//           })
+            console.log('提取用户数据', userInfo)
+
+            // 处理 root
+            commit('SET_NAME', profile.realName)
+            commit('SET_ROLE', profile.nickName)
+
+            // 处理权限
+            commit('SET_ROLE_PERMISSIONS', getPermissionFromUserRole(userInfo.role))
+
+            commit('SET_USER_INFO', userInfo)
+
+            resolve(userInfo)
+          })
+          .catch(error => {
+            reject(error)
+          })
       })
     },
 
     // 登出
     LogOut({ commit }) {
       return new Promise((resolve, reject) => {
-        logout().then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLE', '')
-          commit('SET_SET_USER_INFO', '')
-          commit('SET_ROLE_PERMISSIONS', [])
-          removeToken()
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
+        logout()
+          .then(() => {
+            commit('SET_TOKEN', '')
+            commit('SET_ROLE', '')
+            commit('SET_SET_USER_INFO', '')
+            commit('SET_ROLE_PERMISSIONS', [])
+            removeToken()
+            resolve()
+          })
+          .catch(error => {
+            reject(error)
+          })
       })
     },
 

@@ -13,7 +13,7 @@ export default function checkPermission(value) {
     const permissions = value
 
     const hasPermission = rolePermissions.some(permission => {
-      return role === 'admin' || permissions.includes(permission)
+      return role === '超级管理员' || permissions.includes(permission)
     })
 
     if (!hasPermission) {

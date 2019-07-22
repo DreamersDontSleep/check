@@ -25,8 +25,9 @@ router.beforeEach((to, from, next) => {
           .dispatch('GetInfo')
           .then(res => {
             // 拉取用户信息
-            const role = res.data.role.code // res.data.roles // note: roles must be a array! such as: ['editor','develop']
-            const rolePermissions = getPermissionFromUserRole(res.data.role)
+            console.log('用户信息', res)
+            const role = res.nickName
+            const rolePermissions = getPermissionFromUserRole(res.role)
             store
               .dispatch('GenerateRoutes', { role, rolePermissions })
               .then(() => {

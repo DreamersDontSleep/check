@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { getToken } from '@/utils/auth'
 
 export function login(username, password) {
   return request({
@@ -21,5 +22,23 @@ export function getInfo() {
     url: '/user/info',
     method: 'post',
     data: {}
+  })
+}
+
+export function getInfoList(systemId) {
+  return request({
+    url: '/auth/xyUser/info',
+    method: 'post',
+    data: {},
+    headers: { 'token': getToken() }
+  })
+}
+
+export function getRoleList(user) {
+  return request({
+    url: '/auth/xyUser/setRoles',
+    method: 'post',
+    data: user,
+    headers: { 'token': getToken() }
   })
 }
