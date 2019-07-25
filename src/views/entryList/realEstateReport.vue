@@ -45,17 +45,35 @@
 				</el-form-item>
 				<el-form-item label="估价目的:" style="width: 40%;" prop="assessAim">
 					<template>
-						<el-input v-model="estateForm.assessAim" ></el-input>
+					  <el-select v-model="estateForm.assessAim" multiple placeholder="请选择">
+					    <el-option
+					      v-for="(item,index) in assess"
+					      :key="item.value"
+					      :label="item.label"
+					      :value="item.value"/>
+					  </el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="估价方法:" style="width: 40%;" prop="assessMethod">
 					<template>
-						<el-input v-model="estateForm.assessMethod" ></el-input>
+					  <el-select v-model="estateForm.assessMethod" placeholder="请选择">
+					    <el-option
+					      v-for="(item,index) in assessMethodList"
+					      :key="item.value"
+					      :label="item.label"
+					      :value="item.value"/>
+					  </el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="价值类型:" style="width: 40%;" prop="valueType">
 					<template>
-						<el-input v-model="estateForm.valueType" ></el-input>
+					  <el-select v-model="estateForm.valueType" placeholder="请选择">
+					    <el-option
+					      v-for="(item,index) in valueTypeList"
+					      :key="item.value"
+					      :label="item.label"
+					      :value="item.value"/>
+					  </el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="建筑面积(m2):" style="width: 40%;" prop="buildingArea">
@@ -68,12 +86,12 @@
 						<el-input v-model="estateForm.floorArea" ></el-input>
 					</template>
 				</el-form-item>
-				<el-form-item label="评估单价:" style="width: 40%;" prop="assessUnitPrice">
+				<el-form-item label="评估单价(万元):" style="width: 40%;" prop="assessUnitPrice">
 					<template>
 						<el-input v-model="estateForm.assessUnitPrice" ></el-input>
 					</template>
 				</el-form-item>
-				<el-form-item label="评估总价:" style="width: 40%;" prop="assessTotalPrice">
+				<el-form-item label="评估总价(万元):" style="width: 40%;" prop="assessTotalPrice">
 					<template>
 						<el-input v-model="estateForm.assessTotalPrice" ></el-input>
 					</template>
@@ -85,7 +103,13 @@
 				</el-form-item>
 				<el-form-item label="第一报告人:" style="width: 40%;" prop="firstReporter">
 					<template>
-						<el-input v-model="estateForm.firstReporter" ></el-input>
+					  <el-select v-model="estateForm.firstReporter" placeholder="请选择">
+					    <el-option
+					      v-for="(item,index) in firstReporterList"
+					      :key="item.value"
+					      :label="item.label"
+					      :value="item.value"/>
+					  </el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="第一报告人注册号:" style="width: 40%;" prop="firstReporterRgNum">
@@ -95,17 +119,29 @@
 				</el-form-item>
 				<el-form-item label="参与报告人1:" style="width: 40%;" prop="partReporter1">
 					<template>
-						<el-input v-model="estateForm.partReporter1" ></el-input>
-					</template>
-				</el-form-item>
-				<el-form-item label="参与报告人2:" style="width: 40%;" prop="partReporter2">
-					<template>
-						<el-input v-model="estateForm.partReporter2" ></el-input>
+					  <el-select v-model="estateForm.partReporter1" placeholder="请选择">
+					    <el-option
+					      v-for="(item,index) in partReporter1List"
+					      :key="item.value"
+					      :label="item.label"
+					      :value="item.value"/>
+					  </el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="参与报告人1注册号:" style="width: 40%;" prop="partReporter1RgNum">
 					<template>
 						<el-input v-model="estateForm.partReporter1RgNum" ></el-input>
+					</template>
+				</el-form-item>
+				<el-form-item label="参与报告人2:" style="width: 40%;" prop="partReporter2">
+					<template>
+					  <el-select v-model="estateForm.partReporter2" placeholder="请选择">
+					    <el-option
+					      v-for="(item,index) in partReporter2List"
+					      :key="item.value"
+					      :label="item.label"
+					      :value="item.value"/>
+					  </el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="参与报告人2注册号:" style="width: 40%;" prop="partReporter2RgNum">
@@ -130,12 +166,18 @@
 				</el-form-item>
 				<el-form-item label="审核员:" style="width: 40%;" prop="checker">
 					<template>
-						<el-input v-model="estateForm.checker" ></el-input>
+					  <el-select v-model="estateForm.checker" placeholder="请选择">
+					    <el-option
+					      v-for="(item,index) in checkerList"
+					      :key="item.value"
+					      :label="item.label"
+					      :value="item.value"/>
+					  </el-select>
 					</template>
 				</el-form-item>
-				<el-form-item label="评估机构:" style="width: 40%;" prop="assessOrg">
+				<el-form-item label="评估机构:" style="width: 80%;" prop="assessOrg">
 					<template>
-						<el-input v-model="estateForm.assessOrg" ></el-input>
+						<el-input v-model="estateForm.assessOrg" style="width: 400px;"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="文件上传" class="fl">
@@ -170,7 +212,7 @@
 				estateForm: {
 					reportType: '1',
 					projectName: '',
-					assessReportNum: '',
+					assessReportNum: '苏天房估',
 					assessStartTime: '',
 					assessEndTime: '',
 					assessObject: '',
@@ -193,7 +235,7 @@
 					branchOffice: '',
 					serviceCharge: '',
 					checker: '',
-					assessOrg: ''
+					assessOrg: '江苏天圣房地产土地资产评估测绘有限公司'
 				},
 				checkForm: {
 					checkAccount: '12个'
@@ -202,6 +244,28 @@
 				uploadFormData: '',
 				editFormVisible: false,
 				fileList: [],
+				assess: [{
+					"label": "出让",
+					"value": "出让"
+				}, {
+					"label": "转让",
+					"value": "转让"
+				}, {
+					"label": "抵押",
+					"value": "抵押"
+				}, {
+					"label": "征收",
+					"value": "征收"
+				}, {
+					"label": "司法",
+					"value": "司法"
+				}, {
+					"label": "咨询",
+					"value": "咨询"
+				}, {
+					"label": "其他",
+					"value": "其他"
+				}],
 				assessAimList: [{
 					"label": "出让",
 					"value": "出让"
@@ -210,19 +274,103 @@
 					"value": "不出让"
 				}],
 				assessMethodList: [{
-					"label": "出让",
-					"value": "出让"
+					"label": "比较法",
+					"value": "比较法"
 				}, {
-					"label": "不出让",
-					"value": "不出让"
+					"label": "收益法",
+					"value": "收益法"
+				}, {
+					"label": "成本法",
+					"value": "成本法"
+				}, {
+					"label": "假设开发法",
+					"value": "假设开发法"
+				}, {
+					"label": "基准地价修正法",
+					"value": "基准地价修正法"
+				}, {
+					"label": "其他",
+					"value": "其他"
 				}],
 				valueTypeList: [{
-					"label": "出让",
-					"value": "出让"
+					"label": "抵押价值",
+					"value": "抵押价值"
 				}, {
-					"label": "不出让",
-					"value": "不出让"
+					"label": "市场价值",
+					"value": "市场价值"
+				}, {
+					"label": "投资价值",
+					"value": "投资价值"
+				}, {
+					"label": "现状价值",
+					"value": "现状价值"
+				}, {
+					"label": "快速变现价值",
+					"value": "快速变现价值"
+				}, {
+					"label": "其他",
+					"value": "其他"
 				}],
+				firstReporterList:[
+					{
+						"label": "name1",
+						"value": "name1"
+					}, {
+						"label": "name2",
+						"value": "name2"
+					}, {
+						"label": "name3",
+						"value": "name3"
+					}, {
+						"label": "name4",
+						"value": "name4"
+					}
+				],
+				partReporter1List:[
+					{
+						"label": "name1",
+						"value": "name1"
+					}, {
+						"label": "name2",
+						"value": "name2"
+					}, {
+						"label": "name3",
+						"value": "name3"
+					}, {
+						"label": "name4",
+						"value": "name4"
+					}
+				],
+				partReporter2List:[
+					{
+						"label": "name1",
+						"value": "name1"
+					}, {
+						"label": "name2",
+						"value": "name2"
+					}, {
+						"label": "name3",
+						"value": "name3"
+					}, {
+						"label": "name4",
+						"value": "name4"
+					}
+				],
+				checkerList:[
+					{
+						"label": "name1",
+						"value": "name1"
+					}, {
+						"label": "name2",
+						"value": "name2"
+					}, {
+						"label": "name3",
+						"value": "name3"
+					}, {
+						"label": "name4",
+						"value": "name4"
+					}
+				],
 				fileName: '',
 				projectName: '',
 				file: '',
@@ -460,5 +608,11 @@
 	}
 </script>
 
-<style>
+<style scoped>
+	.el-date-editor.el-input{
+		width: 188px;
+	}
+	.el-select{
+		width: 188px !important;
+	}
 </style>

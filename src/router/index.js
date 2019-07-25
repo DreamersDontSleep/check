@@ -32,7 +32,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/home',
     name: 'Home',
-    // hidden: true,
+    hidden: true,
     children: [
       {
         path: 'home',
@@ -53,13 +53,13 @@ export const asyncRouterMap = [
   {
     path: '/entryList',
     component: Layout,
-    meta: { title: '录入列表', icon: '', permissions: [296, 297, 298, 299, 300] },
+    meta: { title: '报告申请管理', icon: '', permissions: [296, 297, 298, 299, 300] },
     children: [
       {
         path: 'index',
         name: 'Data',
         component: () => import('@/views/entryList/index'),
-        meta: { title: '录入列表', icon: '', permissions: [296, 297, 298, 299, 300] }
+        meta: { title: '报告申请管理', icon: '', permissions: [296, 297, 298, 299, 300] }
       },
       {
         path: 'landValuationReport',
@@ -101,13 +101,13 @@ export const asyncRouterMap = [
   {
     path: '/checkList',
     component: Layout,
-    meta: { title: '审核列表', icon: '', permissions: [302, 303] },
+    meta: { title: '报告审批管理', icon: '', permissions: [302, 303] },
     children: [
       {
         path: 'index',
         name: 'Data',
         component: () => import('@/views/checkList/index'),
-        meta: { title: '审核列表', icon: '', permissions: [302, 303] }
+        meta: { title: '报告审批管理', icon: '', permissions: [302, 303] }
       },
       {
         path: 'landValuationReport',
@@ -147,24 +147,18 @@ export const asyncRouterMap = [
     ]
   },
   {
-    path: '/system',
+    path: '/review',
     component: Layout,
     noredirect: true,
-    redirect: '/system/user/index',
-    name: 'System',
-    meta: { title: '系统管理', permissions: ['role.view', 'user.view'] },
+    redirect: '/review/index',
+    name: 'Review',
+    meta: { title: '报告查看', permissions: [] },
     children: [
       {
-        path: 'user/index',
-        name: 'User',
-        component: () => import('@/views/user/index'),
-        meta: { title: '用户管理', permissions: ['user.view'] }
-      },
-      {
-        path: 'role/index',
-        name: 'Role',
-        component: () => import('@/views/role/index'),
-        meta: { title: '角色管理', permissions: ['role.view'] }
+        path: 'review/index',
+        name: 'Review',
+        component: () => import('@/views/review/index'),
+        meta: { title: '报告查看', permissions: [] }
       }
     ]
   },

@@ -33,7 +33,7 @@
 				<el-form-item label="是否国有资产评估业务:" style="width: 40%;" prop="isStateAssets">
 					<template>
 						<el-select v-model="estateForm.isStateAssets" placeholder="请选择">
-							<el-option v-for="(item,index) in assessAimList" :key="item.value" :label="item.label" :value="item.value">
+							<el-option v-for="(item,index) in isStateAssetsList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</template>
@@ -41,29 +41,41 @@
 				<el-form-item label="是否私发资产评估业务:" style="width: 40%;" prop="isPrivateAsset">
 					<template>
 						<el-select v-model="estateForm.isPrivateAsset" placeholder="请选择">
-							<el-option v-for="(item,index) in assessMethodList" :key="item.value" :label="item.label" :value="item.value">
+							<el-option v-for="(item,index) in isPrivateAssetList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="评估目的:" style="width: 40%;" prop="assessAim">
 					<template>
-						<el-input v-model="estateForm.assessAim"></el-input>
+						<el-select v-model="estateForm.assessAim" placeholder="请选择">
+							<el-option v-for="(item,index) in assessAimList" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="评估对象:" style="width: 40%;" prop="assessTotalPrice">
 					<template>
-						<el-input v-model="estateForm.assessTotalPrice"></el-input>
+						<el-select v-model="estateForm.assessTotalPrice" placeholder="请选择">
+							<el-option v-for="(item,index) in assessTotalPriceList" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="价值类型:" style="width: 40%;" prop="valueType">
 					<template>
-						<el-input v-model="estateForm.valueType"></el-input>
+						<el-select v-model="estateForm.valueType" placeholder="请选择">
+							<el-option v-for="(item,index) in valueTypeList" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="评估方法:" style="width: 40%;" prop="assessMethod">
 					<template>
-						<el-input v-model="estateForm.assessMethod"></el-input>
+						<el-select v-model="estateForm.assessMethod" placeholder="请选择">
+							<el-option v-for="(item,index) in assessMethodList" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="评估结论(万元):" style="width: 40%;" prop="assessResult">
@@ -155,26 +167,109 @@
 				},
 				editFormVisible: false,
 				fileList: [],
-				assessAimList: [{
+				isStateAssetsList: [{
 					"label": "是",
 					"value": "是"
 				}, {
 					"label": "否",
 					"value": "否"
+				}],
+				isPrivateAssetList: [{
+					"label": "是",
+					"value": "是"
+				}, {
+					"label": "否",
+					"value": "否"
+				}],
+				assessAimList: [{
+					"label": "了解价值",
+					"value": "了解价值"
+				}, {
+					"label": "公司制改建",
+					"value": "公司制改建"
+				}, {
+					"label": "对外投资",
+					"value": "对外投资"
+				}, {
+					"label": "接受投资",
+					"value": "接受投资"
+				}, {
+					"label": "合并、分立、破产、清算、解散",
+					"value": "合并、分立、破产、清算、解散"
+				}, {
+					"label": "股东股权比例变动",
+					"value": "股东股权比例变动"
+				}, {
+					"label": "产权转让",
+					"value": "产权转让"
+				}, {
+					"label": "资产转让、处置、拍卖",
+					"value": "资产转让、处置、拍卖"
+				}, {
+					"label": "资产抵押/质押",
+					"value": "资产抵押/质押"
+				}, {
+					"label": "资产涉诉",
+					"value": "资产涉诉"
+				}, {
+					"label": "计税价格评估",
+					"value": "计税价格评估"
+				}, {
+					"label": "追溯评估",
+					"value": "追溯评估"
+				}, {
+					"label": "复核评估",
+					"value": "复核评估"
+				}],
+				assessTotalPriceList:[
+					{
+						"label": "企业价值",
+						"value": "企业价值"
+					}, {
+						"label": "单项资产",
+						"value": "单项资产"
+					}, {
+						"label": "资产组合",
+						"value": "资产组合"
+					}, {
+						"label": "无形资产",
+						"value": "无形资产"
+					}, {
+						"label": "其他资产",
+						"value": "其他资产"
+					}
+				],
+				valueTypeList: [{
+					"label": "市场价值",
+					"value": "市场价值"
+				}, {
+					"label": "投资价值",
+					"value": "投资价值"
+				}, {
+					"label": "清算价值",
+					"value": "清算价值"
+				}, {
+					"label": "在用价值",
+					"value": "在用价值"
+				}, {
+					"label": "残余价值",
+					"value": "残余价值"
+				}, {
+					"label": "其他价值",
+					"value": "其他价值"
 				}],
 				assessMethodList: [{
-					"label": "是",
-					"value": "是"
-				}, {
-					"label": "否",
-					"value": "否"
-				}],
-				valueTypeList: [{
-					"label": "出让",
-					"value": "出让"
-				}, {
-					"label": "不出让",
-					"value": "不出让"
+					"label": "成本法/资产基础法",
+					"value": "成本法/资产基础法"
+				},{
+					"label": "市场法",
+					"value": "市场法"
+				},{
+					"label": "收益法",
+					"value": "收益法"
+				},{
+					"label": "其他",
+					"value": "其他"
 				}],
 				inputRule: {
 					projectName: [{required: true,trigger: 'blur',message: '不能为空'}],
@@ -287,5 +382,12 @@
 	}
 </script>
 
-<style>
+<style scoped>
+	.el-date-editor.el-input{
+		width: 188px;
+	}
+	.el-select{
+		width: 188px !important;
+	}
 </style>
+

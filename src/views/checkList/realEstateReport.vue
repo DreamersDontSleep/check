@@ -150,7 +150,7 @@
 				<el-form-item style="display: block;">
 					<!-- <el-button @click="submitForm(estateForm)">提交</el-button> -->
 					<el-button type="success" @click="checkSuccess()">审核通过</el-button>
-					<el-button type="danger" @click="checkFail()">审核拒绝</el-button>
+					<el-button type="danger" @click="checkFail()">审核不通过</el-button>
 					<el-button @click="cancelForm(estateForm)">返回</el-button>
 				</el-form-item>
 			</el-form>
@@ -264,6 +264,7 @@
 					postCheckId(id,state).then((res) => {
 						// this.fetchProjectList()
 						console.log(res);
+						this.$router.push({path:'/checkList/index'})
 					});
 				}).catch(() => {
 					
@@ -283,6 +284,7 @@
 						// this.fetchProjectList();
 						// this.fetchProjectList()
 						console.log(res);
+						this.$router.push({path:'/checkList/index'})
 					});
 				}).catch(() => {
 					

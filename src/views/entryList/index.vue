@@ -105,12 +105,9 @@
             </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
-                <div v-if="scope.row.state == 1">
+                <div v-if="scope.row.state == 3">
                   <span style="color: rgb(51, 153, 204);cursor: pointer;" @click="getReportDetail(scope.$index,scope.row)">
                     查看
-                  </span>
-                  <span style="cursor: pointer;color: rgb(51, 153, 204);">
-                    待审核
                   </span>
                 </div>
                 <div v-else>
@@ -137,78 +134,66 @@
       <el-form :inline="true" :model="editForm">
         <el-form-item label="报告类型:">
           <template>
-            <el-select style="width: 250px;" placeholder="请选择">
-              <el-option>
-                <router-link :to="{ path: '/entryList/realEstateReport'}" style="color: rgb(51, 153, 204)">
-                  房地产估计报告
-                </router-link>
-              </el-option>
-              <el-option>
-                <router-link :to="{ path: '/entryList/landValuationReport'}" style="color: rgb(51, 153, 204)">
-                  土地估计报告
-                </router-link>
-              </el-option>
-              <el-option>
-                <router-link :to="{ path: '/entryList/assetsReport'}" style="color: rgb(51, 153, 204)">
-                  资产估计报告
-                </router-link>
-              </el-option>
-              <el-option>
-                <router-link :to="{ path: '/entryList/preliminaryAssessment'}" style="color: rgb(51, 153, 204)">
-                  预评估
-                </router-link>
+            <el-select style="width: 250px;" placeholder="请选择" v-model="editForm.linkSel">
+              <el-option v-for="(item,index) in linkArr"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"/>
               </el-option>
             </el-select>
           </template>
         </el-form-item>
+				<el-form-item>
+				  <el-button type="primary" @click="confirmLink(editForm)">确定</el-button>
+				</el-form-item>
       </el-form>
     </el-dialog>
     <!-- 房地产估价报告-弹窗 -->
-    <el-dialog :visible.sync="fdcFormVisible" :close-on-click-modal="false" title="房地产估价报告" style="width: 100%;">
+    <el-dialog :visible.sync="fdcFormVisible" :close-on-click-modal="false" title="房地产估价报告">
       <template>
-        <el-form ref="estateForm" :inline="true" :model="estateForm" label-width="110px" style="width: 100%;">
+        <el-form ref="estateForm" :inline="true" :model="estateForm" label-width="140px" style="width: 100%;">
           <el-form-item label="报告类型:" style="display: block;">
             <template>
               <el-input value="房地产估价报告" disabled/>
             </template>
           </el-form-item>
-          <el-form-item label="项目名称:" style="width: 46%;">
+          <el-form-item label="项目名称:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.projectName" disabled/>
               <el-input v-else v-model="estateForm.projectName"/>
             </template>
           </el-form-item>
-          <el-form-item label="估价报告编号:" style="width: 46%;">
+          <el-form-item label="估价报告编号:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessReportNum" disabled/>
               <el-input v-else v-model="estateForm.assessReportNum"/>
             </template>
           </el-form-item>
-          <el-form-item label="估价作业开始时间:" style="width: 46%;">
+          <el-form-item label="估价作业开始时间:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessStartTime" disabled/>
               <el-date-picker v-else v-model="estateForm.assessStartTime" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss"/>
             </template>
           </el-form-item>
-          <el-form-item label="估价作业结束时间:" style="width: 46%;">
+          <el-form-item label="估价作业结束时间:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessEndTime" disabled/>
               <el-date-picker v-else v-model="estateForm.assessEndTime" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss"/>
             </template>
           </el-form-item>
-          <el-form-item label="估价时点:" style="width: 46%;">
+          <el-form-item label="估价时点:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.valueTime" disabled/>
               <el-date-picker v-else v-model="estateForm.valueTime" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss"/>
             </template>
           </el-form-item>
-          <el-form-item label="估价对象:" style="width: 46%;">
+          <el-form-item label="估价对象:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessObject" disabled/>
               <el-input v-else v-model="estateForm.assessObject"/>
             </template>
           </el-form-item>
-          <el-form-item label="估价目的:" style="width: 46%;">
+          <el-form-item label="估价目的:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessAim" disabled/>
               <el-select v-else v-model="estateForm.assessAim" placeholder="请选择">
@@ -220,7 +205,7 @@
               </el-select>
             </template>
           </el-form-item>
-          <el-form-item label="估价方法:" style="width: 46%;">
+          <el-form-item label="估价方法:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessMethod" disabled/>
               <el-select v-else v-model="estateForm.assessMethod" placeholder="请选择">
@@ -232,7 +217,7 @@
               </el-select>
             </template>
           </el-form-item>
-          <el-form-item label="价值类型:" style="width: 46%;">
+          <el-form-item label="价值类型:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.valueType" disabled/>
               <el-select v-else v-model="estateForm.valueType" placeholder="请选择">
@@ -244,97 +229,97 @@
               </el-select>
             </template>
           </el-form-item>
-          <el-form-item label="建筑面积(m2):" style="width: 46%;">
+          <el-form-item label="建筑面积(m2):" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.buildingArea" disabled/>
               <el-input v-else v-model="estateForm.buildingArea"/>
             </template>
           </el-form-item>
-          <el-form-item label="土地面积(m2):" style="width: 46%;">
+          <el-form-item label="土地面积(m2):" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.floorArea" disabled/>
               <el-input v-else v-model="estateForm.floorArea"/>
             </template>
           </el-form-item>
-          <el-form-item label="评估单价:" style="width: 46%;">
+          <el-form-item label="评估单价:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessUnitPrice" disabled/>
               <el-input v-else v-model="estateForm.assessUnitPrice"/>
             </template>
           </el-form-item>
-          <el-form-item label="评估总价:" style="width: 46%;">
+          <el-form-item label="评估总价:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessTotalPrice" disabled/>
               <el-input v-else v-model="estateForm.assessTotalPrice"/>
             </template>
           </el-form-item>
-          <el-form-item label="委托方:" style="width: 46%;">
+          <el-form-item label="委托方:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.client" disabled/>
               <el-input v-else v-model="estateForm.client"/>
             </template>
           </el-form-item>
-          <el-form-item label="第一报告人:" style="width: 46%;">
+          <el-form-item label="第一报告人:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.firstReporter" disabled/>
               <el-input v-else v-model="estateForm.firstReporter"/>
             </template>
           </el-form-item>
-          <el-form-item label="第一报告人注册号:" style="width: 46%;">
+          <el-form-item label="第一报告人注册号:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.firstReporterRgNum" disabled/>
               <el-input v-else v-model="estateForm.firstReporterRgNum"/>
             </template>
           </el-form-item>
-          <el-form-item label="参与报告人1:" style="width: 46%;">
+          <el-form-item label="参与报告人1:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.partReporter1" disabled/>
               <el-input v-else v-model="estateForm.partReporter1"/>
             </template>
           </el-form-item>
-          <el-form-item label="参与报告人2:" style="width: 46%;">
+          <el-form-item label="参与报告人2:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.partReporter2" disabled/>
               <el-input v-else v-model="estateForm.partReporter2"/>
             </template>
           </el-form-item>
-          <el-form-item label="参与报告人1注册号:" style="width: 46%;">
+          <el-form-item label="参与报告人1注册号:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.partReporter1RgNum" disabled/>
               <el-input v-else v-model="estateForm.partReporter1RgNum"/>
             </template>
           </el-form-item>
-          <el-form-item label="参与报告人2注册号:" style="width: 46%;">
+          <el-form-item label="参与报告人2注册号:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.partReporter2RgNum" disabled/>
               <el-input v-else v-model="estateForm.partReporter2RgNum"/>
             </template>
           </el-form-item>
-          <el-form-item label="业务来源:" style="width: 46%;">
+          <el-form-item label="业务来源:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.serviceSource" disabled/>
               <el-input v-else v-model="estateForm.serviceSource"/>
             </template>
           </el-form-item>
-          <el-form-item label="分公司:" style="width: 46%;">
+          <el-form-item label="分公司:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.branchOffice" disabled/>
               <el-input v-else v-model="estateForm.branchOffice"/>
             </template>
           </el-form-item>
-          <el-form-item label="业务收费:" style="width: 46%;">
+          <el-form-item label="业务收费:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.serviceCharge" disabled/>
               <el-input v-else v-model="estateForm.serviceCharge"/>
             </template>
           </el-form-item>
-          <el-form-item label="审核员:" style="width: 46%;">
+          <el-form-item label="审核员:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.checker" disabled/>
               <el-input v-else v-model="estateForm.checker"/>
             </template>
           </el-form-item>
-          <el-form-item label="评估机构:" style="width: 46%;">
+          <el-form-item label="评估机构:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessOrg" disabled/>
               <el-input v-else v-model="estateForm.assessOrg"/>
@@ -371,49 +356,49 @@
     <!-- 土地估价报告-弹窗 -->
     <el-dialog :visible.sync="tdFormVisible" :close-on-click-modal="false" title="土地估价报告">
       <template>
-        <el-form ref="estateForm" :inline="true" :model="estateForm" label-width="110px">
+        <el-form ref="estateForm" :inline="true" :model="estateForm" label-width="140px">
           <el-form-item label="报告类型:" style="display: block;">
             <template>
               <el-input value="土地估价报告" disabled/>
             </template>
           </el-form-item>
-          <el-form-item label="项目名称:" style="width: 46%;">
+          <el-form-item label="项目名称:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.projectName" disabled/>
               <el-input v-else v-model="estateForm.projectName"/>
             </template>
           </el-form-item>
-          <el-form-item label="估价报告编号:" style="width: 46%;">
+          <el-form-item label="估价报告编号:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessReportNum" disabled/>
               <el-input v-else v-model="estateForm.assessReportNum"/>
             </template>
           </el-form-item>
-          <el-form-item label="估价作业开始时间:" style="width: 46%;">
+          <el-form-item label="估价作业开始时间:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessStartTime" disabled/>
               <el-date-picker v-else v-model="estateForm.assessStartTime" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd"/>
             </template>
           </el-form-item>
-          <el-form-item label="估价作业结束时间:" style="width: 46%;">
+          <el-form-item label="估价作业结束时间:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessEndTime" disabled/>
               <el-date-picker v-else v-model="estateForm.assessEndTime" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd"/>
             </template>
           </el-form-item>
-          <el-form-item label="估价时点:" style="width: 46%;">
+          <el-form-item label="估价时点:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.valueTime" disabled/>
               <el-date-picker v-else v-model="estateForm.valueTime" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd"/>
             </template>
           </el-form-item>
-          <el-form-item label="估价对象:" style="width: 46%;">
+          <el-form-item label="估价对象:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessObject" disabled/>
               <el-input v-else v-model="estateForm.assessObject"/>
             </template>
           </el-form-item>
-          <el-form-item label="估价目的:" style="width: 46%;">
+          <el-form-item label="估价目的:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessAim" disabled/>
               <el-select v-else v-model="estateForm.assessAim" placeholder="请选择">
@@ -425,7 +410,7 @@
               </el-select>
             </template>
           </el-form-item>
-          <el-form-item label="估价方法:" style="width: 46%;">
+          <el-form-item label="估价方法:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessMethod" disabled/>
               <el-select v-else v-model="estateForm.assessMethod" placeholder="请选择">
@@ -437,115 +422,115 @@
               </el-select>
             </template>
           </el-form-item>
-          <el-form-item label="宗地位置:" style="width: 46%;">
+          <el-form-item label="宗地位置:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.landSite" disabled/>
               <el-input v-else v-model="estateForm.landSite"/>
             </template>
           </el-form-item>
-          <el-form-item label="宗地面积(m2):" style="width: 46%;">
+          <el-form-item label="宗地面积(m2):" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.landArea" disabled/>
               <el-input v-else v-model="estateForm.landArea"/>
             </template>
           </el-form-item>
-          <el-form-item label="宗地数:" style="width: 46%;">
+          <el-form-item label="宗地数:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.landAmount" disabled/>
               <el-input v-else v-model="estateForm.landAmount"/>
             </template>
           </el-form-item>
-          <el-form-item label="评估单价:" style="width: 46%;">
+          <el-form-item label="评估单价:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessUnitPrice" disabled/>
               <el-input v-else v-model="estateForm.assessUnitPrice"/>
             </template>
           </el-form-item>
-          <el-form-item label="评估总价:" style="width: 46%;">
+          <el-form-item label="评估总价:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessTotalPrice" disabled/>
               <el-input v-else v-model="estateForm.assessTotalPrice"/>
             </template>
           </el-form-item>
-          <el-form-item label="委托方:" style="width: 46%;">
+          <el-form-item label="委托方:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.client" disabled/>
               <el-input v-else v-model="estateForm.client"/>
             </template>
           </el-form-item>
-          <el-form-item label="委托人邮箱:" style="width: 46%;">
+          <el-form-item label="委托人邮箱:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.clientEmail" disabled/>
               <el-input v-else v-model="estateForm.clientEmail"/>
             </template>
           </el-form-item>
-          <el-form-item label="委托人电话:" style="width: 46%;">
+          <el-form-item label="委托人电话:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.clientPhone" disabled/>
               <el-input v-else v-model="estateForm.clientPhone"/>
             </template>
           </el-form-item>
-          <el-form-item label="第一报告人:" style="width: 46%;">
+          <el-form-item label="第一报告人:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.firstReporter" disabled/>
               <el-input v-else v-model="estateForm.firstReporter"/>
             </template>
           </el-form-item>
-          <el-form-item label="第一报告人注册号:" style="width: 46%;">
+          <el-form-item label="第一报告人注册号:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.firstReporterRgNum" disabled/>
               <el-input v-else v-model="estateForm.firstReporterRgNum"/>
             </template>
           </el-form-item>
-          <el-form-item label="参与报告人1:" style="width: 46%;">
+          <el-form-item label="参与报告人1:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.partReporter1" disabled/>
               <el-input v-else v-model="estateForm.partReporter1"/>
             </template>
           </el-form-item>
-          <el-form-item label="参与报告人2:" style="width: 46%;">
+          <el-form-item label="参与报告人2:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.partReporter2" disabled/>
               <el-input v-else v-model="estateForm.partReporter2"/>
             </template>
           </el-form-item>
-          <el-form-item label="参与报告人1注册号:" style="width: 46%;">
+          <el-form-item label="参与报告人1注册号:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.partReporter1RgNum" disabled/>
               <el-input v-else v-model="estateForm.partReporter1RgNum"/>
             </template>
           </el-form-item>
-          <el-form-item label="参与报告人2注册号:" style="width: 46%;">
+          <el-form-item label="参与报告人2注册号:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.partReporter2RgNum" disabled/>
               <el-input v-else v-model="estateForm.partReporter2RgNum"/>
             </template>
           </el-form-item>
-          <el-form-item label="业务来源:" style="width: 46%;">
+          <el-form-item label="业务来源:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.serviceSource" disabled/>
               <el-input v-else v-model="estateForm.serviceSource"/>
             </template>
           </el-form-item>
-          <el-form-item label="分公司:" style="width: 46%;">
+          <el-form-item label="分公司:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.branchOffice" disabled/>
               <el-input v-else v-model="estateForm.branchOffice"/>
             </template>
           </el-form-item>
-          <el-form-item label="业务收费:" style="width: 46%;">
+          <el-form-item label="业务收费:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.serviceCharge" disabled/>
               <el-input v-else v-model="estateForm.serviceCharge"/>
             </template>
           </el-form-item>
-          <el-form-item label="审核员:" style="width: 46%;">
+          <el-form-item label="审核员:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.checker" disabled/>
               <el-input v-else v-model="estateForm.checker"/>
             </template>
           </el-form-item>
-          <el-form-item label="评估机构:" style="width: 46%;">
+          <el-form-item label="评估机构:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessOrg" disabled/>
               <el-input v-else v-model="estateForm.assessOrg"/>
@@ -582,37 +567,37 @@
     <!-- 资产估价报告-弹窗 -->
     <el-dialog :visible.sync="zcFormVisible" :close-on-click-modal="false" title="资产估价报告">
       <template>
-        <el-form ref="estateForm" :inline="true" :model="estateForm" label-width="110px">
+        <el-form ref="estateForm" :inline="true" :model="estateForm" label-width="140px">
           <el-form-item label="报告类型:" style="display: block;">
             <template>
               <el-input value="资产评估报告" disabled/>
             </template>
           </el-form-item>
-          <el-form-item label="项目名称:" style="width: 46%;">
+          <el-form-item label="项目名称:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.projectName" disabled/>
               <el-input v-else v-model="estateForm.projectName"/>
             </template>
           </el-form-item>
-          <el-form-item label="估价报告编号:" style="width: 46%;">
+          <el-form-item label="估价报告编号:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessReportNum" disabled/>
               <el-input v-else v-model="estateForm.assessReportNum"/>
             </template>
           </el-form-item>
-          <el-form-item label="价值时点:" style="width: 46%;">
+          <el-form-item label="价值时点:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.valueTime" disabled/>
               <el-date-picker v-else v-model="estateForm.valueTime" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd"/>
             </template>
           </el-form-item>
-          <el-form-item label="估价对象:" style="width: 46%;">
+          <el-form-item label="估价对象:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessObject" disabled/>
               <el-input v-else v-model="estateForm.assessObject"/>
             </template>
           </el-form-item>
-          <el-form-item label="是否国有资产评估业务:" style="width: 46%;">
+          <el-form-item label="是否国有资产评估业务:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.isStateAssets" disabled/>
               <el-select v-else v-model="estateForm.isStateAssets" placeholder="请选择">
@@ -624,7 +609,7 @@
               </el-select>
             </template>
           </el-form-item>
-          <el-form-item label="是否私发资产评估业务:" style="width: 46%;">
+          <el-form-item label="是否私发资产评估业务:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.isPrivateAsset" disabled/>
               <el-select v-else v-model="estateForm.isPrivateAsset" placeholder="请选择">
@@ -636,69 +621,69 @@
               </el-select>
             </template>
           </el-form-item>
-          <el-form-item label="评估目的:" style="width: 46%;">
+          <el-form-item label="评估目的:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessAim" disabled/>
               <el-input v-else v-model="estateForm.assessAim"/>
             </template>
           </el-form-item>
-          <el-form-item label="评估对象:" style="width: 46%;">
+          <el-form-item label="评估对象:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessTotalPrice" disabled/>
               <el-input v-else v-model="estateForm.assessTotalPrice"/>
             </template>
           </el-form-item>
-          <el-form-item label="价值类型:" style="width: 46%;">
+          <el-form-item label="价值类型:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.valueType" disabled/>
               <el-input v-else v-model="estateForm.valueType"/>
             </template>
           </el-form-item>
-          <el-form-item label="评估方法:" style="width: 46%;">
+          <el-form-item label="评估方法:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessMethod" disabled/>
               <el-input v-else v-model="estateForm.assessMethod"/>
             </template>
           </el-form-item>
-          <el-form-item label="评估结论(万元):" style="width: 46%;">
+          <el-form-item label="评估结论(万元):" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessResult" disabled/>
               <el-input v-else v-model="estateForm.assessResult"/>
             </template>
           </el-form-item>
-          <el-form-item label="评估基准日" style="width: 46%;">
+          <el-form-item label="评估基准日" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assessDate" disabled/>
               <el-input v-else v-model="estateForm.assessDate"/>
             </template>
           </el-form-item>
-          <el-form-item label="实际收费金额(万元):" style="width: 46%;">
+          <el-form-item label="实际收费金额(万元):" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.actualFee" disabled/>
               <el-input v-else v-model="estateForm.actualFee"/>
             </template>
           </el-form-item>
-          <el-form-item label="资产评估报告日:" style="width: 46%;">
+          <el-form-item label="资产评估报告日:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assetsReportDate" disabled/>
               <el-input v-else v-model="estateForm.assetsReportDate"/>
             </template>
           </el-form-item>
-          <el-form-item label="总资产账面值:" style="width: 46%;">
+          <el-form-item label="总资产账面值:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.assetsFee" disabled/>
               <el-input v-else v-model="estateForm.assetsFee"/>
               <!-- <el-radio></el-radio>无账面价值 -->
             </template>
           </el-form-item>
-          <el-form-item label="总负债账面值:" style="width: 46%;">
+          <el-form-item label="总负债账面值:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.debtFee" disabled/>
               <el-input v-else v-model="estateForm.debtFee"/>
               <!-- <el-radio></el-radio>无账面价值 -->
             </template>
           </el-form-item>
-          <el-form-item label="净资产账面值:" style="width: 46%;">
+          <el-form-item label="净资产账面值:" style="width: 31%;">
             <template>
               <el-input v-if="lookOrEdit" v-model="estateForm.netAssets" disabled/>
               <el-input v-else v-model="estateForm.netAssets"/>
@@ -802,7 +787,8 @@ export default {
     return {
       editForm: {
         branchName: '',
-        status: ''
+        status: '',
+				linkSel: ''
       },
       checkForm: {
         checkAccount: '12个'
@@ -824,6 +810,19 @@ export default {
       }, {
         'label': '未审核',
         'value': '未审核'
+      }],
+			linkArr: [{
+        'label': '房地产估价报告',
+        'value': '房地产估价报告'
+      }, {
+        'label': '土地估价报告',
+        'value': '土地估价报告'
+      }, {
+        'label': '资产评估报告',
+        'value': '资产评估报告'
+      }, {
+        'label': '预评估',
+        'value': '预评估'
       }],
       companySel: [{
         'label': '分公司1',
@@ -916,6 +915,18 @@ export default {
     newAdd() {
       this.editFormVisible = true
     },
+		confirmLink(editForm){
+			let linkVal = editForm.linkSel
+			if(linkVal == "房地产估价报告"){
+				this.$router.push({path:'/entryList/realEstateReport'})
+			}else if(linkVal == "土地估价报告"){
+				this.$router.push({path:'/entryList/landValuationReport'})
+			}else if(linkVal == "资产评估报告"){
+				this.$router.push({path:'/entryList/assetsReport'})
+			}else if(linkVal == "预评估"){
+				this.$router.push({path:'/entryList/preliminaryAssessment'})
+			}
+		},
     getReportDetail: function(index, row) {
       const id = row.id
       const reportType = row.reportType
@@ -1044,5 +1055,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+	.el-dialog{
+		width: 80% !important;
+	}
 </style>

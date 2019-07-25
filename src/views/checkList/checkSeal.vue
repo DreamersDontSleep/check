@@ -1,14 +1,15 @@
 <template>
 	<div>
 		<template>
-			<el-button type="primary" @click="button1_click()">打开文件</el-button>
-			<el-button type="primary" @click="button2_click()">关闭文件</el-button>
+			<el-button type="primary" @click="button1_click()">导入审批文件</el-button>
+			<!-- <el-button type="primary" @click="button2_click()">关闭文件</el-button> -->
 			<el-button type="primary" @click="button3_click()">另存文件</el-button>
 			<el-button type="primary" @click="button4_click()">添加二维码</el-button>
-			<el-button type="primary" @click="button5_click()">上传文件</el-button>
+			<el-button type="primary" @click="button5_click()">盖章完成</el-button>
+			<el-button type="primary" @click="checkSuccess()">审批通过</el-button>
 			<!-- <input id="Button40" type="button" value="打开文件（服务器）" v-on:click="Button40_onclick()" /><br /> -->
-			<div style="min-width:900px; width:74%;margin-left: 100px;">
-				<object classid="CLSID:358327D8-B2C5-402F-B1F5-DD89FAA68BFF" id="ShareSunReaderSDK" style="height: 800px; width:108%; margin-top: 0px;"
+			<div style="min-width:900px; width:74%;margin-left: 100px;z-index: -1;">
+				<object classid="CLSID:358327D8-B2C5-402F-B1F5-DD89FAA68BFF" id="ShareSunReaderSDK" style="height: 800px;z-index: -1; width:108%; margin-top: 0px;"
 				 align="right">
 				</object>
 				<object classid="CLSID:7E0C4EA8-E4BF-43A4-8018-DBB82483BAD5" id="ShareSunReaderSDKs" style="height:600px; width:0px; margin-top: 0px;"
@@ -20,6 +21,9 @@
 </template>
 
 <script>
+	import {
+		postReportData, getReportData, postCheckId
+	} from '@/api/entry'
 	export default {
 		data() {
 			return {
@@ -41,10 +45,19 @@
 		},
 		mounted () {
 			this.hzonload_li1();
+			// setTimeout(this.fetch(),500);
 		},
 		methods: {
 			hzonload_li1(){
 				document.getElementById("ShareSunReaderSDK").FX_SignPDF_AddAboutLicense("xzu3X6dlBVyaBPw9L0eWazAXRbXsuXEn0y5DMEGbYXc8GLWYF8l7I6Xs1Z/seq2bkoNnomhWOmCRwtQMmdB1/kfI/E6GsKvL38o=");
+				// this.button1_click();
+			},
+			fetch () {
+				let XSReaderSDK1 = document.getElementById("ShareSunReaderSDK");
+				let openName = this.fileUrl;
+				console.log(openName);
+				// let openName = "http://fcpgpre.jstspg.com/rpt/open/gy.pdf";
+				XSReaderSDK1.OpenFile(openName, "")
 			},
 			button1_click() {
 				let XSReaderSDK1 = document.getElementById("ShareSunReaderSDK");
@@ -73,15 +86,16 @@
 			},
 			button4_click() {
 				var XSReaderSDK1 = document.getElementById("ShareSunReaderSDK");
-			    var content = prompt("请输入二维码内容", "http://www.17sucai.com/pins/27562.html");
-			    var page = prompt("请输入添加二维码的页码（从0开始）", "0");           
-			    var X = prompt("请输入添加二维码左边距", "450");
-			    var Y = prompt("请输入添加二维码的底部距离", "700");
-			    var hight = prompt("请输入添加二维码的高度", "100");
-			    var width = prompt("请输入添加二维码的宽度", "100");
-			    var fTransparency = prompt("请输入二维码透明度", "200");
-			    var fZoom = prompt("请输入二维码旋转角度", "0");
-			    alert(XSReaderSDK1.FX_SignPDF_AddGenerateCode(content, page, X, Y, hight, width, fTransparency, fZoom));
+			    // var content = prompt("请输入二维码内容", "http://www.17sucai.com/pins/27562.html");
+			    // var page = prompt("请输入添加二维码的页码（从0开始）", "0");           
+			    var X = prompt("请输入添加二维码左边距", "500");
+			    var Y = prompt("请输入添加二维码的底部距离", "750");
+			    // var hight = prompt("请输入添加二维码的高度", "100");
+			    // var width = prompt("请输入添加二维码的宽度", "100");
+			    // var fTransparency = prompt("请输入二维码透明度", "200");
+			    // var fZoom = prompt("请输入二维码旋转角度", "0");
+			    // alert(XSReaderSDK1.FX_SignPDF_AddGenerateCode(content, page, X, Y, hight, width, fTransparency, fZoom));
+				XSReaderSDK1.FX_SignPDF_AddGenerateCode("http://fcpgpre.jstspg.com/sh", "0", X,Y, "100", "100", "200", "0");
 			},
 			button5_click () {
 				var XSReaderSDK1 = document.getElementById("ShareSunReaderSDKs");
@@ -100,7 +114,22 @@
 					alert(post);
 					// XSReaderSDK1.XSRemoveFile(this.saveUrl);
 				}
-			}
+			},
+			checkSuccess () {
+				let id = this.id;
+				let state = 3;
+				// this.$confirm('确认审核通过吗?', '提示', {
+				// 	type: 'warning'
+				// }).then(() => {
+					postCheckId(id,state).then((res) => {
+						// this.fetchProjectList()
+						console.log(res);
+						this.$router.push({path:'/checkList/index'})
+					});
+				// }).catch(() => {
+				// 	
+				// });
+			},
 				
 		}
 	}

@@ -153,6 +153,7 @@
 					postCheckId(id,state).then((res) => {
 						// this.fetchProjectList()
 						console.log(res);
+						this.$router.push({path:'/checkList/index'})
 					});
 				}).catch(() => {
 					
@@ -172,6 +173,7 @@
 						// this.fetchProjectList();
 						// this.fetchProjectList()
 						console.log(res);
+						this.$router.push({path:'/checkList/index'})
 					});
 				}).catch(() => {
 					

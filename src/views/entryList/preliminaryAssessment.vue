@@ -17,7 +17,11 @@
 				</el-form-item>
 				<el-form-item label="审核员:" style="width: 40%;" prop="checker">
 					<template>
-						<el-input v-model="estateForm.checker"></el-input>
+						<!-- <el-input v-model="estateForm.assessMethod"></el-input> -->
+						<el-select v-model="estateForm.checker" placeholder="请选择" style="width: 331px;">
+							<el-option v-for="(item,index) in checkerList" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="评估机构:" style="width: 40%;" prop="assessOrg">
@@ -65,7 +69,7 @@ export default {
 				reportType: '4',
 				branchOffice: '',
 				checker: '',
-				assessOrg: ''
+				assessOrg: '江苏天圣房地产土地资产评估测绘有限公司'
 			},
 			checkForm:{
 				checkAccount: '12个'
@@ -93,6 +97,21 @@ export default {
 					"label": "不出让",
 					"value": "不出让"
 			}],
+			checkerList:[
+				{
+					"label": "name1",
+					"value": "name1"
+				}, {
+					"label": "name2",
+					"value": "name2"
+				}, {
+					"label": "name3",
+					"value": "name3"
+				}, {
+					"label": "name4",
+					"value": "name4"
+				}
+			],
 			inputRule:{
 				projectName: [{ required: true, trigger: 'blur', message: '不能为空' }],
 				branchOffice: [{ required: true, trigger: 'blur', message: '不能为空' }],
