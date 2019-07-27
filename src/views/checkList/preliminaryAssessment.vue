@@ -20,7 +20,7 @@
 				</el-form-item>
 				<el-form-item label="评估机构:" style="width: 40%;">
 					<template>
-						<el-input v-model="estateForm.assessOrg" disabled></el-input>
+						<el-input v-model="estateForm.assessOrg" style="width: 331px;" disabled></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="文件上传" class="fl">

@@ -162,11 +162,20 @@ export default {
         url: ''
       }],
       checkOr: [{
+        'label': '全部',
+        'value': '全部'
+      }, {
         'label': '待审核',
         'value': '待审核'
       }, {
         'label': '未审核',
         'value': '未审核'
+      }, {
+        'label': '审核通过',
+        'value': '审核通过'
+      }, {
+        'label': '审核不通过',
+        'value': '审核不通过'
       }],
 			linkArr: [{
         'label': '房地产估价报告',
@@ -182,6 +191,9 @@ export default {
         'value': '预评估'
       }],
       companySel: [{
+        'label': '全部',
+        'value': '全部'
+      },{
         'label': '分公司1',
         'value': '分公司1'
       }, {
@@ -239,7 +251,12 @@ export default {
     fetchProjectList() {
       const state = this.editForm.status
       const branchOffice = this.editForm.branchName
-      getEntryList(state, branchOffice).then((res) => {
+			let para = {
+				"state": "",
+				"branchOffice": "",
+				"login": ""
+			}
+      getEntryList(para).then((res) => {
         this.totalPriceEvaluation = res.data
         console.log(res)
       })
@@ -251,15 +268,30 @@ export default {
       console.log(para)
       this.$refs.editForm.validate((valid) => {
 			  if (valid) {
-          // alert('submit!');
           console.log(editForm)
-          // let para = {
-          // 	branchOffice: editForm.branchName,
-          // 	state: editForm.status
-          // }
-          const state = editForm.status
-          const branchOffice = editForm.branchName
-          getEntryList(state, branchOffice).then((res) => {
+          let state = editForm.status
+          let branchOffice = editForm.branchName
+					if(branchOffice == "全部"){
+						branchOffice = '';
+					}
+					
+					if( state == "未审核" ){
+						state = "0";
+					}else if( state == "待审核" ){
+						state = "1";
+					}else if( state == "审核通过" ){
+						state = "3";
+					}else if( state == "审核不通过" ){
+						state = "4";
+					}else if( state == "全部" ){
+						state = "";
+					}
+					let para = {
+						"state": state,
+						"branchOffice": branchOffice,
+						"login": ""
+					}
+          getEntryList(para).then((res) => {
             this.totalPriceEvaluation = res.data
             console.log(res)
           })
