@@ -31,7 +31,7 @@
 		</el-form>
 		<el-form :inline="true" :model="checkForm" ref="checkForm" style="float: left;margin-left: 40px;">
 			<el-form-item label="待审批:">
-				<p style="margin: 0;padding: 0;color: red;">{{checkForm.checkAccount}}</p>
+				<p style="margin: 0;padding: 0;color: red;">{{checkForm.checkAccount}}个</p>
 			</el-form-item>
 		</el-form>
 		<div>
@@ -51,7 +51,7 @@
 					</el-table-column>
 					<el-table-column  label="申请编号" align="center">
 					  <template slot-scope="scope">
-						  {{scope.row.orderNum}}
+						  {{scope.row.applicationNum}}
 					  </template>
 					</el-table-column>
 					<el-table-column label="分公司">
@@ -90,11 +90,31 @@
 						{{scope.row.applicationDate}}
 					  </template>
 					</el-table-column>
+					<el-table-column label="审核结果">
+					  <template slot-scope="scope">
+						  <div v-if="scope.row.checkResult == 0">
+						  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">未审核</span>
+						  </div>
+						  <div v-if="scope.row.checkResult == 1">
+						  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">待审核</span>
+						  </div>
+						  <div v-if="scope.row.checkResult == 3">
+						  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">审核通过</span>
+						  </div>
+						  <div v-if="scope.row.checkResult == 4">
+						  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">审核不通过</span>
+						  </div>
+						<!-- {{scope.row.checkResult}} -->
+					  </template>
+					</el-table-column>
 					<el-table-column label="操作">
 					  <template slot-scope="scope">
 						<span @click="linkChange(scope.$index,scope.row)" style="color: rgb(51, 153, 204);cursor: pointer;">
 						  审核
 						</span>
+						<!-- <span @click="sealChange(scope.$index,scope.row)" style="color: rgb(51, 153, 204);cursor: pointer;">
+						  盖章
+						</span> -->
 					  </template>
 					</el-table-column>
 				  </el-table>
@@ -105,7 +125,7 @@
 </template>
 
 <script>
-import { getCheckList } from '@/api/entry'
+import { getCheckList, getEntryList, getReportData } from '@/api/entry'
 export default {
   data() {
 		return {
@@ -114,15 +134,26 @@ export default {
 				status: ''
 			},
 			checkForm:{
-				checkAccount: '12个'
+				checkAccount: ''
 			},
+			username: '',
+			estateForm: {
+				
+			},
+			fileList: [{
+					name: '',
+					url: ''
+				}],
 			editFormVisible: false,
 			checkOr:[{
+					"label": "全部",
+					"value": "全部"
+				},{
 					"label": "待审核",
 					"value": "待审核"
 				},{
-					"label": "未审核",
-					"value": "未审核"
+					"label": "已审核",
+					"value": "已审核"
 			}],
 			companySel:[{
 					"label": "全部",
@@ -142,23 +173,63 @@ export default {
   },
 	methods:{
 		fetchProjectList() {
-			getCheckList().then((res) => {
+			// getCheckList().then((res) => {
+			// 	this.totalPriceEvaluation = res.data
+			// 	this.checkForm.checkAccount = res.count
+			// 	console.log(res);
+			// })
+			let para
+			if(localStorage.getItem('userId') == "root"){
+				para = {
+					"state": "",
+					"branchOffice": "",
+					"login": ""
+				}
+			}else{
+				para = {
+					"state": "1",
+					"branchOffice": "",
+					"login": localStorage.getItem('userId')
+				}
+			}
+			getEntryList(para).then((res) => {
 				this.totalPriceEvaluation = res.data
+				this.checkForm.checkAccount = res.count
 				console.log(res);
 			})
 		},
 		searchTable(editForm){
 			this.$refs.editForm.validate((valid) => {
 			  if (valid) {
-					// alert('submit!');
 					console.log(editForm);
-					// let para = {
-					// 	branchOffice: editForm.branchName,
-					// 	state: editForm.status
-					// }
 					let state = editForm.status;
 					let branchOffice = editForm.branchName;
-					getEntryList(state,branchOffice).then((res) => {
+					if(branchOffice == "全部"){
+						branchOffice = '';
+					}
+					
+					if( state == "待审核" ){
+						state = "1";
+					}else if( state == "已审核" ){
+						state = "3";
+					}else if( state == "全部" ){
+						state = "";
+					}
+					let para
+					if(localStorage.getItem('userId') == "root"){
+						para = {
+							"state": state,
+							"branchOffice": branchOffice,
+							"login": ""
+						}
+					}else{
+						para = {
+							"state": state,
+							"branchOffice": branchOffice,
+							"login": localStorage.getItem('userId')
+						}
+					}
+					getEntryList(para).then((res) => {
 						this.totalPriceEvaluation = res.data
 						console.log(res);
 					})
@@ -182,6 +253,16 @@ export default {
 			}else if(row.reportType == 4){
 				this.$router.push({path:'/checkList/preliminaryAssessment', query: { 'content': row }})
 			}
+		},
+		sealChange(index,row){
+			console.log(row)
+			let id = row.id;
+			let reportType = row.reportType;
+			getReportData(id,reportType).then((res) => {
+				console.log(res);
+				this.estateForm = res.data;
+				this.$router.push({path:'/checkList/checkSeal', query: { 'content': this.estateForm }})
+			});
 		}
 	}
 }

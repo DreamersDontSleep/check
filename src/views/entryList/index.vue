@@ -50,7 +50,7 @@
             </el-table-column>
             <el-table-column label="申请编号" align="center">
               <template slot-scope="scope">
-                {{ scope.row.orderNum }}
+                {{ scope.row.applicationNum }}
               </template>
             </el-table-column>
             <el-table-column label="分公司">
@@ -105,7 +105,7 @@
             </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
-                <div v-if="scope.row.state == 3">
+                <div v-if="scope.row.state == 3 || scope.row.state == 1">
                   <span style="color: rgb(51, 153, 204);cursor: pointer;" @click="getReportDetail(scope.$index,scope.row)">
                     查看
                   </span>
@@ -319,10 +319,10 @@
               <el-input v-else v-model="estateForm.checker"/>
             </template>
           </el-form-item>
-          <el-form-item label="评估机构:" style="width: 31%;">
+          <el-form-item label="评估机构:" style="width: 90%;">
             <template>
-              <el-input v-if="lookOrEdit" v-model="estateForm.assessOrg" disabled/>
-              <el-input v-else v-model="estateForm.assessOrg"/>
+              <el-input v-if="lookOrEdit" v-model="estateForm.assessOrg" style="width: 400px;" disabled/>
+              <el-input v-else v-model="estateForm.assessOrg" style="width: 400px;"/>
             </template>
           </el-form-item>
           <el-form-item label="文件上传" class="fl">
@@ -340,10 +340,10 @@
               name="file"
               :on-exceed="handleExceed"
               :file-list="fileList"
-              accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF,.doc,.docx"
+              accept=".doc,.docx"
               multiple>
-              <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-              <div slot="tip" class="el-upload__tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg</div>
+              <el-button slot="trigger" size="small" type="primary" v-show="!lookOrEdit">选择文件</el-button>
+              <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
             </el-upload>
           </el-form-item>
           <el-form-item style="display: block;">
@@ -530,10 +530,10 @@
               <el-input v-else v-model="estateForm.checker"/>
             </template>
           </el-form-item>
-          <el-form-item label="评估机构:" style="width: 31%;">
+          <el-form-item label="评估机构:" style="width: 90%;">
             <template>
-              <el-input v-if="lookOrEdit" v-model="estateForm.assessOrg" disabled/>
-              <el-input v-else v-model="estateForm.assessOrg"/>
+              <el-input v-if="lookOrEdit" v-model="estateForm.assessOrg" style="width: 400px;" disabled/>
+              <el-input v-else v-model="estateForm.assessOrg" style="width: 400px;"/>
             </template>
           </el-form-item>
           <el-form-item label="文件上传" class="fl">
@@ -554,7 +554,7 @@
               accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF,.doc,.docx"
               multiple>
               <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-              <div slot="tip" class="el-upload__tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg</div>
+              <div slot="tip" class="el-upload__tip">支持扩展名.doc .docx</div>
             </el-upload>
           </el-form-item>
           <el-form-item style="display: block;">
@@ -705,10 +705,10 @@
               name="file"
               :on-exceed="handleExceed"
               :file-list="fileList"
-              accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF,.doc,.docx"
+              accept=".doc,.docx"
               multiple>
               <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-              <div slot="tip" class="el-upload__tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg</div>
+              <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
             </el-upload>
           </el-form-item>
           <el-form-item style="display: block;">
@@ -741,8 +741,8 @@
           </el-form-item>
           <el-form-item label="评估机构:" style="width: 80%;">
             <template>
-              <el-input v-if="lookOrEdit" v-model="estateForm.assessOrg" disabled/>
-              <el-input v-else v-model="estateForm.assessOrg"/>
+              <el-input v-if="lookOrEdit" v-model="estateForm.assessOrg" style="width: 400px;" disabled/>
+              <el-input v-else v-model="estateForm.assessOrg" style="width: 400px;"/>
             </template>
           </el-form-item>
           <el-form-item label="文件上传" class="fl" style="display: block;">
@@ -760,11 +760,30 @@
               name="file"
               :on-exceed="handleExceed"
               :file-list="fileList"
-              accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF,.doc,.docx"
-              multiple>
-              <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-              <div slot="tip" class="el-upload__tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg</div>
+              accept=".doc,.docx"
+              multiple  v-if="lookOrEdit">
+              <!-- <el-button slot="trigger" size="small" type="primary">选择文件</el-button> -->
+              <!-- <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div> -->
             </el-upload>
+						<el-upload
+						  ref="upload"
+						  :action="UploadUrl ()"
+						  :data="uploadData"
+						  :on-preview="handlePreview"
+						  :on-remove="handleRemove"
+						  :before-remove="beforeRemove"
+						  :auto-upload="false"
+						  :on-change="handleChange"
+						  class="upload-demo"
+						  :limit="1"
+						  name="file"
+						  :on-exceed="handleExceed"
+						  :file-list="fileList"
+						  accept=".doc,.docx"
+						  multiple v-else>
+						  <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
+						  <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
+						</el-upload>
           </el-form-item>
           <el-form-item style="display: block;">
             <el-button v-show="!lookOrEdit" @click="submitForm(estateForm)">提交</el-button>
@@ -778,6 +797,7 @@
 
 <script>
 import { getEntryList, deleteReport, postCheckId, getReportData } from '@/api/entry'
+import { mapGetters } from 'vuex'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import permission from '@/directive/permission/index.js' // 权限判断指令
 import checkPermission from '@/utils/permission' // 权限判断函数
@@ -805,11 +825,20 @@ export default {
         url: ''
       }],
       checkOr: [{
+        'label': '全部',
+        'value': '全部'
+      }, {
         'label': '待审核',
         'value': '待审核'
       }, {
         'label': '未审核',
         'value': '未审核'
+      }, {
+        'label': '审核通过',
+        'value': '审核通过'
+      }, {
+        'label': '审核不通过',
+        'value': '审核不通过'
       }],
 			linkArr: [{
         'label': '房地产估价报告',
@@ -825,6 +854,9 @@ export default {
         'value': '预评估'
       }],
       companySel: [{
+        'label': '全部',
+        'value': '全部'
+      },{
         'label': '分公司1',
         'value': '分公司1'
       }, {
@@ -866,6 +898,7 @@ export default {
 	  }
   },
   computed: {
+		...mapGetters(['name']),
   	uploadData: function() {
   		const parseData = JSON.stringify(this.estateForm)
   	    const params = {
@@ -880,9 +913,24 @@ export default {
   methods: {
     checkPermission,
     fetchProjectList() {
+			console.log(this.name)
       const state = this.editForm.status
       const branchOffice = this.editForm.branchName
-      getEntryList(state, branchOffice).then((res) => {
+			let para
+			if(localStorage.getItem('userId') == "root"){
+				para = {
+					"state": "",
+					"branchOffice": "",
+					"login": ""
+				}
+			}else{
+				para = {
+					"state": state,
+					"branchOffice": branchOffice,
+					"login": localStorage.getItem('userId')
+				}
+			}
+      getEntryList(para).then((res) => {
         this.totalPriceEvaluation = res.data
         console.log(res)
       })
@@ -896,13 +944,39 @@ export default {
 			  if (valid) {
           // alert('submit!');
           console.log(editForm)
-          // let para = {
-          // 	branchOffice: editForm.branchName,
-          // 	state: editForm.status
-          // }
-          const state = editForm.status
-          const branchOffice = editForm.branchName
-          getEntryList(state, branchOffice).then((res) => {
+          let state = editForm.status
+          let branchOffice = editForm.branchName
+					
+					if(branchOffice == "全部"){
+						branchOffice = '';
+					}
+					
+					if( state == "未审核" ){
+						state = "0";
+					}else if( state == "待审核" ){
+						state = "1";
+					}else if( state == "审核通过" ){
+						state = "3";
+					}else if( state == "审核不通过" ){
+						state = "4";
+					}else if( state == "全部" ){
+						state = "";
+					}
+					let para
+					if(localStorage.getItem('userId') == "root"){
+						para = {
+							"state": state,
+							"branchOffice": branchOffice,
+							"login": ""
+						}
+					}else{
+						para = {
+							"state": state,
+							"branchOffice": branchOffice,
+							"login": localStorage.getItem('userId')
+						}
+					}
+          getEntryList(para).then((res) => {
             this.totalPriceEvaluation = res.data
             console.log(res)
           })
@@ -1022,17 +1096,18 @@ export default {
       return 'http://fcpgpre.jstspg.com/rpt/index/updateRptOrFile'
     },
     handleChange(file, fileList) {
-		  this.fileList = fileList
-		  this.file = file
+		  // this.fileList = fileList
+		  // this.file = file
 		  console.log(file)
     },
     submitForm(estateForm) {
       this.$refs.estateForm.validate((valid) => {
 			  if (valid) {
+					// this.handleChange();
           this.$confirm('确认提交该记录吗?', '提示', {
             type: 'warning'
           }).then(() => {
-            this.$refs.upload.submit()
+            // this.$refs.upload.submit()
             // this.$router.push({path:'/entryList/index'})
           }).catch(() => {
 
@@ -1046,7 +1121,7 @@ export default {
       console.log(file)
     },
     handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)

@@ -56,7 +56,7 @@
 				</el-form-item>
 				<el-form-item label="估价方法:" style="width: 40%;" prop="assessMethod">
 					<template>
-					  <el-select v-model="estateForm.assessMethod" placeholder="请选择">
+					  <el-select v-model="estateForm.assessMethod"  placeholder="请选择">
 					    <el-option
 					      v-for="(item,index) in assessMethodList"
 					      :key="item.value"
@@ -156,7 +156,11 @@
 				</el-form-item>
 				<el-form-item label="分公司:" style="width: 40%;" prop="branchOffice">
 					<template>
-						<el-input v-model="estateForm.branchOffice" ></el-input>
+						<!-- <el-input v-model="estateForm.assessMethod"></el-input> -->
+						<el-select v-model="estateForm.branchOffice" placeholder="请选择">
+							<el-option v-for="(item,index) in cbranchOfficeList" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="业务收费:" style="width: 40%;" prop="serviceCharge">
@@ -186,7 +190,7 @@
 					 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange" multiple :limit="1" :on-exceed="handleExceed"
 					 :file-list="fileList">
 						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-						<div slot="tip" class="el-upload__tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg</div>
+						<div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
 					</el-upload>
 				</el-form-item>
 				<el-form-item style="display: block;">
@@ -206,6 +210,7 @@
 		postReportDatas,
 		uploadFileRequest
 	} from '@/api/entry'
+	import { mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -235,6 +240,8 @@
 					branchOffice: '',
 					serviceCharge: '',
 					checker: '',
+					applicant:'',
+					login: '',
 					assessOrg: '江苏天圣房地产土地资产评估测绘有限公司'
 				},
 				checkForm: {
@@ -266,6 +273,14 @@
 					"label": "其他",
 					"value": "其他"
 				}],
+				cbranchOfficeList: [{
+					"label": "分公司1",
+					"value": "分公司1"
+				}, {
+					"label": "分公司2",
+					"value": "分公司2"
+				}
+				],
 				assessAimList: [{
 					"label": "出让",
 					"value": "出让"
@@ -529,7 +544,10 @@
 			}
 		},
 		computed: {
+			...mapGetters(['name']),
 			uploadData: function() {
+				this.estateForm.applicant = this.name;
+				this.estateForm.login = localStorage.getItem('userId')
 				let parseData = JSON.stringify(this.estateForm);
 				let params = {
 					data: parseData
@@ -576,7 +594,7 @@
 							type: 'warning'
 						}).then(() => {
 							this.$refs.upload.submit();
-							// this.$router.push({path:'/entryList/index'})
+							this.$router.push({path:'/entryList/index'})
 						}).catch(() => {
 							
 						});

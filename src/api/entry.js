@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 import axios from "axios"
 
-export function getEntryList(state,branchOffice) {
+export function getEntryList(para) {
   return request({
-    url: '/rpt/index/getReports?state=' + state + '&branchOffice=' + branchOffice,
-    method: 'get',
-    data: {}
+    url: '/rpt/index/getReports',
+    method: 'post',
+    data: para
   })
 }
 
@@ -39,6 +39,14 @@ export function deleteReport(id,reportType) {
 export function getCheckList() {
   return request({
     url: '/rpt/index/getCheckList',
+    method: 'get',
+    data: {}
+  })
+}
+
+export function transferToId(id,transferTo) {
+  return request({
+    url: '/rpt/index/transferTo?id='+ id + '&transferTo=' + transferTo,
     method: 'get',
     data: {}
   })

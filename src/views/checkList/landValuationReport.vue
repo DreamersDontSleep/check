@@ -162,13 +162,24 @@
 						<!-- <div slot="tip" class="el-upload__tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg</div> -->
 						<!-- <a class='download' :href='downloadhttp' download=""  title="下载">下载</a> -->
 					</el-upload>
-					<el-button type="primary" @click="sealJump()">盖章</el-button>
-					<el-button>转给其他人</el-button>
+				</el-form-item>
+				<el-form-item style="width: 40%;">
+					<el-button type="primary" @click="sealJump()" v-permission="[305]">盖章</el-button>
+					<el-button>盖章转给其他人</el-button>
+					<el-select style="width: 250px;" placeholder="请选择" v-model="idList">
+						<el-option
+							v-for="(item,index) in idListItem"
+							:key="item.value"
+							:label="item.label"
+							:value="item.value">
+						</el-option>
+					</el-select>
+					<el-button @click="transfer()">确定</el-button>
 				</el-form-item>
 				<el-form-item style="display: block;">
 					<!-- <el-button @click="submitForm(estateForm)">提交</el-button> -->
 					<el-button type="success" @click="checkSuccess()">审核通过</el-button>
-					<el-button type="danger" @click="checkFail()">审核拒绝</el-button>
+					<el-button type="danger" @click="checkFail()">审核不通过</el-button>
 					<el-button @click="cancelForm(estateForm)">返回</el-button>
 				</el-form-item>
 			</el-form>
@@ -179,9 +190,12 @@
 <script>
 	import {
 		postReportData,
-		getReportData, postCheckId
+		getReportData, postCheckId, transferToId
 	} from '@/api/entry'
+	import permission from '@/directive/permission/index.js' // 权限判断指令
+	import checkPermission from '@/utils/permission' // 权限判断函数
 	export default {
+		directives: { permission },
 		data() {
 			return {
 				estateForm: {},
@@ -192,6 +206,14 @@
 				fileList: [{
 					name: '',
 					url:''
+				}],
+				idList: '',
+				idListItem:[{
+					"label": "test",
+					"value": "test"
+				},{
+					"label": "jj",
+					"value": "jj"
 				}],
 				assessAimList: [{
 					"label": "出让",
@@ -255,6 +277,20 @@
 			},
 			newAdd() {
 				this.editFormVisible = true;
+			},
+			transfer(){
+				let id = this.id
+				let transferTo = this.idList
+				console.log(transferTo);
+				if(transferTo == ""){
+					this.$confirm('确认审核通过吗?', '提示', {
+						type: 'warning'
+					})
+				}else{
+					transferToId(id,transferTo).then( (res) => {
+						console.log(res)
+					})
+				}
 			},
 			// 提交表单
 			submitForm(estateForm) {

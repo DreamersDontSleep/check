@@ -22,7 +22,7 @@
 				</el-form-item>
 				<el-form-item label="价值时点:" style="width: 40%;" prop="valueTime">
 					<template>
-						<el-date-picker v-model="estateForm.valueTime" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd"></el-date-picker>
+						<el-date-picker v-model="estateForm.valueTime" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd"></el-date-picker>
 					</template>
 				</el-form-item>
 				<el-form-item label="估价对象:" style="width: 40%;" prop="assessObject">
@@ -48,7 +48,7 @@
 				</el-form-item>
 				<el-form-item label="评估目的:" style="width: 40%;" prop="assessAim">
 					<template>
-						<el-select v-model="estateForm.assessAim" placeholder="请选择">
+						<el-select v-model="estateForm.assessAim" multiple placeholder="请选择">
 							<el-option v-for="(item,index) in assessAimList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
@@ -85,7 +85,7 @@
 				</el-form-item>
 				<el-form-item label="评估基准日" style="width: 40%;" prop="assessDate">
 					<template>
-						<el-input v-model="estateForm.assessDate"></el-input>
+						<el-date-picker v-model="estateForm.assessDate" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd"></el-date-picker>
 					</template>
 				</el-form-item>
 				<el-form-item label="实际收费金额(万元):" style="width: 40%;" prop="actualFee">
@@ -96,6 +96,15 @@
 				<el-form-item label="资产评估报告日:" style="width: 40%;" prop="assetsReportDate">
 					<template>
 						<el-input v-model="estateForm.assetsReportDate"></el-input>
+					</template>
+				</el-form-item>
+				<el-form-item label="分公司:" style="width: 40%;" prop="branchOffice">
+					<template>
+						<!-- <el-input v-model="estateForm.assessMethod"></el-input> -->
+						<el-select v-model="estateForm.branchOffice" placeholder="请选择">
+							<el-option v-for="(item,index) in cbranchOfficeList" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="总资产账面值:" style="width: 40%;" prop="assetsFee">
@@ -122,7 +131,7 @@
 					 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange" multiple :limit="1" :on-exceed="handleExceed"
 					 :file-list="fileList">
 						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-						<div slot="tip" class="el-upload__tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg</div>
+						<div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
 					</el-upload>
 				</el-form-item>
 				<el-form-item style="display: block;">
@@ -139,13 +148,14 @@
 	import {
 		postReportData
 	} from '@/api/entry'
+	import { mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
 				estateForm: {
 					reportType: '3',
 					projectName: '',
-					assessReportNum: '',
+					assessReportNum: '苏天房估',
 					assessObject: '',
 					valueTime: '',
 					assessAim: '',
@@ -160,7 +170,10 @@
 					assetsReportDate: '',
 					assetsFee: '',
 					debtFee: '',
-					netAssets: ''
+					applicant:'',
+					netAssets: '',
+					branchOffice: '',
+					login: ''
 				},
 				checkForm: {
 					checkAccount: '12个'
@@ -239,6 +252,14 @@
 						"value": "其他资产"
 					}
 				],
+				cbranchOfficeList: [{
+					"label": "分公司1",
+					"value": "分公司1"
+				}, {
+					"label": "分公司2",
+					"value": "分公司2"
+				}
+				],
 				valueTypeList: [{
 					"label": "市场价值",
 					"value": "市场价值"
@@ -293,7 +314,10 @@
 			}
 		},
 		computed: {
+			...mapGetters(['name']),
 			uploadData: function() {
+				this.estateForm.applicant = this.name;
+				this.estateForm.login = localStorage.getItem('userId')
 				let parseData = JSON.stringify(this.estateForm);
 				let params = {
 					data: parseData
@@ -350,7 +374,7 @@
 							type: 'warning'
 						}).then(() => {
 							this.$refs.upload.submit();
-							// this.$router.push({path:'/entryList/index'})
+							this.$router.push({path:'/entryList/index'})
 						}).catch(() => {
 							
 						});

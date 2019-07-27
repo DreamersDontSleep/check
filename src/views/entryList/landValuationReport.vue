@@ -22,17 +22,17 @@
 				</el-form-item>
 				<el-form-item label="估价作业开始时间:" style="width: 40%;" prop="assessStartTime">
 					<template>
-						<el-date-picker v-model="estateForm.assessStartTime" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd"></el-date-picker>
+						<el-date-picker v-model="estateForm.assessStartTime" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd"></el-date-picker>
 					</template>
 				</el-form-item>
 				<el-form-item label="估价作业结束时间:" style="width: 40%;" prop="assessEndTime">
 					<template>
-						<el-date-picker v-model="estateForm.assessEndTime" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd"></el-date-picker>
+						<el-date-picker v-model="estateForm.assessEndTime" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd"></el-date-picker>
 					</template>
 				</el-form-item>
 				<el-form-item label="估价时点:" style="width: 40%;" prop="valueTime">
 					<template>
-						<el-date-picker v-model="estateForm.valueTime" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd"></el-date-picker>
+						<el-date-picker v-model="estateForm.valueTime" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd"></el-date-picker>
 					</template>
 				</el-form-item>
 				<el-form-item label="估价对象:" style="width: 40%;" prop="assessObject">
@@ -42,7 +42,7 @@
 				</el-form-item>
 				<el-form-item label="估价目的:" style="width: 40%;" prop="assessAim">
 					<template>
-						<el-select v-model="estateForm.assessAim" placeholder="请选择">
+						<el-select v-model="estateForm.assessAim" multiple placeholder="请选择">
 							<el-option v-for="(item,index) in assessAimList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
@@ -100,7 +100,7 @@
 				<el-form-item label="第一报告人:" style="width: 40%;" prop="firstReporter">
 					<template>
 						<!-- <el-input v-model="estateForm.assessMethod"></el-input> -->
-						<el-select v-model="estateForm.assessMethod" placeholder="请选择">
+						<el-select v-model="estateForm.firstReporter" placeholder="请选择">
 							<el-option v-for="(item,index) in firstReporterList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
@@ -146,7 +146,11 @@
 				</el-form-item>
 				<el-form-item label="分公司:" style="width: 40%;" prop="branchOffice">
 					<template>
-						<el-input v-model="estateForm.branchOffice"></el-input>
+						<!-- <el-input v-model="estateForm.assessMethod"></el-input> -->
+						<el-select v-model="estateForm.branchOffice" placeholder="请选择">
+							<el-option v-for="(item,index) in cbranchOfficeList" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="业务收费:" style="width: 40%;" prop="serviceCharge">
@@ -174,7 +178,7 @@
 					 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange" multiple :limit="1" :on-exceed="handleExceed"
 					 :file-list="fileList">
 						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-						<div slot="tip" class="el-upload__tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg</div>
+						<div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
 					</el-upload>
 				</el-form-item>
 				<el-form-item style="display: block;">
@@ -191,6 +195,7 @@
 	import {
 		postReportData
 	} from '@/api/entry'
+	import { mapGetters } from 'vuex'
 	export default {
 		data() {
 			return {
@@ -222,6 +227,8 @@
 					branchOffice: '',
 					serviceCharge: '',
 					checker: '',
+					applicant:'',
+					login: '',
 					assessOrg: '江苏天圣房地产土地资产评估测绘有限公司'
 				},
 				checkForm: {
@@ -270,6 +277,14 @@
 					"label": "其他",
 					"value": "其他"
 				}],
+				cbranchOfficeList: [{
+					"label": "分公司1",
+					"value": "分公司1"
+				}, {
+					"label": "分公司2",
+					"value": "分公司2"
+				}
+				],
 				firstReporterList:[
 					{
 						"label": "name1",
@@ -471,7 +486,10 @@
 			}
 		},
 		computed: {
+			...mapGetters(['name']),
 			uploadData: function() {
+				this.estateForm.applicant = this.name;
+				this.estateForm.login = localStorage.getItem('userId')
 				let parseData = JSON.stringify(this.estateForm);
 				let params = {
 					data: parseData
@@ -516,7 +534,7 @@
 							type: 'warning'
 						}).then(() => {
 							this.$refs.upload.submit();
-							// this.$router.push({path:'/entryList/index'})
+							this.$router.push({path:'/entryList/index'})
 						}).catch(() => {
 							
 						});

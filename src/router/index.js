@@ -149,16 +149,13 @@ export const asyncRouterMap = [
   {
     path: '/review',
     component: Layout,
-    noredirect: true,
-    redirect: '/review/index',
-    name: 'Review',
-    meta: { title: '报告查看', permissions: [] },
+    meta: { title: '报告查看', permissions: [305] },
     children: [
       {
         path: 'review/index',
         name: 'Review',
         component: () => import('@/views/review/index'),
-        meta: { title: '报告查看', permissions: [] }
+        meta: { title: '报告查看', permissions: [305] }
       }
     ]
   },
