@@ -9,6 +9,14 @@ export function getEntryList(para) {
   })
 }
 
+export function getCheckRpt(para) {
+  return request({
+    url: '/rpt/index/getCheckReports',
+    method: 'post',
+    data: para
+  })
+}
+
 export function postReportData(para) {
   return request({
     url: '/rpt/index/saveReport',
@@ -65,5 +73,13 @@ export function getReportData(id,reportType) {
     url: '/rpt/index/getReportsDetail?id='+ id + '&reportType=' + reportType,
     method: 'get',
     data: {}
+  })
+}
+
+export function postUpdateRpt(para) {
+  return request({
+    url: '/rpt/index/updateRpt',
+    method: 'post',
+    data: para
   })
 }

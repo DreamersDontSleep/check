@@ -27,32 +27,34 @@
 					<el-upload class="upload-demo" action="http://fcpgpre.jstspg.com/rpt/index/upLoad" :on-preview="handlePreview"
 					 accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF,.doc,.docx" :on-remove="handleRemove"
 					 :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
-						<!-- <el-button size="small" type="primary">点击上传</el-button> -->
-						<!-- <div slot="tip" class="el-upload__tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg</div> -->
-						<!-- <a class='download' :href='downloadhttp' download=""  title="下载">下载</a> -->
 					</el-upload>
 				</el-form-item>
-				<el-form-item style="width: 40%;">
-					<el-button type="primary" @click="sealJump()" v-permission="[305]">盖章</el-button>
-					<el-button>盖章转给其他人</el-button>
-					<el-select style="width: 250px;" placeholder="请选择" v-model="idList">
-						<el-option
-							v-for="(item,index) in idListItem"
-							:key="item.value"
-							:label="item.label"
-							:value="item.value">
-						</el-option>
-					</el-select>
-					<el-button @click="transfer()">确定</el-button>
-				</el-form-item>
 				<el-form-item style="display: block;">
-					<!-- <el-button @click="submitForm(estateForm)">提交</el-button> -->
-					<el-button type="success" @click="checkSuccess()">审核通过</el-button>
-					<el-button type="danger" @click="checkFail()">审核不通过</el-button>
+					<el-button type="primary" @click="sealJump()" v-permission="[305]" v-show="this.status == 1">盖章</el-button>
+					<el-button type="success" @click="checkSuccess()" v-show="this.status == 1">审核</el-button>
+					<el-button type="danger" @click="checkFail()" v-show="this.status == 1">审核不通过</el-button>
 					<el-button @click="cancelForm(estateForm)">返回</el-button>
 				</el-form-item>
 			</el-form>
 		</template>
+		<el-dialog :visible.sync="sealFormVisible" title="转让盖章">
+		  <el-form :inline="true" :model="sealForm">
+		    <el-form-item label="转让盖章权限:">
+		      <template>
+		        <el-select style="width: 250px;" placeholder="请选择" v-model="sealForm.seal">
+		          <el-option v-for="(item,index) in sealList"
+		          :key="item.value"
+		          :label="item.label"
+		          :value="item.value"/>
+		          </el-option>
+		        </el-select>
+		      </template>
+		    </el-form-item>
+				<el-form-item>
+				  <el-button type="primary" @click="changeSeal(sealForm)">确定</el-button>
+				</el-form-item>
+		  </el-form>
+		</el-dialog>
 	</div>
 </template>
 
@@ -71,6 +73,10 @@
 				checkForm: {
 					checkAccount: '12个'
 				},
+				sealForm:{
+					seal: ''
+				},
+				sealFormVisible: false,
 				editFormVisible: false,
 				fileList: [{
 					name: '',
@@ -91,6 +97,10 @@
 					"label": "jj",
 					"value": "jj"
 				}],
+				sealList:[{
+					"label": "test",
+					"value": "test"
+				}],
 				assessMethodList: [{
 					"label": "出让",
 					"value": "出让"
@@ -106,13 +116,15 @@
 					"value": "不出让"
 				}],
 				id: '',
-				reportType: ''
+				reportType: '',
+				status: ''
 			}
 		},
 		created() {
 			const content = this.$route.query.content
 			console.log(content)
 			this.id = content.id
+			this.status = content.state
 			this.reportType = content.reportType
 		},
 		mounted() {
@@ -183,17 +195,21 @@
 			checkSuccess () {
 				let id = this.id;
 				let state = 3;
-				this.$confirm('确认审核通过吗?', '提示', {
+				this.$confirm('是否需要盖章?', '提示', {
 					type: 'warning'
 				}).then(() => {
-					postCheckId(id,state).then((res) => {
-						// this.fetchProjectList()
-						console.log(res);
-						this.$router.push({path:'/checkList/index'})
-					});
+					this.sealFormVisible = true
 				}).catch(() => {
-					
-				});
+					this.$confirm('确认是否审核通过?','提示',{
+						type: 'warning'
+						}).then(() => {
+							postCheckId(id,state).then((res) => {
+								// this.fetchProjectList()
+								console.log(res);
+								this.$router.push({path:'/checkList/index'})
+							});
+						}).catch(() => {})
+					})
 			},
 			checkFail () {
 				let id = this.id;
@@ -214,6 +230,43 @@
 				}).catch(() => {
 					
 				});
+			},
+			changeSeal (sealForm) {
+				this.sealFormVisible = true
+				console.log(sealForm.seal)
+				let id = this.id
+				let transferTo = sealForm.seal
+				let state = 3
+				console.log(transferTo);
+				if(transferTo == ""){
+					this.$message({
+						message:'请选择需要转让的人!', 
+						type: 'warning'
+					})
+				}else{
+					transferToId(id,transferTo).then( (res) => {
+						if(res.code == 200){
+							this.$message({
+								message:'转让成功!', 
+								type: 'success'
+							})
+							this.$confirm('确认是否审核通过?','提示',{
+								type: 'warning'
+								}).then(() => {
+									postCheckId(id,state).then((res) => {
+										// this.fetchProjectList()
+										console.log(res);
+										this.$router.push({path:'/checkList/index'})
+									});
+								}).catch(() => {})
+						}else{
+							this.$message({
+								message:'转让成失败!', 
+								type: 'warning'
+							})
+						}
+					})
+				}
 			},
 			sealJump(){
 				console.log(this.estateForm)

@@ -92,29 +92,29 @@
 					</el-table-column>
 					<el-table-column label="审核结果">
 					  <template slot-scope="scope">
-						  <div v-if="scope.row.checkResult == 0">
-						  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">未审核</span>
+						  <div v-if="scope.row.state == 0">
+						  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">未提交</span>
 						  </div>
-						  <div v-if="scope.row.checkResult == 1">
+						  <div v-if="scope.row.state == 1">
 						  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">待审核</span>
 						  </div>
-						  <div v-if="scope.row.checkResult == 3">
+						  <div v-if="scope.row.state == 3">
 						  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">审核通过</span>
 						  </div>
-						  <div v-if="scope.row.checkResult == 4">
-						  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">审核不通过</span>
+						  <div v-if="scope.row.state == 4">
+						  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">未提交</span>
 						  </div>
 						<!-- {{scope.row.checkResult}} -->
 					  </template>
 					</el-table-column>
 					<el-table-column label="操作">
 					  <template slot-scope="scope">
-						<span @click="linkChange(scope.$index,scope.row)" style="color: rgb(51, 153, 204);cursor: pointer;">
+						<span v-if="scope.row.state == 1" @click="linkChange(scope.$index,scope.row)" style="color: rgb(51, 153, 204);cursor: pointer;">
 						  审核
 						</span>
-						<!-- <span @click="sealChange(scope.$index,scope.row)" style="color: rgb(51, 153, 204);cursor: pointer;">
-						  盖章
-						</span> -->
+						<span v-if="scope.row.state == 3" @click="linkChange(scope.$index,scope.row)" style="color: rgb(51, 153, 204);cursor: pointer;">
+						  查看
+						</span>
 					  </template>
 					</el-table-column>
 				  </el-table>
@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import { getCheckList, getEntryList, getReportData } from '@/api/entry'
+import { getCheckList, getEntryList, getReportData, getCheckRpt } from '@/api/entry'
 export default {
   data() {
 		return {
@@ -173,27 +173,27 @@ export default {
   },
 	methods:{
 		fetchProjectList() {
-			// getCheckList().then((res) => {
-			// 	this.totalPriceEvaluation = res.data
-			// 	this.checkForm.checkAccount = res.count
-			// 	console.log(res);
-			// })
 			let para
 			if(localStorage.getItem('userId') == "root"){
 				para = {
-					"state": "",
+					"state": [1],
 					"branchOffice": "",
-					"login": ""
+					"login": "",
+					"applicant": "",
+					"checker": ""
 				}
 			}else{
 				para = {
-					"state": "1",
+					"state": [1],
 					"branchOffice": "",
-					"login": localStorage.getItem('userId')
+					"login": localStorage.getItem('userId'),
+					"applicant": "",
+					"checker": localStorage.getItem('userId')
 				}
 			}
-			getEntryList(para).then((res) => {
-				this.totalPriceEvaluation = res.data
+			getCheckRpt(para).then((res) => {
+				let checkData = res.data.reverse()
+				this.totalPriceEvaluation = checkData
 				this.checkForm.checkAccount = res.count
 				console.log(res);
 			})
@@ -209,27 +209,31 @@ export default {
 					}
 					
 					if( state == "待审核" ){
-						state = "1";
+						state = [1];
 					}else if( state == "已审核" ){
-						state = "3";
+						state = [3];
 					}else if( state == "全部" ){
-						state = "";
+						state = [1,3];
 					}
 					let para
 					if(localStorage.getItem('userId') == "root"){
 						para = {
 							"state": state,
 							"branchOffice": branchOffice,
-							"login": ""
+							"login": "",
+							"applicant": "",
+							"checker": ""
 						}
 					}else{
 						para = {
 							"state": state,
 							"branchOffice": branchOffice,
-							"login": localStorage.getItem('userId')
+							"login": localStorage.getItem('userId'),
+							"applicant": "",
+							"checker": localStorage.getItem('userId')
 						}
 					}
-					getEntryList(para).then((res) => {
+					getCheckRpt(para).then((res) => {
 						this.totalPriceEvaluation = res.data
 						console.log(res);
 					})
@@ -244,6 +248,7 @@ export default {
 		},
 		linkChange(index,row){
 			let id = row.id;
+			console.log(row)
 			if(row.reportType == 1){
 				this.$router.push({path:'/checkList/realEstateReport', query: { 'content': row }})
 			}else if(row.reportType == 2){

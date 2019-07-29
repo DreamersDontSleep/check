@@ -114,17 +114,11 @@ export default {
 			],
 			checkerList:[
 				{
-					"label": "name1",
-					"value": "name1"
+					"label": "test",
+					"value": "test"
 				}, {
-					"label": "name2",
-					"value": "name2"
-				}, {
-					"label": "name3",
-					"value": "name3"
-				}, {
-					"label": "name4",
-					"value": "name4"
+					"label": "check",
+					"value": "check"
 				}
 			],
 			inputRule:{

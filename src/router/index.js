@@ -89,6 +89,34 @@ export const asyncRouterMap = [
         component: () => import('@/views/entryList/preliminaryAssessment'),
         meta: { title: '预评估', icon: '', permissions: [296, 297, 298, 299, 300] }
       },
+			{
+			  path: 'modifyRealEstateReport',
+			  name: 'ModifyRealEstateReport',
+			  hidden: true,
+			  component: () => import('@/views/entryList/modifyRealEstateReport'),
+			  meta: { title: '房地产报告修改', icon: '', permissions: [296, 297, 298, 299, 300] }
+			},
+			{
+			  path: 'modifyLandValuationReport',
+			  name: 'ModifyLandValuationReport',
+			  hidden: true,
+			  component: () => import('@/views/entryList/modifyLandValuationReport'),
+			  meta: { title: '土地报告修改', icon: '', permissions: [296, 297, 298, 299, 300] }
+			},
+			{
+			  path: 'modifyAssetsReport',
+			  name: 'ModifyAssetsReport',
+			  hidden: true,
+			  component: () => import('@/views/entryList/modifyAssetsReport'),
+			  meta: { title: '资产评估报告修改', icon: '', permissions: [296, 297, 298, 299, 300] }
+			},
+			{
+			  path: 'modifyPreliminaryAssessment',
+			  name: 'ModifyPreliminaryAssessment',
+			  hidden: true,
+			  component: () => import('@/views/entryList/modifyPreliminaryAssessment'),
+			  meta: { title: '预评估报告修改', icon: '', permissions: [296, 297, 298, 299, 300] }
+			},
       {
         path: 'checkIndex',
         name: 'CheckIndex',

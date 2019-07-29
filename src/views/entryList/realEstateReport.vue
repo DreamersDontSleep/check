@@ -163,7 +163,7 @@
 						</el-select>
 					</template>
 				</el-form-item>
-				<el-form-item label="业务收费:" style="width: 40%;" prop="serviceCharge">
+				<el-form-item label="业务收费(万元):" style="width: 40%;" prop="serviceCharge">
 					<template>
 						<el-input v-model="estateForm.serviceCharge" ></el-input>
 					</template>
@@ -186,7 +186,7 @@
 				</el-form-item>
 				<el-form-item label="文件上传" class="fl">
 					<el-upload class="upload-demo" ref="upload" name="file" :action="UploadUrl ()" :data="uploadData" :on-preview="handlePreview"
-					 accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF,.doc,.docx" :on-remove="handleRemove"
+					 accept=".doc,.docx" :on-remove="handleRemove"
 					 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange" multiple :limit="1" :on-exceed="handleExceed"
 					 :file-list="fileList">
 						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
@@ -373,17 +373,11 @@
 				],
 				checkerList:[
 					{
-						"label": "name1",
-						"value": "name1"
+						"label": "test",
+						"value": "test"
 					}, {
-						"label": "name2",
-						"value": "name2"
-					}, {
-						"label": "name3",
-						"value": "name3"
-					}, {
-						"label": "name4",
-						"value": "name4"
+						"label": "check",
+						"value": "check"
 					}
 				],
 				fileName: '',

@@ -95,7 +95,8 @@
 				</el-form-item>
 				<el-form-item label="资产评估报告日:" style="width: 40%;" prop="assetsReportDate">
 					<template>
-						<el-input v-model="estateForm.assetsReportDate"></el-input>
+						<!-- <el-input v-model="estateForm.assetsReportDate"></el-input> -->
+						<el-date-picker v-model="estateForm.assetsReportDate" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd"></el-date-picker>
 					</template>
 				</el-form-item>
 				<el-form-item label="分公司:" style="width: 40%;" prop="branchOffice">
@@ -125,9 +126,18 @@
 						<!-- <el-radio></el-radio>无账面价值 -->
 					</template>
 				</el-form-item>
+				<el-form-item label="审核员:" style="width: 40%;" prop="checker">
+					<template>
+						<!-- <el-input v-model="estateForm.assessMethod"></el-input> -->
+						<el-select v-model="estateForm.checker" placeholder="请选择">
+							<el-option v-for="(item,index) in checkerList" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
+					</template>
+				</el-form-item>
 				<el-form-item label="文件上传" class="fl" style="display: block;">
 					<el-upload class="upload-demo" ref="upload" name="file" :action="UploadUrl ()" :data="uploadData" :on-preview="handlePreview"
-					 accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF,.doc,.docx" :on-remove="handleRemove"
+					 accept=".doc,.docx" :on-remove="handleRemove"
 					 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange" multiple :limit="1" :on-exceed="handleExceed"
 					 :file-list="fileList">
 						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
@@ -171,6 +181,7 @@
 					assetsFee: '',
 					debtFee: '',
 					applicant:'',
+					checker: '',
 					netAssets: '',
 					branchOffice: '',
 					login: ''
@@ -292,6 +303,15 @@
 					"label": "其他",
 					"value": "其他"
 				}],
+				checkerList:[
+					{
+						"label": "test",
+						"value": "test"
+					}, {
+						"label": "check",
+						"value": "check"
+					}
+				],
 				inputRule: {
 					projectName: [{required: true,trigger: 'blur',message: '不能为空'}],
 					assessReportNum: [ {required: true,trigger: 'blur',message: '不能为空'}],
@@ -309,6 +329,7 @@
 					assetsReportDate: [ {required: true,trigger: 'blur',message: '不能为空'}],
 					assetsFee: [ {required: true,trigger: 'blur',message: '不能为空'}],
 					debtFee: [ {required: true,trigger: 'blur',message: '不能为空'}],
+					checker: [{required: true,trigger: 'blur',message: '不能为空'}],
 					netAssets: [ {required: true,trigger: 'blur',message: '不能为空'}]
 				}
 			}
