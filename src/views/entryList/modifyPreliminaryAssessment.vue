@@ -1,0 +1,190 @@
+<template>
+	<div>
+		<template>
+		  <el-form ref="estateForm" :inline="true" :model="estateForm" label-width="180px">
+		    <el-form-item label="业务来源:" style="width: 80%;">
+		      <template>
+		        <el-input v-model="estateForm.reportType" disabled/>
+		      </template>
+		    </el-form-item>
+		    <el-form-item label="分公司:" style="width: 80%;">
+		      <template>
+		        <el-input v-if="lookOrEdit" v-model="estateForm.branchOffice" disabled/>
+		        <!-- <el-input v-else v-model="estateForm.branchOffice"/> -->
+						<el-select v-else v-model="estateForm.branchOffice" placeholder="请选择" style="width: 331px;">
+							<el-option v-for="(item,index) in cbranchOfficeList" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
+		      </template>
+		    </el-form-item>
+		    <el-form-item label="审核员:" style="width: 80%;">
+		      <template>
+		        <el-input v-if="lookOrEdit" v-model="estateForm.checker" disabled/>
+		        <!-- <el-input v-else v-model="estateForm.checker"/> -->
+						<el-select v-else v-model="estateForm.checker" placeholder="请选择" style="width: 331px;">
+							<el-option v-for="(item,index) in checkerList" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
+		      </template>
+		    </el-form-item>
+		    <el-form-item label="评估机构:" style="width: 80%;">
+		      <template>
+		        <el-input v-if="lookOrEdit" v-model="estateForm.assessOrg" style="width: 400px;" disabled/>
+		        <el-input v-else v-model="estateForm.assessOrg" style="width: 400px;"/>
+		      </template>
+		    </el-form-item>
+		    <el-form-item label="文件上传" class="fl" style="display: block;">
+		      <el-upload
+		        ref="upload"
+		        :action="UploadUrl ()"
+		        :on-preview="handlePreview"
+		        :on-remove="handleRemove"
+		        :before-remove="beforeRemove"
+		        :auto-upload="false"
+		        :on-change="handleChange"
+		        class="upload-demo"
+		        :limit="1"
+		        name="file"
+		        :on-exceed="handleExceed"
+		        :file-list="fileList"
+		        accept=".doc,.docx"
+		        multiple  v-if="lookOrEdit">
+		        <!-- <el-button slot="trigger" size="small" type="primary">选择文件</el-button> -->
+		        <!-- <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div> -->
+		      </el-upload>
+					<el-upload
+					  ref="upload"
+					  :action="UploadUrl ()"
+					  :on-preview="handlePreview"
+					  :on-remove="handleRemove"
+					  :before-remove="beforeRemove"
+					  :on-change="handleChange"
+						:on-success="handleSuccess"
+					  class="upload-demo"
+					  :limit="1"
+					  name="file"
+					  :on-exceed="handleExceed"
+					  :file-list="fileList"
+					  accept=".doc,.docx"
+					  multiple v-else>
+					  <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
+					  <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
+					</el-upload>
+		    </el-form-item>
+		    <el-form-item style="display: block;">
+		      <el-button v-show="!lookOrEdit" @click="submitForm(estateForm)">提交</el-button>
+		      <router-link :to="{ path: '/entryList/index'}">
+		      	<el-button>返回</el-button>
+		      </router-link>
+		    </el-form-item>
+		  </el-form>
+		</template>
+	</div>
+</template>
+
+<script>
+	import { postUpdateRpt } from '@/api/entry'
+	export default {
+		data () {
+			return {
+				lookOrEdit: '',
+				estateForm: '',
+				cbranchOfficeList: [{
+					"label": "分公司1",
+					"value": "分公司1"
+				}, {
+					"label": "分公司2",
+					"value": "分公司2"
+				}
+				],
+				checkerList:[
+					{
+						"label": "test",
+						"value": "test"
+					}, {
+						"label": "check",
+						"value": "check"
+					}
+				],
+				fileList: [{
+				  name: '',
+				  url: ''
+				}],
+				id: ''
+			}
+		},
+		created() {
+		  const content = this.$route.query.contents
+		  console.log(content)
+		  this.estateForm = content
+		  this.lookOrEdit = this.$route.query.lookOrEdit
+			this.id = content.id
+		  const fileUrl = this.estateForm.wordUri
+		  const fileIndex = fileUrl.lastIndexOf('\/')
+		  const fileName = fileUrl.substring(fileIndex + 1, fileUrl.length)
+		  console.log(fileName)
+		  this.fileList[0].name = fileName
+		  this.fileList[0].url = fileUrl
+		},
+		methods:{
+			submitForm(estateForm) {
+			  this.$refs.estateForm.validate((valid) => {
+				  if (valid) {
+			      this.$confirm('确认提交该记录吗?', '提示', {
+			        type: 'warning'
+			      }).then(() => {
+							let para = estateForm
+							console.log(para)
+							postUpdateRpt(para).then ( (res) => {
+								if(res.code == 200){
+									this.$message({
+										message:'修改成功!', 
+										type: 'success'
+									})
+								}
+							})
+			      }).catch(() => {
+							
+			      })
+				  } else {
+			      console.log('error submit!!')
+				  }
+			  })
+			},
+			handleSuccess(response,file, fileList){
+				console.log(response);
+				if(response.code == 200){
+					console.log(this.estateForm)
+					this.estateForm.pdfUri = response.data.pdfPath
+					this.estateForm.wordUri = response.data.wordPath
+				}else{
+					return ;
+				}
+			},
+			handleRemove(file, fileList) {
+			  console.log(file, fileList)
+			},
+			UploadUrl() {
+				let upUrl = 'http://fcpgpre.jstspg.com/rpt/index/upLoad/'+ this.id
+			  return upUrl
+			},
+			handleChange(file, fileList) {
+			  // this.fileList = fileList
+			  // this.file = file
+			  console.log(file)
+			},
+			handlePreview(file) {
+			  console.log(file)
+			},
+			handleExceed(files, fileList) {
+			  this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+			},
+			beforeRemove(file, fileList) {
+			  return this.$confirm(`确定移除 ${file.name}？`)
+			}
+		}
+	}
+</script>
+
+<style>
+</style>
