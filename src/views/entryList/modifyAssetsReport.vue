@@ -1,5 +1,10 @@
 <template>
 	<div>
+		<div>
+			<router-link :to="{ path: '/entryList/index'}">
+				<el-button>返回</el-button>
+			</router-link>
+		</div>
 		<template>
 		  <el-form ref="estateForm" :inline="true" :model="estateForm" label-width="180px">
 		    <el-form-item label="报告类型:" style="display: block;">
@@ -67,10 +72,14 @@
 		        </el-select>
 		      </template>
 		    </el-form-item>
-		    <el-form-item label="评估对象:" style="width: 40%;" prop="assessTotalPrice">
+		    <el-form-item label="评估对象:" style="width: 40%;" prop="assessObj">
 		      <template>
-		        <el-input v-if="lookOrEdit" v-model="estateForm.assessTotalPrice" disabled/>
-		        <el-input v-else v-model="estateForm.assessTotalPriceList"/>
+		        <el-input v-if="lookOrEdit" v-model="estateForm.assessObj" disabled/>
+		        <!-- <el-input v-else v-model="estateForm.assessObj"/> -->
+				<el-select v-else v-model="estateForm.assessObj" placeholder="请选择">
+					<el-option v-for="(item,index) in assessObjList " :key="item.value" :label="item.label" :value="item.value">
+					</el-option>
+				</el-select>
 		      </template>
 		    </el-form-item>
 		    <el-form-item label="价值类型:" style="width: 40%;" prop="valueType">
@@ -120,7 +129,7 @@
 		    </el-form-item>
 				<el-form-item label="分公司:" style="width: 40%;" prop="branchOffice">
 					<template>
-						<el-input v-if="lookOrEdit" v-model="estateForm.branchOffice"></el-input>
+						<el-input v-if="lookOrEdit" v-model="estateForm.branchOffice" disabled></el-input>
 						<el-select v-else v-model="estateForm.branchOffice" placeholder="请选择">
 							<el-option v-for="(item,index) in cbranchOfficeList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
@@ -150,7 +159,7 @@
 		    </el-form-item>
 				<el-form-item label="审核员:" style="width: 40%;" prop="checker">
 					<template>
-						<el-input v-if="lookOrEdit" v-model="estateForm.checker"></el-input>
+						<el-input v-if="lookOrEdit" v-model="estateForm.checker" disabled></el-input>
 						<el-select v-else v-model="estateForm.checker" placeholder="请选择">
 							<el-option v-for="(item,index) in checkerList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
@@ -267,7 +276,7 @@ import { postUpdateRpt } from '@/api/entry'
 					"label": "复核评估",
 					"value": "复核评估"
 				}],
-				assessTotalPriceList:[
+				assessObjList:[
 					{
 						"label": "企业价值",
 						"value": "企业价值"
@@ -459,5 +468,11 @@ import { postUpdateRpt } from '@/api/entry'
 	}
 </script>
 
-<style>
+<style scoped>
+	.el-date-editor.el-input{
+		width: 188px;
+	}
+	.el-select{
+		width: 188px !important;
+	}
 </style>

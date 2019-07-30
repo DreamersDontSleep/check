@@ -72,12 +72,12 @@
 						<el-input v-model="estateForm.landAmount"></el-input>
 					</template>
 				</el-form-item>
-				<el-form-item label="评估单价:" style="width: 40%;" prop="assessUnitPrice">
+				<el-form-item label="评估单价(万元):" style="width: 40%;" prop="assessUnitPrice">
 					<template>
 						<el-input v-model="estateForm.assessUnitPrice"></el-input>
 					</template>
 				</el-form-item>
-				<el-form-item label="评估总价:" style="width: 40%;" prop="assessTotalPrice">
+				<el-form-item label="评估总价:(万元)" style="width: 40%;" prop="assessTotalPrice">
 					<template>
 						<el-input v-model="estateForm.assessTotalPrice"></el-input>
 					</template>
@@ -120,6 +120,11 @@
 						</el-select>
 					</template>
 				</el-form-item>
+				<el-form-item label="参与报告人1注册号:" style="width: 40%;" prop="partReporter1RgNum">
+					<template>
+						<el-input v-model="estateForm.partReporter1RgNum"></el-input>
+					</template>
+				</el-form-item>
 				<el-form-item label="参与报告人2:" style="width: 40%;" prop="partReporter2">
 					<template>
 						<!-- <el-input v-model="estateForm.assessMethod"></el-input> -->
@@ -127,11 +132,6 @@
 							<el-option v-for="(item,index) in partReporter2List" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
-					</template>
-				</el-form-item>
-				<el-form-item label="参与报告人1注册号:" style="width: 40%;" prop="partReporter1RgNum">
-					<template>
-						<el-input v-model="estateForm.partReporter1RgNum"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="参与报告人2注册号:" style="width: 40%;" prop="partReporter2RgNum">
@@ -198,6 +198,31 @@
 	import { mapGetters } from 'vuex'
 	export default {
 		data() {
+			const checkPhone = (rule, value, callback) => {
+			if (!value) {
+			  return callback(new Error('手机号不能为空'));
+			} else {
+			  const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+			  console.log(reg.test(value));
+			  if (reg.test(value)) {
+				callback();
+			  } else {
+				return callback(new Error('请输入正确的手机号'));
+			  }
+			}
+			}
+			const checkEmail = (rule, value, callback) => {
+			  if (!value) {
+			    return callback(new Error('邮箱地址不能为空'));
+			  } else {
+				let temp = /^[\w.\-]+@(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,3}$/
+			    if (value && (!(temp).test(value))) {
+				  callback(new Error('邮箱格式不符合规范'))
+				} else {
+				  callback()
+				}
+			  }
+			}
 			return {
 				estateForm: {
 					reportType: '2',
@@ -413,12 +438,12 @@
 					clientEmail: [{
 						required: true,
 						trigger: 'blur',
-						message: '不能为空'
+						validator:checkEmail
 					}],
 					clientPhone: [{
 						required: true,
 						trigger: 'blur',
-						message: '不能为空'
+						validator: checkPhone 
 					}],
 					firstReporter: [{
 						required: true,

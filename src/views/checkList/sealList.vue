@@ -30,7 +30,7 @@
 			</el-form-item>
 		</el-form>
 		<el-form :inline="true" :model="checkForm" ref="checkForm" style="float: left;margin-left: 40px;">
-			<el-form-item label="待审批:">
+			<el-form-item label="待盖章:">
 				<p style="margin: 0;padding: 0;color: red;">{{checkForm.checkAccount}}个</p>
 			</el-form-item>
 		</el-form>
@@ -109,12 +109,13 @@
 					</el-table-column>
 					<el-table-column label="操作">
 					  <template slot-scope="scope">
-						<span v-if="scope.row.state == 1" @click="linkChange(scope.$index,scope.row)" style="color: rgb(51, 153, 204);cursor: pointer;">
+						<!-- <span v-if="scope.row.state == 1" @click="linkChange(scope.$index,scope.row)" style="color: rgb(51, 153, 204);cursor: pointer;">
 						  审核
 						</span>
 						<span v-if="scope.row.state == 3" @click="linkChange(scope.$index,scope.row)" style="color: rgb(51, 153, 204);cursor: pointer;">
 						  查看
-						</span>
+						</span> -->
+						<el-button type="primary" @click="sealChange(scope.$index,scope.row)">盖章</el-button>
 					  </template>
 					</el-table-column>
 				  </el-table>
@@ -176,7 +177,9 @@ export default {
 					"label": "分公司2",
 					"value": "分公司2"
 			}],
-			totalPriceEvaluation: []
+			totalPriceEvaluation: [],
+			id: '',
+			reportType: ''
 	  }
   },
   mounted() {
@@ -196,12 +199,12 @@ export default {
 				}
 			}else{
 				para = {
-					"state": [1],
+					"state": [1,3],
 					"branchOffice": "",
 					"login": "",
 					"applicant": "",
-					"checker": localStorage.getItem('userId'),
-					"transferTo": ""
+					"checker": "",
+					"transferTo": localStorage.getItem('userId')
 				}
 			}
 			getCheckRpt(para).then((res) => {
@@ -235,15 +238,17 @@ export default {
 							"branchOffice": branchOffice,
 							"login": "",
 							"applicant": "",
-							"checker": ""
+							"checker": "",
+							"transferTo": ""
 						}
 					}else{
 						para = {
 							"state": state,
 							"branchOffice": branchOffice,
-							"login": localStorage.getItem('userId'),
+							"login": "",
 							"applicant": "",
-							"checker": localStorage.getItem('userId')
+							"checker": "",
+							"transferTo": localStorage.getItem('userId')
 						}
 					}
 					getCheckRpt(para).then((res) => {

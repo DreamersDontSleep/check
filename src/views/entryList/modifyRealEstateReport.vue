@@ -1,5 +1,10 @@
 <template>
 	<div>
+		<div>
+			<router-link :to="{ path: '/entryList/index'}">
+				<el-button>返回</el-button>
+			</router-link>
+		</div>
 		<template>
 		  <el-form ref="estateForm" :inline="true" :model="estateForm" label-width="180px" style="width: 100%;">
 		    <el-form-item label="报告类型:" style="display: block;">
@@ -145,7 +150,7 @@
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.partReporter2" disabled/>
 		        <!-- <el-input v-else v-model="estateForm.partReporter2"/> -->
-						<el-select v-model="estateForm.partReporter2" placeholder="请选择">
+						<el-select v-else v-model="estateForm.partReporter2" placeholder="请选择">
 						  <el-option
 						    v-for="(item,index) in partReporter2List"
 						    :key="item.value"
@@ -481,5 +486,11 @@
 	}
 </script>
 
-<style>
+<style scoped>
+	.el-date-editor.el-input{
+		width: 188px;
+	}
+	.el-select{
+		width: 188px !important;
+	}
 </style>

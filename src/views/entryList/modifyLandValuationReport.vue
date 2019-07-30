@@ -1,5 +1,10 @@
 <template>
 	<div>
+		<div>
+			<router-link :to="{ path: '/entryList/index'}">
+				<el-button>返回</el-button>
+			</router-link>
+		</div>
 		<template>
 		  <el-form ref="estateForm" :inline="true" :model="estateForm" label-width="180px">
 		    <el-form-item label="报告类型:" style="display: block;">
@@ -46,14 +51,14 @@
 		    <el-form-item label="估价目的:" style="width: 40%;">
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.assessAim" disabled/>
-						<el-input v-else v-model="estateForm.assessAim"/>
-		        <!-- <el-select v-else multiple v-model="estateForm.assessAim" placeholder="请选择">
+						<!-- <el-input v-else v-model="estateForm.assessAim"/> -->
+		        <el-select v-else v-model="estateForm.assessAim" placeholder="请选择">
 		          <el-option
 		            v-for="(item,index) in assessAimList"
 		            :key="item.value"
 		            :label="item.label"
 		            :value="item.value"/>
-		        </el-select> -->
+		        </el-select>
 		      </template>
 		    </el-form-item>
 		    <el-form-item label="估价方法:" style="width: 40%;">
@@ -255,6 +260,31 @@
 		import { postUpdateRpt } from '@/api/entry'
 	export default {
 		data () {
+			const checkPhone = (rule, value, callback) => {
+			if (!value) {
+			  return callback(new Error('手机号不能为空'));
+			} else {
+			  const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+			  console.log(reg.test(value));
+			  if (reg.test(value)) {
+				callback();
+			  } else {
+				return callback(new Error('请输入正确的手机号'));
+			  }
+			}
+			}
+			const checkEmail = (rule, value, callback) => {
+			  if (!value) {
+			    return callback(new Error('邮箱地址不能为空'));
+			  } else {
+				let temp = /^[\w.\-]+@(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,3}$/
+			    if (value && (!(temp).test(value))) {
+				  callback(new Error('邮箱格式不符合规范'))
+				} else {
+				  callback()
+				}
+			  }
+			}
 			return {
 				lookOrEdit: '',
 				estateForm: '',
@@ -448,5 +478,11 @@
 	}
 </script>
 
-<style>
+<style scoped>
+	.el-date-editor.el-input{
+		width: 188px;
+	}
+	.el-select{
+		width: 188px !important;
+	}
 </style>

@@ -62,7 +62,7 @@
 				let openName = this.fileUrl;
 				console.log(openName);
 				// let openName = "http://fcpgpre.jstspg.com/rpt/open/gy.pdf";
-				XSReaderSDK1.OpenFile(encodeURI(openName), "")
+				XSReaderSDK1.OpenFile(openName, "")
 			},
 			button2_click() {
 				let XSReaderSDK1 = document.getElementById("ShareSunReaderSDK");
@@ -96,21 +96,18 @@
 				XSReaderSDK1.FX_SignPDF_AddGenerateCode("http://fcpgpre.jstspg.com/sh", "0", X,Y, "100", "100", "200", "0");
 			},
 			button5_click () {
-				console.log(this.saveUrl)
 				var XSReaderSDK1 = document.getElementById("ShareSunReaderSDKs");
-				// var XSReaderSDK1 = document.getElementById("ShareSunReaderSDK");
 				XSReaderSDK1.XSUnlock("EA27C68108D462FC3C2829E937836D69B3ACC6C8070C919FB3CD72646A3FAAAE0C0D256FC9B00EA0A1126E7ABE143972833DFCCB4B4");
-					var postUrl = "http://fcpgpre.jstspg.com/rpt/index/upLoad/" + this.id;
-					var post = XSReaderSDK1.XSPostFileByHttpEX(postUrl, this.saveUrl);
-					console(post);
-
+				var postUrl = "http://fcpgpre.jstspg.com/rpt/index/upLoad/" + this.id;
+				var post = XSReaderSDK1.XSPostFileByHttpEX(postUrl, this.saveUrl);
 				if (post == "") {
 					alert("上传失败！");
 				}
 				if (post == "uncode") {
 					alert("未授权！");
 				}else {
-					alert(post);
+					// alert(post);
+					alert("盖章成功")
 					// XSReaderSDK1.XSRemoveFile(this.saveUrl);
 				}
 			},

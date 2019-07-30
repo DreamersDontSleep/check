@@ -37,7 +37,7 @@
         <div class="table">
           <el-table
             ref="table"
-            :data="totalPriceEvaluation"
+            :data="totalPriceEvaluation.slice((currentPage-1)*pageSize,currentPage*pageSize)"
             tooltip-effect="dark"
             border
             stripe
@@ -127,6 +127,15 @@
               </template>
             </el-table-column>
           </el-table>
+					<el-pagination
+					  @size-change="handleSizeChange"
+					  @current-change="handleCurrentChange"
+					  :current-page="currentPage"
+					  :page-sizes="[5,10, 20, 30, 40]"
+					  :page-size="pageSize"
+					  layout="total, sizes, prev, pager, next, jumper"
+					  :total="totalPriceEvaluation.length" style="width: 95%;margin: 10px auto;">
+					</el-pagination>
         </div>
       </template>
     </div>
@@ -150,6 +159,8 @@ export default {
       checkForm: {
         checkAccount: '12个'
       },
+			currentPage: 1,
+			pageSize: 10,
       editFormVisible: false,
       fdcFormVisible: false,
       tdFormVisible: false,
@@ -252,9 +263,11 @@ export default {
       const state = this.editForm.status
       const branchOffice = this.editForm.branchName
 			let para = {
-				"state": "",
+				"state": [],
 				"branchOffice": "",
-				"login": ""
+				"login": "",
+				"applicant": "",
+				"checker": ""
 			}
       getEntryList(para).then((res) => {
         this.totalPriceEvaluation = res.data
@@ -289,7 +302,9 @@ export default {
 					let para = {
 						"state": state,
 						"branchOffice": branchOffice,
-						"login": ""
+						"login": "",
+						"applicant": "",
+						"checker": ""
 					}
           getEntryList(para).then((res) => {
             this.totalPriceEvaluation = res.data
@@ -439,7 +454,15 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
-    }
+    },
+			handleSizeChange(val) {
+			  console.log(`每页 ${val} 条`);
+			  this.pageSize = val;
+			},
+			handleCurrentChange(val) {
+			  console.log(`当前页: ${val}`);
+			  this.currentPage = val;
+			}  
   }
 }
 </script>

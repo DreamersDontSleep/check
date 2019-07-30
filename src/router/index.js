@@ -135,8 +135,14 @@ export const asyncRouterMap = [
         path: 'index',
         name: 'Data',
         component: () => import('@/views/checkList/index'),
-        meta: { title: '报告审批管理', icon: '', permissions: [302, 303] }
+        meta: { title: '报告审批', icon: '', permissions: [302, 303] }
       },
+			{
+			  path: 'sealList',
+			  name: 'SealList',
+			  component: () => import('@/views/checkList/sealList'),
+			  meta: { title: '报告盖章', icon: '', permissions: [303] }
+			},
       {
         path: 'landValuationReport',
         name: 'LandValuationReport',

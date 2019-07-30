@@ -37,7 +37,7 @@
         <div class="table">
           <el-table
             ref="table"
-            :data="totalPriceEvaluation"
+            :data="totalPriceEvaluation.slice((currentPage-1)*pageSize,currentPage*pageSize)"
             tooltip-effect="dark"
             border
             stripe
@@ -96,6 +96,19 @@
                 <div v-else>已审核</div>
               </template>
             </el-table-column>
+						<el-table-column label="盖章结果">
+						  <template slot-scope="scope">
+							  <div v-if="scope.row.stampState == ''">
+							  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">未盖章</span>
+							  </div>
+							  <div v-if="scope.row.stampState == 1">
+							  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">已转交待盖章</span>
+							  </div>
+							  <div v-if="scope.row.stampState == 2">
+							  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">已盖章</span>
+							  </div>
+						  </template>
+						</el-table-column>
             <el-table-column label="审核结果">
               <template slot-scope="scope">
                 <div v-if="scope.row.state == 3" style="color: #409EFF;">审核通过</div>
@@ -103,6 +116,11 @@
                 <div v-else>未审核</div>
               </template>
             </el-table-column>
+						<el-table-column label="备注">
+						  <template slot-scope="scope">
+						    {{ scope.row.remark }}
+						  </template>
+						</el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <div v-if="scope.row.state == 3 || scope.row.state == 1">
@@ -127,7 +145,16 @@
               </template>
             </el-table-column>
           </el-table>
-        </div>
+					<el-pagination
+					  @size-change="handleSizeChange"
+					  @current-change="handleCurrentChange"
+					  :current-page="currentPage"
+					  :page-sizes="[5,10, 20, 30, 40]"
+					  :page-size="pageSize"
+					  layout="total, sizes, prev, pager, next, jumper"
+					  :total="totalPriceEvaluation.length" style="width: 95%;margin: 10px auto;">
+					</el-pagination>
+				</div>
       </template>
     </div>
     <el-dialog :visible.sync="editFormVisible" title="新建项目">
@@ -169,6 +196,8 @@ export default {
       checkForm: {
         checkAccount: '12个'
       },
+			currentPage: 1,
+			pageSize: 10,
       editFormVisible: false,
       fdcFormVisible: false,
       tdFormVisible: false,
@@ -220,17 +249,7 @@ export default {
         'label': '分公司2',
         'value': '分公司2'
       }],
-      totalPriceEvaluation: [{
-        number: '0001',
-        totalPriceHousingAppraisal: '安安',
-        landArea: '啊',
-        landPrice: '吧',
-        landTotalPrice: '吧',
-        totalAmountCompensation: '拒绝',
-        amountEquityCompensation: '哈哈',
-        amountTenantCompensation: '那你',
-        notes: '111'
-      }],
+      totalPriceEvaluation: [],
       assessAimList: [{
         'label': '出让',
         'value': '出让'
@@ -262,7 +281,7 @@ export default {
   			data: parseData
   		  }
   		  return params
-  		}
+  	},
   },
   mounted() {
   	this.fetchProjectList()
@@ -309,7 +328,7 @@ export default {
 					
           let branchOffice = editForm.branchName
 					
-					if(branchOffice == "全部"){
+					if(branchOffice == "全部" || branchOffice == ""){
 						branchOffice = '';
 					}
 					
@@ -321,7 +340,7 @@ export default {
 						state = [3];
 					}else if( state == "审核不通过" ){
 						state = [4];
-					}else if( state == "全部" ){
+					}else if( state == "全部" || state == ""){
 						state = [0,1,2,3,4];
 					}
 					// this.stateArr = state
@@ -344,7 +363,7 @@ export default {
 						}
 					}
           getEntryList(para).then((res) => {
-            this.totalPriceEvaluation = res.data
+            this.totalPriceEvaluation = res.data.reverse()
             console.log(res)
           })
 			  } else {
@@ -433,7 +452,15 @@ export default {
       }).catch(() => {
 
       })
-    }
+    },
+			handleSizeChange(val) {
+			  console.log(`每页 ${val} 条`);
+			  this.pageSize = val;
+			},
+			handleCurrentChange(val) {
+			  console.log(`当前页: ${val}`);
+			  this.currentPage = val;
+			}  
   }
 }
 </script>

@@ -54,7 +54,7 @@
 				</el-form-item>
 				<el-form-item label="评估对象:" style="width: 40%;">
 					<template>
-						<el-input v-model="estateForm.assessObject" disabled></el-input>
+						<el-input v-model="estateForm.assessObj" disabled></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="价值类型:" style="width: 40%;">
@@ -114,10 +114,11 @@
 						<!-- <a class='download' :href='downloadhttp' download=""  title="下载">下载</a> -->
 					</el-upload>
 				</el-form-item>
-				<el-form-item style="display: block;">
-					<el-button type="primary" @click="sealJump()" v-permission="[305]" v-show="this.status == 1">盖章</el-button>
-					<el-button type="success" @click="checkSuccess()" v-show="this.status == 1">审核</el-button>
-					<el-button type="danger" @click="checkFail()" v-show="this.status == 1">审核不通过</el-button>
+				<el-form-item style="display: block;padding-left: 100px;">
+					<el-button type="primary" @click="sealJump()" v-permission="[305]">盖章</el-button>
+					<el-button type="success" @click="transferSeal()">转让盖章</el-button>
+					<el-button type="success" @click="checkSuccess()">审核通过</el-button>
+					<el-button type="danger" @click="checkFail()">审核不通过</el-button>
 					<el-button @click="cancelForm(estateForm)">返回</el-button>
 				</el-form-item>
 			</el-form>
@@ -178,6 +179,14 @@
 				},{
 					"label": "jj",
 					"value": "jj"
+				}],
+				sealForm:{
+					seal: ''
+				},
+				sealFormVisible: false,
+				sealList:[{
+					"label": "test",
+					"value": "test"
 				}],
 				assessMethodList: [{
 					"label": "出让",
@@ -319,8 +328,11 @@
 					
 				});
 			},
-			changeSeal (sealForm) {
+			transferSeal () {
 				this.sealFormVisible = true
+			},
+			changeSeal (sealForm) {
+				// this.sealFormVisible = true
 				console.log(sealForm.seal)
 				let id = this.id
 				let transferTo = sealForm.seal
@@ -338,21 +350,13 @@
 								message:'转让成功!', 
 								type: 'success'
 							})
-							this.$confirm('确认是否审核通过?','提示',{
-								type: 'warning'
-								}).then(() => {
-									postCheckId(id,state).then((res) => {
-										// this.fetchProjectList()
-										console.log(res);
-										this.$router.push({path:'/checkList/index'})
-									});
-								}).catch(() => {})
 						}else{
 							this.$message({
 								message:'转让成失败!', 
 								type: 'warning'
 							})
 						}
+						this.sealFormVisible = false
 					})
 				}
 			},

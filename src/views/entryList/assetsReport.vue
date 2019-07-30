@@ -54,10 +54,10 @@
 						</el-select>
 					</template>
 				</el-form-item>
-				<el-form-item label="评估对象:" style="width: 40%;" prop="assessTotalPrice">
+				<el-form-item label="评估对象:" style="width: 40%;" prop="assessObj">
 					<template>
-						<el-select v-model="estateForm.assessTotalPrice" placeholder="请选择">
-							<el-option v-for="(item,index) in assessTotalPriceList" :key="item.value" :label="item.label" :value="item.value">
+						<el-select v-model="estateForm.assessObj" placeholder="请选择">
+							<el-option v-for="(item,index) in assessObjList " :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 					</template>
@@ -135,7 +135,7 @@
 						</el-select>
 					</template>
 				</el-form-item>
-				<el-form-item label="文件上传" class="fl" style="display: block;">
+				<el-form-item label="文件上传" class="fl" style="display: block;" prop="fileList">
 					<el-upload class="upload-demo" ref="upload" name="file" :action="UploadUrl ()" :data="uploadData" :on-preview="handlePreview"
 					 accept=".doc,.docx" :on-remove="handleRemove"
 					 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange" multiple :limit="1" :on-exceed="handleExceed"
@@ -245,7 +245,7 @@
 					"label": "复核评估",
 					"value": "复核评估"
 				}],
-				assessTotalPriceList:[
+				assessObjList:[
 					{
 						"label": "企业价值",
 						"value": "企业价值"
@@ -330,7 +330,8 @@
 					assetsFee: [ {required: true,trigger: 'blur',message: '不能为空'}],
 					debtFee: [ {required: true,trigger: 'blur',message: '不能为空'}],
 					checker: [{required: true,trigger: 'blur',message: '不能为空'}],
-					netAssets: [ {required: true,trigger: 'blur',message: '不能为空'}]
+					netAssets: [ {required: true,trigger: 'blur',message: '不能为空'}],
+					fileList: [ {required: true,trigger: 'blur',message: '不能为空'}]
 				}
 			}
 		},
