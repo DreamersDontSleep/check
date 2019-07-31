@@ -217,11 +217,11 @@ export default {
 					console.log(editForm);
 					let state = editForm.status;
 					let branchOffice = editForm.branchName;
-					if(branchOffice == "全部"){
+					if(branchOffice == "全部" || branchOffice == ""){
 						branchOffice = '';
 					}
 					
-					if( state == "待审核" ){
+					if( state == "待审核" || state == "" ){
 						state = [1];
 					}else if( state == "已审核" ){
 						state = [3];
@@ -241,7 +241,7 @@ export default {
 						para = {
 							"state": state,
 							"branchOffice": branchOffice,
-							"login": localStorage.getItem('userId'),
+							"login": "",
 							"applicant": "",
 							"checker": localStorage.getItem('userId')
 						}

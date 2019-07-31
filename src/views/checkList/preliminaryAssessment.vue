@@ -211,11 +211,6 @@
 				this.$confirm('确认是否审核通过?','提示',{
 					type: 'warning'
 					}).then(() => {
-						postCheckId(id,state).then((res) => {
-							// this.fetchProjectList()
-							console.log(res);
-							this.$router.push({path:'/checkList/index'})
-						});
 						let para = {
 							"stampState": "",
 							"id": this.id,
@@ -224,6 +219,12 @@
 						postUpdateRemark(para).then( (res) => {
 							console.log(res)
 						})
+						postCheckId(id,state).then((res) => {
+							// this.fetchProjectList()
+							console.log(res);
+							this.$router.push({path:'/checkList/index'})
+						});
+						
 					}).catch(() => {})
 			},
 			checkFail () {
@@ -291,14 +292,21 @@
 				}
 			},
 			sealJump(){
+				let id = this.id
+				let state = 3
 				let para = {
-					"stampState": 1,
+					"stampState": "",
 					"id": this.id,
 					"remark":this.remark
 				}
 				postUpdateRemark(para).then( (res) => {
 					console.log(res)
 				})
+				postCheckId(id,state).then((res) => {
+					// this.fetchProjectList()
+					console.log(res);
+					// this.$router.push({path:'/checkList/index'})
+				});
 				console.log(this.estateForm)
 				this.$router.push({path:'/checkList/checkSeal', query: { 'content': this.estateForm }})
 			},

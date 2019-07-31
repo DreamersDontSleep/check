@@ -221,21 +221,21 @@ export default {
 					console.log(editForm);
 					let state = editForm.status;
 					let branchOffice = editForm.branchName;
-					if(branchOffice == "全部"){
+					if(branchOffice == "全部" || branchOffice == ""){
 						branchOffice = '';
 					}
 					
-					if( state == "待审核" ){
+					if( state == "待审核"){
 						state = [1];
 					}else if( state == "已审核" ){
 						state = [3];
-					}else if( state == "全部" ){
+					}else if( state == "全部" || state == ""  ){
 						state = [1,3];
 					}
 					let para
 					if(localStorage.getItem('userId') == "root"){
 						para = {
-							"state": state,
+							"state": [],
 							"branchOffice": branchOffice,
 							"login": "",
 							"applicant": "",
@@ -249,7 +249,8 @@ export default {
 							"login": "",
 							"applicant": "",
 							"checker": "",
-							"transferTo": localStorage.getItem('userId')
+							"transferTo": localStorage.getItem('userId'),
+							"stampState": 1
 						}
 					}
 					getCheckRpt(para).then((res) => {
