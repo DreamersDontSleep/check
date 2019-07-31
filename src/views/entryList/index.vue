@@ -98,7 +98,7 @@
             </el-table-column>
 						<el-table-column label="盖章结果">
 						  <template slot-scope="scope">
-							  <div v-if="scope.row.stampState == '' || scope.row.stampState == null">
+							  <div v-if="scope.row.stampState == '' || scope.row.stampState == null || scope.row.stampState == 0">
 							  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">未盖章</span>
 							  </div>
 							  <div v-if="scope.row.stampState == 1">
