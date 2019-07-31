@@ -52,7 +52,7 @@
 				  	message:'当前浏览器不是IE浏览器，请切换到IE浏览器!', 
 				  	type: 'success'
 				  })
-				  this.$router.push({path:'/checkList/index'})
+				  // this.$router.push({path:'/checkList/index'})
 				}
 			this.hzonload_li1();
 			// setTimeout(this.fetch(),500);

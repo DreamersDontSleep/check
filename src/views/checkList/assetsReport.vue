@@ -385,7 +385,7 @@
 			},
 			sealJump(){
 				let para = {
-					"stampState": 1,
+					"stampState": "0",
 					"id": this.id,
 					"remark":this.remark
 				}

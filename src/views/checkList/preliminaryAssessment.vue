@@ -292,22 +292,14 @@
 				}
 			},
 			sealJump(){
-				let id = this.id
-				let state = 3
 				let para = {
-					"stampState": "",
+					"stampState": "0",
 					"id": this.id,
 					"remark":this.remark
 				}
 				postUpdateRemark(para).then( (res) => {
 					console.log(res)
 				})
-				postCheckId(id,state).then((res) => {
-					// this.fetchProjectList()
-					console.log(res);
-					// this.$router.push({path:'/checkList/index'})
-				});
-				console.log(this.estateForm)
 				this.$router.push({path:'/checkList/checkSeal', query: { 'content': this.estateForm }})
 			},
 			handleRemove(file, fileList) {
