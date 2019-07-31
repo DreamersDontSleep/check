@@ -204,7 +204,8 @@ export default {
 					"login": "",
 					"applicant": "",
 					"checker": "",
-					"transferTo": localStorage.getItem('userId')
+					"transferTo": localStorage.getItem('userId'),
+					"stampState": 1
 				}
 			}
 			getCheckRpt(para).then((res) => {

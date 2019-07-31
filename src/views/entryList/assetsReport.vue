@@ -135,11 +135,12 @@
 						</el-select>
 					</template>
 				</el-form-item>
-				<el-form-item label="文件上传" class="fl" style="display: block;" prop="fileList">
+				<el-form-item label="文件上传" class="fl" style="display: block;">
 					<el-upload class="upload-demo" ref="upload" name="file" :action="UploadUrl ()" :data="uploadData" :on-preview="handlePreview"
 					 accept=".doc,.docx" :on-remove="handleRemove"
 					 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange" multiple :limit="1" :on-exceed="handleExceed"
 					 :file-list="fileList">
+						<div prop="fileCheck" v-show="false">{{fileCheck}}</div>
 						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
 						<div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
 					</el-upload>
@@ -205,6 +206,7 @@
 					"label": "否",
 					"value": "否"
 				}],
+				fileCheck:'',
 				assessAimList: [{
 					"label": "了解价值",
 					"value": "了解价值"
@@ -331,7 +333,7 @@
 					debtFee: [ {required: true,trigger: 'blur',message: '不能为空'}],
 					checker: [{required: true,trigger: 'blur',message: '不能为空'}],
 					netAssets: [ {required: true,trigger: 'blur',message: '不能为空'}],
-					fileList: [ {required: true,trigger: 'blur',message: '不能为空'}]
+					fileCheck: [ {required: true,trigger: 'blur',message: '不能为空'}]
 				}
 			}
 		},
@@ -376,6 +378,7 @@
 			handleChange(file, fileList) {
 				this.fileList = fileList;
 				this.file = file;
+				this.fileCheck = fileList
 				console.log(file)
 			},
 			submitForm() {
@@ -392,14 +395,21 @@
 				}
 				this.$refs.estateForm.validate((valid) => {
 				  if (valid) {
-						this.$confirm('确认提交该记录吗?', '提示', {
-							type: 'warning'
-						}).then(() => {
-							this.$refs.upload.submit();
-							this.$router.push({path:'/entryList/index'})
-						}).catch(() => {
-							
-						});
+					  if(this.fileCheck == ""){
+						 this.$message({
+										message:'请上传文件!', 
+										type: 'warning'
+									})
+					  }else{
+						 this.$confirm('确认提交该记录吗?', '提示', {
+						 	type: 'warning'
+						 }).then(() => {
+						 	this.$refs.upload.submit();
+						 	this.$router.push({path:'/entryList/index'})
+						 }).catch(() => {
+						 	
+						 }); 
+					  }
 				  } else {
 						console.log('error submit!!');
 				  }

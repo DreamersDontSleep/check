@@ -177,6 +177,7 @@
 					 accept=".doc,.docx" :on-remove="handleRemove"
 					 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange" multiple :limit="1" :on-exceed="handleExceed"
 					 :file-list="fileList">
+					 <div prop="fileCheck" v-show="false">{{fileCheck}}</div>
 						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
 						<div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
 					</el-upload>
@@ -259,6 +260,7 @@
 				checkForm: {
 					checkAccount: '12个'
 				},
+				fileCheck:'',
 				editFormVisible: false,
 				fileList: [],
 				assessAimList: [{
@@ -499,7 +501,8 @@
 						required: true,
 						trigger: 'blur',
 						message: '不能为空'
-					}]
+					}],
+					fileCheck: [ {required: true,trigger: 'blur',message: '不能为空'}]
 				}
 
 			}
@@ -544,11 +547,18 @@
 			handleChange(file, fileList) {
 				this.fileList = fileList;
 				this.file = file;
+				this.fileCheck = fileList
 				console.log(file)
 			},
 			submitForm() {
 				this.$refs.estateForm.validate((valid) => {
 				  if (valid) {
+					  if(this.fileCheck == ""){
+					  						 this.$message({
+					  										message:'请上传文件!', 
+					  										type: 'warning'
+					  									})
+					  }else{
 						this.$confirm('确认提交该记录吗?', '提示', {
 							type: 'warning'
 						}).then(() => {
@@ -557,6 +567,7 @@
 						}).catch(() => {
 							
 						});
+					  }
 				  } else {
 						console.log('error submit!!');
 				  }

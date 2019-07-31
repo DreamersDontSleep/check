@@ -203,6 +203,8 @@
 		        <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
 		        <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
 		      </el-upload>
+			  <el-button @click="downloadWord()">下载word文档</el-button>
+			  <el-button @click="previewPdf()">预览pdf文档</el-button>
 		    </el-form-item>
 		    <el-form-item style="display: block;">
 		      <el-button v-show="!lookOrEdit" @click="submitForm(estateForm)">提交</el-button>
@@ -343,6 +345,8 @@ import { postUpdateRpt } from '@/api/entry'
 						"value": "check"
 					}
 				],
+				wordUrl: '',
+				pdfUrl: '',
 				fileList: [{
 				  name: '',
 				  url: ''
@@ -389,6 +393,8 @@ import { postUpdateRpt } from '@/api/entry'
 			// this.estateForm.assessDate = formatDate(this.estateForm.assessDate)
 		  this.lookOrEdit = this.$route.query.lookOrEdit
 			this.id = content.id
+			this.wordUrl = this.estateForm.wordUri
+			this.pdfUrl = this.estateForm.pdfUri
 		  const fileUrl = this.estateForm.wordUri
 		  const fileIndex = fileUrl.lastIndexOf('\/')
 		  const fileName = fileUrl.substring(fileIndex + 1, fileUrl.length)
@@ -463,6 +469,12 @@ import { postUpdateRpt } from '@/api/entry'
 			},
 			beforeRemove(file, fileList) {
 			  return this.$confirm(`确定移除 ${file.name}？`)
+			},
+			downloadWord(){
+				window.location.href = this.wordUrl
+			},
+			previewPdf(){
+				window.open(this.pdfUrl,'_blank')
 			}
 		}
 	}

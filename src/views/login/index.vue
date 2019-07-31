@@ -1,12 +1,12 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-      <h2 class="title">江苏天圣评估管理系统</h2>
+      <h2 class="title">江苏天圣审批管理系统</h2>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.username" name="username" type="text" auto-complete="on" placeholder="username" />
+        <el-input v-model="loginForm.username" name="username" type="text" auto-complete="on" placeholder="username" style="color: #fff;"/>
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
@@ -18,7 +18,7 @@
           name="password"
           auto-complete="on"
           placeholder="password"
-          @keyup.enter.native="handleLogin" />
+          @keyup.enter.native="handleLogin" style="color: #fff;"/>
         <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="pwdType === 'password' ? 'eye' : 'eye-open'" />
         </span>
@@ -151,7 +151,7 @@ $light_gray:#eee;
   height: 100%;
   width: 100%;
   background-color: $bg;
-  background-image: url(https://picsum.photos/1920/1080);
+  // background-image: url(https://picsum.photos/1920/1080);
   .login-form {
     position: absolute;
     left: 0;

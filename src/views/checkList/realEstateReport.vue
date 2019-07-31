@@ -140,14 +140,18 @@
 					<el-upload class="upload-demo" action="http://fcpgpre.jstspg.com/rpt/index/upLoad" :on-preview="handlePreview"
 					 accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF,.doc,.docx" :on-remove="handleRemove"
 					 :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
-						<!-- <el-button size="small" type="primary">点击上传</el-button> -->
-						<!-- <div slot="tip" class="el-upload__tip">支持扩展名：.rar .zip .doc .docx .pdf .jpg</div> -->
-						<!-- <a class='download' :href='downloadhttp' download=""  title="下载">下载</a> -->
 					</el-upload>
+					<el-button @click="downloadWord()">下载word文档</el-button>
+					<el-button @click="previewPdf()">预览pdf文档</el-button>
 				</el-form-item>
-				<el-form-item style="display: block;">
+				<el-form-item label="审核意见:" style="display: block;">
+					<el-input type="textarea" v-model="remark" style="width: 331px;"></el-input>
+				</el-form-item>
+				<el-form-item label="盖章:" style="display: block;">
 					<el-button type="primary" @click="sealJump()" v-permission="[305]">盖章</el-button>
 					<el-button type="success" @click="transferSeal()">转让盖章</el-button>
+				</el-form-item>
+				<el-form-item label="审核:" style="display: block;">
 					<el-button type="success" @click="checkSuccess()">审核通过</el-button>
 					<el-button type="danger" @click="checkFail()">审核不通过</el-button>
 					<el-button @click="cancelForm(estateForm)">返回</el-button>
@@ -177,7 +181,7 @@
 
 <script>
 	import {
-		postReportData, getReportData, postCheckId, transferToId
+		postReportData, getReportData, postCheckId, transferToId, postUpdateRemark
 	} from '@/api/entry'
 	import permission from '@/directive/permission/index.js' // 权限判断指令
 	import checkPermission from '@/utils/permission' // 权限判断函数
@@ -191,6 +195,7 @@
 					name: '',
 					url:''
 				}],
+				remark: '',
 				idList: '',
 				idListItem:[{
 					"label": "test",
@@ -230,7 +235,9 @@
 				}],
 				id: '',
 				reportType: '',
-				status: ''
+				status: '',
+				wordUrl: '',
+				pdfUrl: '',
 			}
 		},
 		created() {
@@ -250,6 +257,8 @@
 				getReportData(id,reportType).then((res) => {
 					console.log(res);
 					this.estateForm = res.data;
+					this.wordUrl = this.estateForm.wordUri
+					this.pdfUrl = this.estateForm.pdfUri
 					let fileUrl = res.data.wordUri;
 					let fileIndex = fileUrl.lastIndexOf('\/');
 					let fileName = fileUrl.substring(fileIndex + 1, fileUrl.length);
@@ -310,21 +319,23 @@
 			checkSuccess () {
 				let id = this.id;
 				let state = 3;
-				this.$confirm('是否需要盖章?', '提示', {
+				this.$confirm('确认是否审核通过?','提示',{
 					type: 'warning'
-				}).then(() => {
-					this.sealFormVisible = true
-				}).catch(() => {
-					this.$confirm('确认是否审核通过?','提示',{
-						type: 'warning'
-						}).then(() => {
-							postCheckId(id,state).then((res) => {
-								// this.fetchProjectList()
-								console.log(res);
-								this.$router.push({path:'/checkList/index'})
-							});
-						}).catch(() => {})
-					})
+					}).then(() => {
+						postCheckId(id,state).then((res) => {
+							// this.fetchProjectList()
+							console.log(res);
+							this.$router.push({path:'/checkList/index'})
+						});
+						let para = {
+							"stampState": "",
+							"id": this.id,
+							"remark":this.remark
+						}
+						postUpdateRemark(para).then( (res) => {
+							console.log(res)
+						})
+					}).catch(() => {})
 			},
 			checkFail () {
 				let id = this.id;
@@ -365,9 +376,21 @@
 					transferToId(id,transferTo).then( (res) => {
 						if(res.code == 200){
 							this.$message({
-								message:'转让成功!', 
+								message:'转让成功并审核通过!', 
 								type: 'success'
 							})
+							let para = {
+								"stampState": 1,
+								"id": this.id,
+								"remark":this.remark
+							}
+							postUpdateRemark(para).then( (res) => {
+								console.log(res)
+							})
+							postCheckId(id,state).then((res) => {
+								console.log(res);
+								this.$router.push({path:'/checkList/index'})
+							});
 						}else{
 							this.$message({
 								message:'转让成失败!', 
@@ -379,6 +402,14 @@
 				}
 			},
 			sealJump(){
+				let para = {
+					"stampState": 1,
+					"id": this.id,
+					"remark":this.remark
+				}
+				postUpdateRemark(para).then( (res) => {
+					console.log(res)
+				})
 				console.log(this.estateForm)
 				this.$router.push({path:'/checkList/checkSeal', query: { 'content': this.estateForm }})
 			},
@@ -393,6 +424,12 @@
 			},
 			beforeRemove(file, fileList) {
 				return this.$confirm(`确定移除 ${ file.name }？`);
+			},
+			downloadWord(){
+				window.location.href = this.wordUrl
+			},
+			previewPdf(){
+				window.open(this.pdfUrl,'_blank')
 			}
 		}
 	}

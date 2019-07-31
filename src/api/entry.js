@@ -83,3 +83,11 @@ export function postUpdateRpt(para) {
     data: para
   })
 }
+
+export function postUpdateRemark(para) {
+  return request({
+    url: '/rpt/index/updateRemarkOrStampState',
+    method: 'post',
+    data: para
+  })
+}

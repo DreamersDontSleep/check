@@ -22,7 +22,7 @@
 
 <script>
 	import {
-		postReportData, getReportData, postCheckId
+		postReportData, getReportData, postCheckId, postUpdateRemark
 	} from '@/api/entry'
 	export default {
 		data() {
@@ -71,14 +71,19 @@
 			button3_click() {
 				let XSReaderSDK1 = document.getElementById("ShareSunReaderSDK");
 				this.saveUrl = "d:\\" + this.fileName;
-				alert(this.fileName);
 			    let value2 = prompt("请输入文件保存路径", this.saveUrl);
 			   XSReaderSDK1.SaveAs(value2);
 			   var ifexits = XSReaderSDK1.FileExists(value2);
 			   if (ifexits == true) {
-				   alert("文件已另存成功！");
+				   this.$message({
+				   	message:'文件已另存成功!', 
+				   	type: 'success'
+				   })
 			   }else {
-				   alert("文件另存失败！");
+				   this.$message({
+				   	message:'文件另存失败!', 
+				   	type: 'warning'
+				   })
 			   }
 				
 			},
@@ -101,14 +106,29 @@
 				var postUrl = "http://fcpgpre.jstspg.com/rpt/index/upLoad/" + this.id;
 				var post = XSReaderSDK1.XSPostFileByHttpEX(postUrl, this.saveUrl);
 				if (post == "") {
-					alert("上传失败！");
+					this.$message({
+						message:'上传失败!', 
+						type: 'warning'
+					})
 				}
 				if (post == "uncode") {
-					alert("未授权！");
+					this.$message({
+						message:'未授权!', 
+						type: 'warning'
+					})
 				}else {
-					// alert(post);
-					alert("盖章成功")
-					// XSReaderSDK1.XSRemoveFile(this.saveUrl);
+					this.$message({
+						message:'盖章成功!', 
+						type: 'success'
+					})
+					let para = {
+						"stampState": 2,
+						"id": this.id,
+						"remark":""
+					}
+					postUpdateRemark(para).then( (res) => {
+						console.log(res)
+					})
 				}
 			},
 			checkSuccess () {
@@ -117,6 +137,14 @@
 				// this.$confirm('确认审核通过吗?', '提示', {
 				// 	type: 'warning'
 				// }).then(() => {
+					let para = {
+						"stampState": 2,
+						"id": this.id,
+						"remark":""
+					}
+					postUpdateRemark(para).then( (res) => {
+						console.log(res)
+					})
 					postCheckId(id,state).then((res) => {
 						// this.fetchProjectList()
 						console.log(res);

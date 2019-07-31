@@ -46,10 +46,10 @@
 					  :before-remove="beforeRemove"
 					  :auto-upload="false"
 					  :on-change="handleChange"
-					  multiple
 					  :limit="1"
 					  :on-exceed="handleExceed"
 					  :file-list="fileList">
+					  <div prop="fileCheck" v-show="false">{{fileCheck}}</div>
 					  <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
 					  <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
 					</el-upload>
@@ -97,6 +97,7 @@ export default {
 					"label": "不出让",
 					"value": "不出让"
 			}],
+			fileCheck:'',
 			valueTypeList:[{
 					"label": "出让",
 					"value": "出让"
@@ -125,8 +126,10 @@ export default {
 				projectName: [{ required: true, trigger: 'blur', message: '不能为空' }],
 				branchOffice: [{ required: true, trigger: 'blur', message: '不能为空' }],
 				checker: [{ required: true, trigger: 'blur', message: '不能为空' }],
-				assessOrg: [{ required: true, trigger: 'blur', message: '不能为空' }]
-			}
+				assessOrg: [{ required: true, trigger: 'blur', message: '不能为空' }],
+				fileCheck: [ {required: true,trigger: 'blur',message: '不能为空'}]
+			},
+			testFile: ''
 	  }
   },
   computed: {
@@ -170,19 +173,28 @@ export default {
 		handleChange(file, fileList) {
 		  this.fileList = fileList;
 		  this.file = file;
+		  this.fileCheck = fileList
 		  console.log(file)
 		},
 		submitForm(){
 			this.$refs.estateForm.validate((valid) => {
 			  if (valid) {
-					this.$confirm('确认提交该记录吗?', '提示', {
-						type: 'warning'
-					}).then(() => {
-						this.$refs.upload.submit();
-						this.$router.push({path:'/entryList/index'})
-					}).catch(() => {
-						
-					});
+					console.log(this.fileList)
+					if(this.fileCheck == ""){
+											 this.$message({
+															message:'请上传文件!', 
+															type: 'warning'
+														})
+					}else{
+						this.$confirm('确认提交该记录吗?', '提示', {
+							type: 'warning'
+						}).then(() => {
+							this.$refs.upload.submit();
+							this.$router.push({path:'/entryList/index'})
+						}).catch(() => {
+							
+						});
+					}
 			  } else {
 					console.log('error submit!!');
 			  }
@@ -198,6 +210,7 @@ export default {
 		},
 		handleRemove(file, fileList) {
 			console.log(file, fileList);
+			this.fileList = []
 		},
 		handlePreview(file) {
 			console.log(file);
@@ -207,6 +220,19 @@ export default {
 		},
 		beforeRemove(file, fileList) {
 			return this.$confirm(`确定移除 ${ file.name }？`);
+		},
+		beforeUpLoad(file){
+			var testmsg=file.name.substring(file.name.lastIndexOf('.')+1)
+			alert(file.size)
+			this.testFile = file.size
+			const isLt2M = file.size / 1024 / 1024 > 0  
+			if(!isLt2M) {
+					this.$message({
+						message: '上传文件大小不能小于 0MB!',
+						type: 'warning'
+					});
+				}
+			return isLt2M
 		}
 	}
 }
