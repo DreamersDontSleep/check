@@ -24,16 +24,16 @@
 		        <el-input v-else v-model="estateForm.assessReportNum"/>
 		      </template>
 		    </el-form-item>
-		    <el-form-item label="价值时点:" style="width: 40%;" prop="valueTime">
+		    <el-form-item label="委托方:" style="width: 40%;" prop="client">
 		      <template>
-		        <el-input v-if="lookOrEdit" v-model="estateForm.valueTime" disabled/>
-		        <el-date-picker v-else v-model="estateForm.valueTime" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd"/>
+		        <el-input v-if="lookOrEdit" v-model="estateForm.client" disabled/>
+				<el-input v-else  v-model="estateForm.client"></el-input>
 		      </template>
 		    </el-form-item>
-		    <el-form-item label="估价对象:" style="width: 40%;" prop="assessObject">
+		    <el-form-item label="被评估单位名称:" style="width: 40%;" prop="assessedUnitName">
 		      <template>
-		        <el-input v-if="lookOrEdit" v-model="estateForm.assessObject" disabled/>
-		        <el-input v-else v-model="estateForm.assessObject"/>
+		        <el-input v-if="lookOrEdit" v-model="estateForm.assessedUnitName" disabled/>
+		        <el-input v-else v-model="estateForm.assessedUnitName"/>
 		      </template>
 		    </el-form-item>
 		    <el-form-item label="是否国有资产评估业务:" style="width: 40%;" prop="isStateAssets">
@@ -130,10 +130,7 @@
 				<el-form-item label="分公司:" style="width: 40%;" prop="branchOffice">
 					<template>
 						<el-input v-if="lookOrEdit" v-model="estateForm.branchOffice" disabled></el-input>
-						<el-select v-else v-model="estateForm.branchOffice" placeholder="请选择">
-							<el-option v-for="(item,index) in cbranchOfficeList" :key="item.value" :label="item.label" :value="item.value">
-							</el-option>
-						</el-select>
+						<el-input v-else v-model="estateForm.branchOffice" disabled></el-input>
 					</template>
 				</el-form-item>
 		    <el-form-item label="总资产账面值:" style="width: 40%;" prop="assetsFee">
@@ -218,7 +215,8 @@
 </template>
 
 <script>
-import { postUpdateRpt } from '@/api/entry'
+import { postUpdateRpt,
+		getDictionary } from '@/api/entry'
 	export default {
 		data () {
 			return {
@@ -238,64 +236,9 @@ import { postUpdateRpt } from '@/api/entry'
 					"label": "否",
 					"value": "否"
 				}],
-				assessAimList: [{
-					"label": "了解价值",
-					"value": "了解价值"
-				}, {
-					"label": "公司制改建",
-					"value": "公司制改建"
-				}, {
-					"label": "对外投资",
-					"value": "对外投资"
-				}, {
-					"label": "接受投资",
-					"value": "接受投资"
-				}, {
-					"label": "合并、分立、破产、清算、解散",
-					"value": "合并、分立、破产、清算、解散"
-				}, {
-					"label": "股东股权比例变动",
-					"value": "股东股权比例变动"
-				}, {
-					"label": "产权转让",
-					"value": "产权转让"
-				}, {
-					"label": "资产转让、处置、拍卖",
-					"value": "资产转让、处置、拍卖"
-				}, {
-					"label": "资产抵押/质押",
-					"value": "资产抵押/质押"
-				}, {
-					"label": "资产涉诉",
-					"value": "资产涉诉"
-				}, {
-					"label": "计税价格评估",
-					"value": "计税价格评估"
-				}, {
-					"label": "追溯评估",
-					"value": "追溯评估"
-				}, {
-					"label": "复核评估",
-					"value": "复核评估"
-				}],
-				assessObjList:[
-					{
-						"label": "企业价值",
-						"value": "企业价值"
-					}, {
-						"label": "单项资产",
-						"value": "单项资产"
-					}, {
-						"label": "资产组合",
-						"value": "资产组合"
-					}, {
-						"label": "无形资产",
-						"value": "无形资产"
-					}, {
-						"label": "其他资产",
-						"value": "其他资产"
-					}
-				],
+				assessAimList: '',
+				assessMethodList: '',
+				assessObjList:'',
 				cbranchOfficeList: [{
 					"label": "分公司1",
 					"value": "分公司1"
@@ -304,38 +247,7 @@ import { postUpdateRpt } from '@/api/entry'
 					"value": "分公司2"
 				}
 				],
-				valueTypeList: [{
-					"label": "市场价值",
-					"value": "市场价值"
-				}, {
-					"label": "投资价值",
-					"value": "投资价值"
-				}, {
-					"label": "清算价值",
-					"value": "清算价值"
-				}, {
-					"label": "在用价值",
-					"value": "在用价值"
-				}, {
-					"label": "残余价值",
-					"value": "残余价值"
-				}, {
-					"label": "其他价值",
-					"value": "其他价值"
-				}],
-				assessMethodList: [{
-					"label": "成本法/资产基础法",
-					"value": "成本法/资产基础法"
-				},{
-					"label": "市场法",
-					"value": "市场法"
-				},{
-					"label": "收益法",
-					"value": "收益法"
-				},{
-					"label": "其他",
-					"value": "其他"
-				}],
+				valueTypeList: '',
 				checkerList:[
 					{
 						"label": "test",
@@ -401,9 +313,20 @@ import { postUpdateRpt } from '@/api/entry'
 		  console.log(fileName)
 		  this.fileList[0].name = fileName
 		  this.fileList[0].url = fileUrl
-			id: ''
+		},
+		mounted() {
+			this.getTreeData()
 		},
 		methods:{
+			getTreeData(){
+				getDictionary().then( (res) => {
+					console.log(res);
+					this.assessAimList = res.data.zzpg2019[4].zcpgmd.reverse()
+					this.assessObjList = res.data.zzpg2019[3].zcpgdx.reverse()
+					this.valueTypeList = res.data.zzpg2019[2].zcjzlx.reverse()
+					this.assessMethodList = res.data.zzpg2019[1].zcpgff.reverse()
+				})	
+			},
 			submitForm(estateForm) {
 				if(estateForm.isStateAssets == '是'){
 					estateForm.isStateAssets = 1

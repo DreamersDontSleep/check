@@ -13,10 +13,11 @@
 				<el-form-item label="分公司:" style="width: 40%;" prop="branchOffice">
 					<template>
 						<!-- <el-input v-model="estateForm.assessMethod"></el-input> -->
-						<el-select v-model="estateForm.branchOffice" placeholder="请选择" style="width: 331px;">
+						<el-input v-model="estateForm.branchOffice" disabled></el-input>
+						<!-- <el-select v-model="estateForm.branchOffice" placeholder="请选择" style="width: 331px;">
 							<el-option v-for="(item,index) in cbranchOfficeList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
-						</el-select>
+						</el-select> -->
 					</template>
 				</el-form-item>
 				<el-form-item label="审核员:" style="width: 40%;" prop="checker">
@@ -133,7 +134,7 @@ export default {
 	  }
   },
   computed: {
-	  ...mapGetters(['name']),
+	  ...mapGetters(['name','userInfo']),
   	uploadData: function () {
 		this.estateForm.applicant = this.name;
 		this.estateForm.login = localStorage.getItem('userId')
@@ -144,7 +145,9 @@ export default {
   		  return params
   		}
     },
-  
+	mounted() {
+		this.estateForm.branchOffice = this.userInfo.department
+	},
 	methods:{
 		searchTable(editForm){
 			this.$refs.editForm.validate((valid) => {

@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 import axios from "axios"
+import { getToken } from '@/utils/auth'
 
 export function getEntryList(para) {
   return request({
@@ -89,5 +90,14 @@ export function postUpdateRemark(para) {
     url: '/rpt/index/updateRemarkOrStampState',
     method: 'post',
     data: para
+  })
+}
+
+export function getDictionary() {
+  return request({
+    url: '/auth/dataDictionary/getTreeSp',
+    method: 'get',
+    data: {},
+    headers: { 'token': getToken() }
   })
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-      <h2 class="title">江苏天圣审批管理系统</h2>
+      <h2 class="title">江苏天圣报告审批系统</h2>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -150,7 +150,7 @@ $light_gray:#eee;
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: $bg;
+  background-color: grey;
   // background-image: url(https://picsum.photos/1920/1080);
   .login-form {
     position: absolute;

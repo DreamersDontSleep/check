@@ -243,11 +243,14 @@ export default {
         'label': '全部',
         'value': '全部'
       },{
-        'label': '分公司1',
-        'value': '分公司1'
+        'label': '南京',
+        'value': '南京'
       }, {
-        'label': '分公司2',
-        'value': '分公司2'
+        'label': '如东',
+        'value': '如东'
+      }, {
+        'label': '青岛',
+        'value': '青岛'
       }],
       totalPriceEvaluation: [],
       assessAimList: [{

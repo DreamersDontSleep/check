@@ -162,17 +162,10 @@
 					<el-button @click="downloadWord()">下载word文档</el-button>
 					<el-button @click="previewPdf()">预览pdf文档</el-button>
 				</el-form-item>
-				<el-form-item label="审核意见:" style="display: block;">
-					<el-input type="textarea" v-model="remark" style="width: 331px;"></el-input>
-				</el-form-item>
-				<el-form-item label="盖章:" style="display: block;">
-					<el-button type="primary" @click="sealJump()" v-permission="[305]">盖章</el-button>
-					<el-button type="success" @click="transferSeal()">转让盖章</el-button>
-				</el-form-item>
 				<el-form-item label="审核:" style="display: block;">
-					<el-button type="success" @click="checkSuccess()">审核通过</el-button>
-					<el-button type="danger" @click="checkFail()">审核不通过</el-button>
-					<el-button @click="cancelForm(estateForm)">返回</el-button>
+					<el-button type="success" @click="sealJump()">审核</el-button>
+					<!-- <el-button type="danger" @click="checkFail()">审核不通过</el-button>
+					<el-button @click="cancelForm(estateForm)">返回</el-button> -->
 				</el-form-item>
 			</el-form>
 		</template>

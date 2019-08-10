@@ -103,50 +103,50 @@
 				</el-form-item>
 				<el-form-item label="第一报告人:" style="width: 40%;" prop="firstReporter">
 					<template>
-					  <el-select v-model="estateForm.firstReporter" placeholder="请选择">
+					  <el-select v-model="estateForm.firstReporter" placeholder="请选择" @change="selChange1(estateForm.firstReporter)">
 					    <el-option
-					      v-for="(item,index) in firstReporterList"
+					      v-for="(item,index) in reportNameList"
 					      :key="item.value"
-					      :label="item.label"
+					      :label="item.value"
 					      :value="item.value"/>
 					  </el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="第一报告人注册号:" style="width: 40%;" prop="firstReporterRgNum">
 					<template>
-						<el-input v-model="estateForm.firstReporterRgNum" ></el-input>
+						<el-input v-model="estateForm.firstReporterRgNum" disabled></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="参与报告人1:" style="width: 40%;" prop="partReporter1">
 					<template>
-					  <el-select v-model="estateForm.partReporter1" placeholder="请选择">
+					  <el-select v-model="estateForm.partReporter1" placeholder="请选择" @change="selChange2(estateForm.partReporter1)">
 					    <el-option
-					      v-for="(item,index) in partReporter1List"
+					      v-for="(item,index) in reportNameList"
 					      :key="item.value"
-					      :label="item.label"
+					      :label="item.value"
 					      :value="item.value"/>
 					  </el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="参与报告人1注册号:" style="width: 40%;" prop="partReporter1RgNum">
 					<template>
-						<el-input v-model="estateForm.partReporter1RgNum" ></el-input>
+						<el-input v-model="estateForm.partReporter1RgNum" disabled ></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="参与报告人2:" style="width: 40%;" prop="partReporter2">
 					<template>
-					  <el-select v-model="estateForm.partReporter2" placeholder="请选择">
+					  <el-select v-model="estateForm.partReporter2" placeholder="请选择" @change="selChange3(estateForm.partReporter2)">
 					    <el-option
-					      v-for="(item,index) in partReporter2List"
+					      v-for="(item,index) in reportNameList"
 					      :key="item.value"
-					      :label="item.label"
+					      :label="item.value"
 					      :value="item.value"/>
 					  </el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="参与报告人2注册号:" style="width: 40%;" prop="partReporter2RgNum">
 					<template>
-						<el-input v-model="estateForm.partReporter2RgNum" ></el-input>
+						<el-input v-model="estateForm.partReporter2RgNum" disabled ></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="业务来源:" style="width: 40%;" prop="serviceSource">
@@ -156,11 +156,11 @@
 				</el-form-item>
 				<el-form-item label="分公司:" style="width: 40%;" prop="branchOffice">
 					<template>
-						<!-- <el-input v-model="estateForm.assessMethod"></el-input> -->
-						<el-select v-model="estateForm.branchOffice" placeholder="请选择">
+						<el-input v-model="estateForm.branchOffice" disabled></el-input>
+						<!-- <el-select v-model="estateForm.branchOffice" placeholder="请选择">
 							<el-option v-for="(item,index) in cbranchOfficeList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
-						</el-select>
+						</el-select> -->
 					</template>
 				</el-form-item>
 				<el-form-item label="业务收费(万元):" style="width: 40%;" prop="serviceCharge">
@@ -186,8 +186,8 @@
 				</el-form-item>
 				<el-form-item label="文件上传" class="fl">
 					<el-upload class="upload-demo" ref="upload" name="file" :action="UploadUrl ()" :data="uploadData" :on-preview="handlePreview"
-					 accept=".doc,.docx" :on-remove="handleRemove"
-					 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange" multiple :limit="1" :on-exceed="handleExceed"
+					 accept=".doc,.docx,.rar" :on-remove="handleRemove"
+					 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange" multiple :limit="2" :on-exceed="handleExceed"
 					 :file-list="fileList">
 						<div prop="fileCheck" v-show="false">{{fileCheck}}</div>
 						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
@@ -209,7 +209,8 @@
 	import axios from "axios"
 	import {
 		postReportDatas,
-		uploadFileRequest
+		uploadFileRequest,
+		getDictionary
 	} from '@/api/entry'
 	import { mapGetters } from 'vuex'
 	export default {
@@ -245,134 +246,26 @@
 					login: '',
 					assessOrg: '江苏天圣房地产土地资产评估测绘有限公司'
 				},
-				checkForm: {
-					checkAccount: '12个'
-				},
 				formData: '',
 				uploadFormData: '',
 				editFormVisible: false,
 				fileList: [],
-				assess: [{
-					"label": "出让",
-					"value": "出让"
-				}, {
-					"label": "转让",
-					"value": "转让"
-				}, {
-					"label": "抵押",
-					"value": "抵押"
-				}, {
-					"label": "征收",
-					"value": "征收"
-				}, {
-					"label": "司法",
-					"value": "司法"
-				}, {
-					"label": "咨询",
-					"value": "咨询"
-				}, {
-					"label": "其他",
-					"value": "其他"
-				}],
-				cbranchOfficeList: [{
+				assess: '',
+				cbranchOfficeList: [
+					{
 					"label": "分公司1",
 					"value": "分公司1"
-				}, {
-					"label": "分公司2",
-					"value": "分公司2"
-				}
+					}, {
+						"label": "分公司2",
+						"value": "分公司2"
+					}
 				],
 				fileCheck:'',
-				assessAimList: [{
-					"label": "出让",
-					"value": "出让"
-				}, {
-					"label": "不出让",
-					"value": "不出让"
-				}],
-				assessMethodList: [{
-					"label": "比较法",
-					"value": "比较法"
-				}, {
-					"label": "收益法",
-					"value": "收益法"
-				}, {
-					"label": "成本法",
-					"value": "成本法"
-				}, {
-					"label": "假设开发法",
-					"value": "假设开发法"
-				}, {
-					"label": "基准地价修正法",
-					"value": "基准地价修正法"
-				}, {
-					"label": "其他",
-					"value": "其他"
-				}],
-				valueTypeList: [{
-					"label": "抵押价值",
-					"value": "抵押价值"
-				}, {
-					"label": "市场价值",
-					"value": "市场价值"
-				}, {
-					"label": "投资价值",
-					"value": "投资价值"
-				}, {
-					"label": "现状价值",
-					"value": "现状价值"
-				}, {
-					"label": "快速变现价值",
-					"value": "快速变现价值"
-				}, {
-					"label": "其他",
-					"value": "其他"
-				}],
-				firstReporterList:[
-					{
-						"label": "name1",
-						"value": "name1"
-					}, {
-						"label": "name2",
-						"value": "name2"
-					}, {
-						"label": "name3",
-						"value": "name3"
-					}, {
-						"label": "name4",
-						"value": "name4"
-					}
-				],
-				partReporter1List:[
-					{
-						"label": "name1",
-						"value": "name1"
-					}, {
-						"label": "name2",
-						"value": "name2"
-					}, {
-						"label": "name3",
-						"value": "name3"
-					}, {
-						"label": "name4",
-						"value": "name4"
-					}
-				],
-				partReporter2List:[
-					{
-						"label": "name1",
-						"value": "name1"
-					}, {
-						"label": "name2",
-						"value": "name2"
-					}, {
-						"label": "name3",
-						"value": "name3"
-					}, {
-						"label": "name4",
-						"value": "name4"
-					}
-				],
+				assessMethodList: '',
+				valueTypeList: '',
+				firstReporterList:'',
+				partReporter1List:'',
+				partReporter2List:'',
 				checkerList:[
 					{
 						"label": "test",
@@ -502,12 +395,12 @@
 						message: '不能为空'
 					}],
 					partReporter2: [{
-						required: true,
+						required: false,
 						trigger: 'blur',
 						message: '不能为空'
 					}],
 					partReporter2RgNum: [{
-						required: true,
+						required: false,
 						trigger: 'blur',
 						message: '不能为空'
 					}],
@@ -522,7 +415,7 @@
 						message: '不能为空'
 					}],
 					serviceCharge: [{
-						required: true,
+						required: false,
 						trigger: 'blur',
 						message: '不能为空'
 					}],
@@ -537,11 +430,16 @@
 						message: '不能为空'
 					}],
 					fileCheck: [ {required: true,trigger: 'blur',message: '不能为空'}]
-				}
+				},
+				arr1:[],
+				nameList: '',
+				arr: [],
+				reportNameList: [],
+				regList: []
 			}
 		},
 		computed: {
-			...mapGetters(['name']),
+			...mapGetters(['name','userInfo']),
 			uploadData: function() {
 				this.estateForm.applicant = this.name;
 				this.estateForm.login = localStorage.getItem('userId')
@@ -552,13 +450,36 @@
 				return params
 			}
 		},
+		mounted() {
+			this.getTreeData()
+		},
 
 		methods: {
+			getTreeData(){
+				this.estateForm.branchOffice = this.userInfo.department
+				getDictionary().then( (res) => {
+					console.log(res);
+					let me = this
+					this.assess = res.data.fdc2019[2].gjmd.reverse()
+					this.assessMethodList = res.data.fdc2019[1].gjff.reverse()
+					this.valueTypeList = res.data.fdc2019[0].jzlx.reverse()
+					this.nameList = res.data.fdczcbg
+					this.nameList.forEach(function(e,c){
+						for(let key in e){
+							me.arr.push(e[key])
+						}
+					})
+					this.arr.forEach(function(e,c){
+						me.reportNameList.push(e[1])
+						// console.log(me.reportNameList)
+						me.regList.push(e[0])
+					})
+				})	
+			},
 			searchTable(editForm) {
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
 						// alert('submit!');
-						console.log(editForm);
 					} else {
 						console.log('error submit!!');
 						return false;
@@ -626,6 +547,42 @@
 			},
 			beforeRemove(file, fileList) {
 				return this.$confirm(`确定移除 ${ file.name }？`);
+			},
+			selChange1(val){
+				// alert(val)
+				console.log(this.reportNameList)
+				console.log(this.regList)
+				let me = this
+				this.reportNameList.forEach(function(e,c){
+					console.log(e)
+					if(e.value == val){
+						me.estateForm.firstReporterRgNum = me.regList[c].value
+					}
+				})
+			},
+			selChange2(val){
+				// alert(val)
+				console.log(this.reportNameList)
+				console.log(this.regList)
+				let me = this
+				this.reportNameList.forEach(function(e,c){
+					console.log(e)
+					if(e.value == val){
+						me.estateForm.partReporter1RgNum = me.regList[c].value
+					}
+				})
+			},
+			selChange3(val){
+				// alert(val)
+				console.log(this.reportNameList)
+				console.log(this.regList)
+				let me = this
+				this.reportNameList.forEach(function(e,c){
+					console.log(e)
+					if(e.value == val){
+						me.estateForm.partReporter2RgNum = me.regList[c].value
+					}
+				})
 			}
 		}
 	}

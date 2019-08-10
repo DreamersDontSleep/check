@@ -1,7 +1,7 @@
 {
   "name": "ts-admin",
   "version": "1.0.0",
-  "description": "江苏天圣审核管理系统",
+  "description": "江苏天圣报告审批系统",
   "main": "index.js",
   "license": "ISC",
   "keywords": [],

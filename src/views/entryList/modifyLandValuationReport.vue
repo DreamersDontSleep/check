@@ -125,8 +125,8 @@
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.firstReporter" disabled/>
 		        <!-- <el-input v-else v-model="estateForm.firstReporter"/> -->
-						<el-select v-else v-model="estateForm.firstReporter" placeholder="请选择">
-							<el-option v-for="(item,index) in firstReporterList" :key="item.value" :label="item.label" :value="item.value">
+						<el-select v-else v-model="estateForm.firstReporter" placeholder="请选择" @change="selChange1(estateForm.firstReporter)">
+							<el-option v-for="(item,index) in reportNameList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 		      </template>
@@ -141,18 +141,8 @@
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.partReporter1" disabled/>
 		        <!-- <el-input v-else v-model="estateForm.partReporter1"/> -->
-						<el-select v-else v-model="estateForm.partReporter1" placeholder="请选择">
-							<el-option v-for="(item,index) in partReporter1List" :key="item.value" :label="item.label" :value="item.value">
-							</el-option>
-						</el-select>
-		      </template>
-		    </el-form-item>
-		    <el-form-item label="参与报告人2:" style="width: 40%;">
-		      <template>
-		        <el-input v-if="lookOrEdit" v-model="estateForm.partReporter2" disabled/>
-		        <!-- <el-input v-else v-model="estateForm.partReporter2"/> -->
-						<el-select v-else v-model="estateForm.partReporter2" placeholder="请选择">
-							<el-option v-for="(item,index) in partReporter2List" :key="item.value" :label="item.label" :value="item.value">
+						<el-select v-else v-model="estateForm.partReporter1" placeholder="请选择" @change="selChange2(estateForm.partReporter1)">
+							<el-option v-for="(item,index) in reportNameList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
 		      </template>
@@ -163,6 +153,16 @@
 		        <el-input v-else v-model="estateForm.partReporter1RgNum"/>
 		      </template>
 		    </el-form-item>
+			<el-form-item label="参与报告人2:" style="width: 40%;">
+			  <template>
+			    <el-input v-if="lookOrEdit" v-model="estateForm.partReporter2" disabled/>
+			    <!-- <el-input v-else v-model="estateForm.partReporter2"/> -->
+						<el-select v-else v-model="estateForm.partReporter2" placeholder="请选择" @change="selChange3(estateForm.partReporter2)">
+							<el-option v-for="(item,index) in reportNameList" :key="item.value" :label="item.label" :value="item.value">
+							</el-option>
+						</el-select>
+			  </template>
+			</el-form-item>
 		    <el-form-item label="参与报告人2注册号:" style="width: 40%;">
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.partReporter2RgNum" disabled/>
@@ -191,6 +191,28 @@
 		        <el-input v-else v-model="estateForm.serviceCharge"/>
 		      </template>
 		    </el-form-item>
+			<el-form-item label="项目负责人:" style="width: 40%;" prop="pl">
+				<template>
+					<el-input v-if="lookOrEdit"  v-model="estateForm.pl" disabled></el-input>
+					<el-input v-else v-model="estateForm.pl"></el-input>
+				</template>
+			</el-form-item>
+			<el-form-item label="委托人地址:" style="width: 40%;" prop="clientAddr">
+				<template>
+					<el-input v-if="lookOrEdit"  v-model="estateForm.clientAddr" disabled></el-input>
+					<el-input v-else v-model="estateForm.clientAddr"></el-input>
+
+				</template>
+			</el-form-item>
+			<el-form-item label="季度:" style="width: 40%;" prop="quarter">
+				<template>
+					<el-input v-if="lookOrEdit"  v-model="estateForm.quarter" disabled></el-input>
+					<el-select v-else v-model="estateForm.quarter" placeholder="请选择">
+						<el-option v-for="(item,index) in quarterList" :key="item.value" :label="item.label" :value="item.value">
+						</el-option>
+					</el-select>
+				</template>
+			</el-form-item>
 		    <el-form-item label="审核员:" style="width: 40%;">
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.checker" disabled/>
@@ -259,7 +281,8 @@
 </template>
 
 <script>
-		import { postUpdateRpt } from '@/api/entry'
+		import { postUpdateRpt,
+		getDictionary } from '@/api/entry'
 	export default {
 		data () {
 			const checkPhone = (rule, value, callback) => {
@@ -290,47 +313,21 @@
 			return {
 				lookOrEdit: '',
 				estateForm: '',
-				assessAimList: [{
-					"label": "出让",
-					"value": "出让"
+				assessAimList: '',
+				quarterList: [{
+					"label": "第一季度",
+					"value": "第一季度"
 				}, {
-					"label": "转让",
-					"value": "转让"
+					"label": "第二季度",
+					"value": "第二季度"
 				}, {
-					"label": "抵押",
-					"value": "抵押"
+					"label": "第三季度",
+					"value": "第三季度"
 				}, {
-					"label": "征收",
-					"value": "征收"
-				}, {
-					"label": "司法",
-					"value": "司法"
-				}, {
-					"label": "咨询",
-					"value": "咨询"
-				}, {
-					"label": "其他",
-					"value": "其他"
+					"label": "第四季度",
+					"value": "第四季度"
 				}],
-				assessMethodList: [{
-					"label": "比较法",
-					"value": "比较法"
-				}, {
-					"label": "收益法",
-					"value": "收益法"
-				}, {
-					"label": "成本法",
-					"value": "成本法"
-				}, {
-					"label": "假设开发法",
-					"value": "假设开发法"
-				}, {
-					"label": "基准地价修正法",
-					"value": "基准地价修正法"
-				}, {
-					"label": "其他",
-					"value": "其他"
-				}],
+				assessMethodList: '',
 				cbranchOfficeList: [{
 					"label": "分公司1",
 					"value": "分公司1"
@@ -339,51 +336,9 @@
 					"value": "分公司2"
 				}
 				],
-				firstReporterList:[
-					{
-						"label": "name1",
-						"value": "name1"
-					}, {
-						"label": "name2",
-						"value": "name2"
-					}, {
-						"label": "name3",
-						"value": "name3"
-					}, {
-						"label": "name4",
-						"value": "name4"
-					}
-				],
-				partReporter1List:[
-					{
-						"label": "name1",
-						"value": "name1"
-					}, {
-						"label": "name2",
-						"value": "name2"
-					}, {
-						"label": "name3",
-						"value": "name3"
-					}, {
-						"label": "name4",
-						"value": "name4"
-					}
-				],
-				partReporter2List:[
-					{
-						"label": "name1",
-						"value": "name1"
-					}, {
-						"label": "name2",
-						"value": "name2"
-					}, {
-						"label": "name3",
-						"value": "name3"
-					}, {
-						"label": "name4",
-						"value": "name4"
-					}
-				],
+				firstReporterList:'',
+				partReporter1List:'',
+				partReporter2List:'',
 				checkerList:[
 					{
 						"label": "test",
@@ -399,7 +354,12 @@
 				  name: '',
 				  url: ''
 				}],
-				id: ''
+				id: '',
+				arr1:[],
+				nameList: '',
+				arr: [],
+				reportNameList: [],
+				regList: []
 			}
 		},
 		created() {
@@ -426,7 +386,34 @@
 				  return params
 				}
 		},
+		mounted() {
+			this.getTreeData()
+		},
 		methods:{
+			getTreeData(){
+				getDictionary().then( (res) => {
+					console.log(res.data.tdbg2019[0].tdgjff);
+					let me = this
+					this.assessMethodList= res.data.tdbg2019[0].tdgjff.reverse()
+					this.assessAimList = res.data.tdbg2019[1].tdgjmd.reverse()
+					this.nameList = res.data.zcbg
+					this.nameList.forEach(function(e,c){
+						console.log(me.arr)
+						for(let key in e){
+							console.log(e[key])
+							me.arr.push(e[key])
+						}
+					})
+					console.log(this.arr)
+					this.arr.forEach(function(e,c){
+						console.log(e)
+						me.reportNameList.push(e[1])
+						// console.log(me.reportNameList)
+						me.regList.push(e[0])
+					})
+					console.log(this.reportNameList)
+				})	
+			},
 			submitForm(estateForm) {
 			  this.$refs.estateForm.validate((valid) => {
 				  if (valid) {
@@ -485,7 +472,43 @@
 			},
 			previewPdf(){
 				window.open(this.pdfUrl,'_blank')
-			}
+			},
+			selChange1(val){
+				// alert(val)
+				console.log(this.reportNameList)
+				console.log(this.regList)
+				let me = this
+				this.reportNameList.forEach(function(e,c){
+					console.log(e)
+					if(e.value == val){
+						me.estateForm.firstReporterRgNum = me.regList[c].value
+					}
+				})
+			},
+			selChange2(val){
+				// alert(val)
+				console.log(this.reportNameList)
+				console.log(this.regList)
+				let me = this
+				this.reportNameList.forEach(function(e,c){
+					console.log(e)
+					if(e.value == val){
+						me.estateForm.partReporter1RgNum = me.regList[c].value
+					}
+				})
+			},
+			selChange3(val){
+				// alert(val)
+				console.log(this.reportNameList)
+				console.log(this.regList)
+				let me = this
+				this.reportNameList.forEach(function(e,c){
+					console.log(e)
+					if(e.value == val){
+						me.estateForm.partReporter2RgNum = me.regList[c].value
+					}
+				})
+			},
 		}
 	}
 </script>

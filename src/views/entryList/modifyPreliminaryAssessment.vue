@@ -10,11 +10,11 @@
 		    <el-form-item label="分公司:" style="width: 80%;">
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.branchOffice" disabled/>
-		        <!-- <el-input v-else v-model="estateForm.branchOffice"/> -->
-						<el-select v-else v-model="estateForm.branchOffice" placeholder="请选择" style="width: 331px;">
+		        <el-input v-else v-model="estateForm.branchOffice" disabled/>
+				<!-- 		<el-select v-else v-model="estateForm.branchOffice" placeholder="请选择" style="width: 331px;">
 							<el-option v-for="(item,index) in cbranchOfficeList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
-						</el-select>
+						</el-select> -->
 		      </template>
 		    </el-form-item>
 		    <el-form-item label="审核员:" style="width: 80%;">
