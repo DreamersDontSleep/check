@@ -52,7 +52,7 @@
 					  :file-list="fileList">
 					  <div prop="fileCheck" v-show="false">{{fileCheck}}</div>
 					  <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-					  <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
+					  <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx.rar</div>
 					</el-upload>
 				</el-form-item>
 				<el-form-item style="display: block;">

@@ -186,7 +186,7 @@
 				</el-form-item>
 				<el-form-item label="文件上传" class="fl">
 					<el-upload class="upload-demo" ref="upload" name="file" :action="UploadUrl ()" :data="uploadData" :on-preview="handlePreview"
-					 accept=".doc,.docx,.rar" :on-remove="handleRemove"
+					 accept=".doc,.docx" :on-remove="handleRemove"
 					 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange" multiple :limit="2" :on-exceed="handleExceed"
 					 :file-list="fileList">
 						<div prop="fileCheck" v-show="false">{{fileCheck}}</div>

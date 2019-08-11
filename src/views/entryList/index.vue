@@ -6,9 +6,9 @@
           <el-select v-model="editForm.branchName" style="width: 250px;" placeholder="请选择">
             <el-option
               v-for="(item,index) in companySel"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
+              :key="item.name"
+              :label="item.name"
+              :value="item.name"/>
           </el-select>
         </template>
       </el-form-item>
@@ -179,7 +179,7 @@
 </template>
 
 <script>
-import { getEntryList, deleteReport, postCheckId, getReportData } from '@/api/entry'
+import { getEntryList, deleteReport, postCheckId, getReportData, getDictionary } from '@/api/entry'
 import { mapGetters } from 'vuex'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import permission from '@/directive/permission/index.js' // 权限判断指令
@@ -239,19 +239,7 @@ export default {
         'label': '预评估',
         'value': '预评估'
       }],
-      companySel: [{
-        'label': '全部',
-        'value': '全部'
-      },{
-        'label': '南京',
-        'value': '南京'
-      }, {
-        'label': '如东',
-        'value': '如东'
-      }, {
-        'label': '青岛',
-        'value': '青岛'
-      }],
+      companySel: '',
       totalPriceEvaluation: [],
       assessAimList: [{
         'label': '出让',
@@ -317,6 +305,27 @@ export default {
         this.totalPriceEvaluation = res.data.reverse()
         console.log(res)
       })
+		getDictionary().then((res) => {
+			let dataList = res
+			let depData = dataList.data.fgs
+			console.log("数据树", dataList)
+			let depArr = [];
+			for(let i = 0; i < depData.length; i++){
+				let obj = {id: '',name: ''};
+				console.log(depData[0])
+				// depData[i].forEach(function(e,c){
+					for(let key in depData[i]){
+						// depArr.push(e[key])
+						obj.id = depData[i][key][0].value;
+						obj.name = depData[i][key][1].value;
+						depArr.push(obj);
+					}
+				// })
+			}
+			console.log("城市数据",depArr)
+			depArr.unshift({id: '',name: "全部"})
+			this.companySel = depArr
+		})
     },
     searchTable(editForm) {
       const para = {
