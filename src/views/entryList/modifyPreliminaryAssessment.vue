@@ -11,10 +11,6 @@
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.branchOffice" disabled/>
 		        <el-input v-else v-model="estateForm.branchOffice" disabled/>
-				<!-- 		<el-select v-else v-model="estateForm.branchOffice" placeholder="请选择" style="width: 331px;">
-							<el-option v-for="(item,index) in cbranchOfficeList" :key="item.value" :label="item.label" :value="item.value">
-							</el-option>
-						</el-select> -->
 		      </template>
 		    </el-form-item>
 		    <el-form-item label="审核员:" style="width: 80%;">
@@ -52,27 +48,42 @@
 		        <!-- <el-button slot="trigger" size="small" type="primary">选择文件</el-button> -->
 		        <!-- <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div> -->
 		      </el-upload>
-					<el-upload
-					  ref="upload"
-					  :action="UploadUrl ()"
-					  :on-preview="handlePreview"
-					  :on-remove="handleRemove"
-					  :before-remove="beforeRemove"
-					  :on-change="handleChange"
-						:on-success="handleSuccess"
-					  class="upload-demo"
-					  :limit="1"
-					  name="file"
-					  :on-exceed="handleExceed"
-					  :file-list="fileList"
-					  accept=".doc,.docx"
-					  multiple v-else>
-					  <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-					  <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
-					</el-upload>
-					<el-button @click="downloadWord()">下载word文档</el-button>
-					<el-button @click="previewPdf()">预览pdf文档</el-button>
+				<el-upload
+				  ref="upload"
+				  :action="UploadUrl ()"
+				  :on-preview="handlePreview"
+				  :on-remove="handleRemove"
+				  :before-remove="beforeRemove"
+				  :on-change="handleChange"
+					:on-success="handleSuccess"
+				  class="upload-demo"
+				  :limit="1"
+				  name="file"
+				  :on-exceed="handleExceed"
+				  :file-list="fileList"
+				  accept=".doc,.docx"
+				  multiple v-else>
+				  <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
+				  <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
+				</el-upload>
+				<el-button @click="downloadWord()">下载word文档</el-button>
+				<el-button @click="previewPdf()">预览pdf文档</el-button>
 		    </el-form-item>
+			<el-form-item label="文件上传(压缩文件)" class="fl">
+				<el-upload ref="upload" :action="UploadUrl ()" :on-preview="handlePreview" :on-remove="handleRemove"
+				 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange2" class="upload-demo" :limit="1" name="file"
+				 :on-exceed="handleExceed" :file-list="fileList2" accept=".doc,.docx" multiple v-if="lookOrEdit">
+					<!-- <el-button slot="trigger" size="small" type="primary">选择文件</el-button> -->
+					<!-- <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div> -->
+				</el-upload>
+				<el-upload ref="upload" :action="UploadUrl ()" :on-preview="handlePreview" :on-remove="handleRemove"
+				 :before-remove="beforeRemove" :on-change="handleChange2" :on-success="handleSuccess2" class="upload-demo" :limit="1"
+				 name="file" :on-exceed="handleExceed" :file-list="fileList2" accept=".rar,.zip" multiple v-else>
+					<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
+					<div slot="tip" class="el-upload__tip">支持扩展名：.rar,.zip</div>
+				</el-upload>
+				<el-button @click="downloadZip()" v-show="zipShow">下载压缩文档</el-button>
+			</el-form-item>
 		    <el-form-item style="display: block;">
 		      <el-button v-show="!lookOrEdit" @click="submitForm(estateForm)">提交</el-button>
 		      <router-link :to="{ path: '/entryList/index'}">
@@ -101,6 +112,7 @@
 				],
 				wordUrl: '',
 				pdfUrl: '',
+				upFileUrl: '',
 				checkerList:[
 					{
 						"label": "test",
@@ -114,7 +126,12 @@
 				  name: '',
 				  url: ''
 				}],
-				id: ''
+				fileList2: [{
+					name: '',
+					url: ''
+				}],
+				id: '',
+				zipShow: true
 			}
 		},
 		created() {
@@ -125,12 +142,22 @@
 			this.id = content.id
 			this.wordUrl = this.estateForm.wordUri
 			this.pdfUrl = this.estateForm.pdfUri
+			this.upFileUrl = this.estateForm.upFileURI
 		  const fileUrl = this.estateForm.wordUri
 		  const fileIndex = fileUrl.lastIndexOf('\/')
 		  const fileName = fileUrl.substring(fileIndex + 1, fileUrl.length)
 		  console.log(fileName)
 		  this.fileList[0].name = fileName
 		  this.fileList[0].url = fileUrl
+		  if(this.upFileURI != ""){
+		  	const zipUrl = this.estateForm.upFileURI
+		  	const zipIndex = zipUrl.lastIndexOf('\/')
+		  	const zipName = zipUrl.substring(fileIndex + 1, fileUrl.length)
+		  	this.fileList2[0].name = zipName
+		  	this.fileList2[0].url = zipUrl
+		  }else{
+		  	this.zipShow = false
+		  }
 		},
 		methods:{
 			submitForm(estateForm) {
@@ -161,23 +188,37 @@
 				console.log(response);
 				if(response.code == 200){
 					console.log(this.estateForm)
-					this.estateForm.pdfUri = response.data.pdfPath
-					this.estateForm.wordUri = response.data.wordPath
+					this.estateForm.pdfUri = response.data[0].pdfPath
+					this.estateForm.wordUri = response.data[0].wordPath
 				}else{
 					return ;
+				}
+			},
+			handleSuccess2(response, file, fileList) {
+				console.log(response);
+				if (response.code == 200) {
+					console.log(this.estateForm)
+					this.estateForm.upFileURI = response.data[0].wordPath
+				} else {
+					return;
 				}
 			},
 			handleRemove(file, fileList) {
 			  console.log(file, fileList)
 			},
 			UploadUrl() {
-				let upUrl = 'http://fcpgpre.jstspg.com/rpt/index/upLoad/'+ this.id
+				let upUrl = 'http://fcpgpre.jstspg.com/rpt/index/upLoad'
 			  return upUrl
 			},
 			handleChange(file, fileList) {
 			  // this.fileList = fileList
 			  // this.file = file
 			  console.log(file)
+			},
+			handleChange2(file, fileList) {
+				// this.fileList = fileList
+				// this.file = file
+				console.log('11',file)
 			},
 			handlePreview(file) {
 			  console.log(file)
@@ -193,6 +234,9 @@
 			},
 			previewPdf(){
 				window.open(this.pdfUrl,'_blank')
+			},
+			downloadZip(){
+				window.location.href = this.upFileUrl
 			}
 		}
 	}

@@ -134,7 +134,7 @@
 		    <el-form-item label="第一报告人注册号:" style="width: 40%;">
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.firstReporterRgNum" disabled/>
-		        <el-input v-else v-model="estateForm.firstReporterRgNum"/>
+		        <el-input v-else v-model="estateForm.firstReporterRgNum" disabled/>
 		      </template>
 		    </el-form-item>
 		    <el-form-item label="参与报告人1:" style="width: 40%;">
@@ -150,7 +150,7 @@
 		    <el-form-item label="参与报告人1注册号:" style="width: 40%;">
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.partReporter1RgNum" disabled/>
-		        <el-input v-else v-model="estateForm.partReporter1RgNum"/>
+		        <el-input v-else v-model="estateForm.partReporter1RgNum" disabled/>
 		      </template>
 		    </el-form-item>
 			<el-form-item label="参与报告人2:" style="width: 40%;">
@@ -166,7 +166,7 @@
 		    <el-form-item label="参与报告人2注册号:" style="width: 40%;">
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.partReporter2RgNum" disabled/>
-		        <el-input v-else v-model="estateForm.partReporter2RgNum"/>
+		        <el-input v-else v-model="estateForm.partReporter2RgNum" disabled/>
 		      </template>
 		    </el-form-item>
 		    <el-form-item label="业务来源:" style="width: 40%;">
@@ -178,11 +178,11 @@
 		    <el-form-item label="分公司:" style="width: 40%;">
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.branchOffice" disabled/>
-		        <!-- <el-input v-else v-model="estateForm.branchOffice"/> -->
-						<el-select v-else v-model="estateForm.branchOffice" placeholder="请选择">
+		        <el-input v-else v-model="estateForm.branchOffice" disabled/>
+						<!-- <el-select v-else v-model="estateForm.branchOffice" placeholder="请选择">
 							<el-option v-for="(item,index) in cbranchOfficeList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
-						</el-select>
+						</el-select> -->
 		      </template>
 		    </el-form-item>
 		    <el-form-item label="业务收费(万元):" style="width: 40%;">
@@ -257,6 +257,7 @@
 		        :on-change="handleChange"
 		      	:on-success="handleSuccess"
 		        class="upload-demo"
+				:auto-upload="true"
 		        :limit="1"
 		        name="file"
 		        :on-exceed="handleExceed"
@@ -269,6 +270,21 @@
 					<el-button @click="downloadWord()">下载word文档</el-button>
 					<el-button @click="previewPdf()">预览pdf文档</el-button>
 		    </el-form-item>
+			<el-form-item label="文件上传(压缩文件)" class="fl">
+				<el-upload ref="upload" :action="UploadUrl ()" :on-preview="handlePreview" :on-remove="handleRemove"
+				 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange2" class="upload-demo" :limit="1" name="file"
+				 :on-exceed="handleExceed" :file-list="fileList2" accept=".doc,.docx" multiple v-if="lookOrEdit">
+					<!-- <el-button slot="trigger" size="small" type="primary">选择文件</el-button> -->
+					<!-- <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div> -->
+				</el-upload>
+				<el-upload ref="upload" :action="UploadUrl ()" :on-preview="handlePreview" :on-remove="handleRemove"
+				 :before-remove="beforeRemove" :on-change="handleChange2" :on-success="handleSuccess2" class="upload-demo" :limit="1"
+				 name="file" :on-exceed="handleExceed" :file-list="fileList2" accept=".rar,.zip" multiple v-else>
+					<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
+					<div slot="tip" class="el-upload__tip">支持扩展名：.rar,.zip</div>
+				</el-upload>
+				<el-button @click="downloadZip()" v-show="zipShow">下载压缩文档</el-button>
+			</el-form-item>
 		    <el-form-item style="display: block;">
 		      <el-button v-show="!lookOrEdit" @click="submitForm(estateForm)">提交</el-button>
 		      <router-link :to="{ path: '/entryList/index'}">
@@ -350,16 +366,22 @@
 				],
 				wordUrl: '',
 				pdfUrl: '',
+				upFileUrl: '',
 				fileList: [{
 				  name: '',
 				  url: ''
+				}],
+				fileList2: [{
+					name: '',
+					url: ''
 				}],
 				id: '',
 				arr1:[],
 				nameList: '',
 				arr: [],
 				reportNameList: [],
-				regList: []
+				regList: [],
+				zipShow: true
 			}
 		},
 		created() {
@@ -370,12 +392,22 @@
 			this.id = content.id
 			this.wordUrl = this.estateForm.wordUri
 			this.pdfUrl = this.estateForm.pdfUri
+			this.upFileUrl = this.estateForm.upFileURI
 		  const fileUrl = this.estateForm.wordUri
 		  const fileIndex = fileUrl.lastIndexOf('\/')
 		  const fileName = fileUrl.substring(fileIndex + 1, fileUrl.length)
 		  console.log(fileName)
 		  this.fileList[0].name = fileName
 		  this.fileList[0].url = fileUrl
+		  if(this.upFileURI != ""){
+		  	const zipUrl = this.estateForm.upFileURI
+		  	const zipIndex = zipUrl.lastIndexOf('\/')
+		  	const zipName = zipUrl.substring(fileIndex + 1, fileUrl.length)
+		  	this.fileList2[0].name = zipName
+		  	this.fileList2[0].url = zipUrl
+		  }else{
+		  	this.zipShow = false
+		  }
 		},
 		computed: {
 			uploadData: function() {
@@ -392,26 +424,20 @@
 		methods:{
 			getTreeData(){
 				getDictionary().then( (res) => {
-					console.log(res.data.tdbg2019[0].tdgjff);
 					let me = this
 					this.assessMethodList= res.data.tdbg2019[0].tdgjff.reverse()
 					this.assessAimList = res.data.tdbg2019[1].tdgjmd.reverse()
-					this.nameList = res.data.zcbg
+					this.nameList = res.data.tdzcbg
 					this.nameList.forEach(function(e,c){
-						console.log(me.arr)
 						for(let key in e){
-							console.log(e[key])
 							me.arr.push(e[key])
 						}
 					})
-					console.log(this.arr)
 					this.arr.forEach(function(e,c){
-						console.log(e)
 						me.reportNameList.push(e[1])
 						// console.log(me.reportNameList)
 						me.regList.push(e[0])
 					})
-					console.log(this.reportNameList)
 				})	
 			},
 			submitForm(estateForm) {
@@ -442,21 +468,35 @@
 				console.log(response);
 				if(response.code == 200){
 					console.log(this.estateForm)
-					this.estateForm.pdfUri = response.data.pdfPath
-					this.estateForm.wordUri = response.data.wordPath
+					this.estateForm.pdfUri = response.data[0].pdfPath
+					this.estateForm.wordUri = response.data[0].wordPath
 				}else{
 					return ;
+				}
+			},
+			handleSuccess2(response, file, fileList) {
+				console.log(response);
+				if (response.code == 200) {
+					console.log(this.estateForm)
+					this.estateForm.upFileURI = response.data[0].wordPath
+				} else {
+					return;
 				}
 			},
 			handleRemove(file, fileList) {
 			  console.log(file, fileList)
 			},
 			UploadUrl() {
-			  let upUrl = 'http://fcpgpre.jstspg.com/rpt/index/upLoad/'+ this.id
+			  let upUrl = 'http://fcpgpre.jstspg.com/rpt/index/upLoad'
 			  return upUrl
 			},
 			handleChange(file, fileList) {
 			  console.log(file)
+			},
+			handleChange2(file, fileList) {
+				// this.fileList = fileList
+				// this.file = file
+				console.log('11',file)
 			},
 			handlePreview(file) {
 			  console.log(file)
@@ -472,6 +512,9 @@
 			},
 			previewPdf(){
 				window.open(this.pdfUrl,'_blank')
+			},
+			downloadZip(){
+				window.location.href = this.upFileUrl
 			},
 			selChange1(val){
 				// alert(val)

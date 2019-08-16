@@ -90,7 +90,7 @@
 						{{scope.row.applicationDate}}
 					  </template>
 					</el-table-column>
-					<el-table-column label="审核结果">
+					<el-table-column label="报告审批状态">
 					  <template slot-scope="scope">
 						  <div v-if="scope.row.state == 0">
 						  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">未提交</span>

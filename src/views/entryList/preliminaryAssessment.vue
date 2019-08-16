@@ -40,12 +40,12 @@
 					  ref="upload"
 					  name="file"
 					  :action="UploadUrl ()"
-					  :data="uploadData"
 					  :on-preview="handlePreview"
 					  accept=".doc,.docx"
 					  :on-remove="handleRemove"
 					  :before-remove="beforeRemove"
-					  :auto-upload="false"
+					  :on-success="handleSuccess"
+					  :auto-upload="true"
 					  :on-change="handleChange"
 					  :limit="1"
 					  :on-exceed="handleExceed"
@@ -55,8 +55,17 @@
 					  <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx.rar</div>
 					</el-upload>
 				</el-form-item>
+				<el-form-item label="文件上传(压缩文件)" class="fl">
+					<el-upload class="upload-demo" ref="upload2" name="file" :action="UploadUrl ()" :on-preview="handlePreview"
+					 accept=".rar,.zip" :on-remove="handleRemove" :before-remove="beforeRemove" :auto-upload="true" :on-success="handleSuccess2"
+					 :on-change="handleChange2" multiple :limit="1" :on-exceed="handleExceed" :file-list="fileList2">
+						<div prop="fileCheck" v-show="false">{{fileCheck}}</div>
+						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
+						<div slot="tip" class="el-upload__tip">支持扩展名：.rar,.zip</div>
+					</el-upload>
+				</el-form-item>
 				<el-form-item style="display: block;">
-					<el-button @click="submitForm()">提交</el-button>
+					<el-button @click="submitForm(estateForm)">提交</el-button>
 					<el-button @click="cancelForm(estateForm)">返回</el-button>
 					<el-button @click="restForm(estateForm)">重置</el-button>
 				</el-form-item>
@@ -66,7 +75,7 @@
 </template>
 
 <script>
-import { postReportData } from '@/api/entry'
+import { postReportData, postsaveRpt } from '@/api/entry'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -77,6 +86,9 @@ export default {
 				checker: '',
 				applicant: '',
 				login: '',
+				pdfUri: '',
+				wordUri: '',
+				upFileURI: '',
 				assessOrg: '江苏天圣房地产土地资产评估测绘有限公司'
 			},
 			checkForm:{
@@ -84,6 +96,7 @@ export default {
 			},
 			editFormVisible: false,
 			fileList: [],
+			fileList2: [],
 			assessAimList:[{
 					"label": "出让",
 					"value": "出让"
@@ -134,19 +147,12 @@ export default {
 	  }
   },
   computed: {
-	  ...mapGetters(['name','userInfo']),
-  	uploadData: function () {
-		this.estateForm.applicant = this.name;
-		this.estateForm.login = localStorage.getItem('userId')
-  		let parseData = JSON.stringify(this.estateForm);
-  	    let params = {
-  			data: parseData
-  		  }
-  		  return params
-  		}
+	  ...mapGetters(['name','userInfo'])
     },
 	mounted() {
 		this.estateForm.branchOffice = this.userInfo.department
+		this.estateForm.applicant = this.name;
+		this.estateForm.login = localStorage.getItem('userId')
 	},
 	methods:{
 		searchTable(editForm){
@@ -164,7 +170,7 @@ export default {
 			this.editFormVisible = true;
 		},
 		UploadUrl () {
-			return "http://fcpgpre.jstspg.com/rpt/index/saveRptOrFile"
+			return "http://fcpgpre.jstspg.com/rpt/index/upLoad"
 		},
 		submitUpload() {
 			
@@ -174,12 +180,18 @@ export default {
 			console.log(file);
 		},
 		handleChange(file, fileList) {
-		  this.fileList = fileList;
-		  this.file = file;
-		  this.fileCheck = fileList
-		  console.log(file)
+			this.fileList = fileList;
+			this.file = file;
+			this.fileCheck = fileList
+			// console.log(file)
 		},
-		submitForm(){
+		handleChange2(file, fileList) {
+			this.fileList2 = fileList;
+			this.file = file;
+			this.fileCheck = fileList
+			console.log(file)
+		},
+		submitForm(estateForm){
 			this.$refs.estateForm.validate((valid) => {
 			  if (valid) {
 					console.log(this.fileList)
@@ -192,8 +204,19 @@ export default {
 						this.$confirm('确认提交该记录吗?', '提示', {
 							type: 'warning'
 						}).then(() => {
-							this.$refs.upload.submit();
-							this.$router.push({path:'/entryList/index'})
+							let para = estateForm
+							 console.log(para)
+							 postsaveRpt(para).then ( (res) => {
+							 	if(res.code == 200){
+							 		console.log(res)
+							 		this.rptId = res.data
+							 		this.$message({
+							 			message:'提交成功!', 
+							 			type: 'success'
+							 		})
+							 	}
+							 })
+							// this.$router.push({path:'/entryList/index'})
 						}).catch(() => {
 							
 						});
@@ -210,6 +233,25 @@ export default {
 		restForm() {
 			this.$refs.estateForm.resetFields();
 			// this.$refs.upload.clearFiles();
+		},
+		handleSuccess(response, file, fileList) {
+			// console.log(response);
+			if (response.code == 200) {
+				console.log(this.estateForm)
+				this.estateForm.pdfUri = response.data[0].pdfPath
+				this.estateForm.wordUri = response.data[0].wordPath
+			} else {
+				return;
+			}
+		},
+		handleSuccess2(response, file, fileList) {
+			console.log(response);
+			if (response.code == 200) {
+				console.log(this.estateForm)
+				this.estateForm.upFileURI = response.data[0].wordPath
+			} else {
+				return;
+			}
 		},
 		handleRemove(file, fileList) {
 			console.log(file, fileList);

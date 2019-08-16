@@ -63,6 +63,7 @@
 				fileName: '',
 				saveUrl: '',
 				id: '',
+				reportType:'',
 				remark: '',
 				seal: '',
 				sealFormVisible: false,
@@ -77,6 +78,7 @@
 			console.log(content)
 			this.fileUrl = content.pdfUri
 			this.id = content.id;
+			this.reportType = content.reportType
 			let fileIndex = this.fileUrl.lastIndexOf('\/');
 			console.log(fileIndex);
 			this.fileName = this.fileUrl.substring(fileIndex + 1, this.fileUrl.length);
@@ -143,6 +145,8 @@
 			    // var fTransparency = prompt("请输入二维码透明度", "200");
 			    // var fZoom = prompt("请输入二维码旋转角度", "0");
 			    // alert(XSReaderSDK1.FX_SignPDF_AddGenerateCode(content, page, X, Y, hight, width, fTransparency, fZoom));
+				let codeUrl = "http://fcpgpre.jstspg.com/sh?a=" + Math.random() + "&id=" + this.id + "&reportType=" + this.reportType
+				console.log(codeUrl)
 				XSReaderSDK1.FX_SignPDF_AddGenerateCode("http://fcpgpre.jstspg.com/sh", "0", X,Y, "100", "100", "200", "0");
 			},
 			button5_click () {

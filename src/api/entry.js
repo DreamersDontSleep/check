@@ -47,7 +47,7 @@ export function deleteReport(id,reportType) {
 
 export function getCheckList() {
   return request({
-    url: '/rpt/index/getCheckList',
+    url: '/rpt/index/getCheckList?a=' + Math.random(),
     method: 'get',
     data: {}
   })
@@ -55,7 +55,7 @@ export function getCheckList() {
 
 export function transferToId(id,transferTo) {
   return request({
-    url: '/rpt/index/transferTo?id='+ id + '&transferTo=' + transferTo,
+    url: '/rpt/index/transferTo?id='+ id + '&transferTo=' + transferTo + '&a=' + Math.random(),
     method: 'get',
     data: {}
   })
@@ -71,7 +71,7 @@ export function postCheckId(id,state) {
 
 export function getReportData(id,reportType) {
   return request({
-    url: '/rpt/index/getReportsDetail?id='+ id + '&reportType=' + reportType,
+    url: '/rpt/index/getReportsDetail?id='+ id + '&reportType=' + reportType + '&a=' + Math.random(),
     method: 'get',
     data: {}
   })
@@ -80,6 +80,14 @@ export function getReportData(id,reportType) {
 export function postUpdateRpt(para) {
   return request({
     url: '/rpt/index/updateRpt',
+    method: 'post',
+    data: para
+  })
+}
+
+export function postsaveRpt(para) {
+  return request({
+    url: '/rpt/index/saveRpt',
     method: 'post',
     data: para
   })
@@ -99,5 +107,13 @@ export function getDictionary() {
     method: 'get',
     data: {},
     headers: { 'token': getToken() }
+  })
+}
+
+export function postStaticsList(para) {
+  return request({
+    url: '/rpt/index/getStaticsList',
+    method: 'post',
+    data: para
   })
 }

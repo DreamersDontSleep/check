@@ -31,23 +31,20 @@
 					<el-button @click="downloadWord()">下载word文档</el-button>
 					<el-button @click="previewPdf()">预览pdf文档</el-button>
 				</el-form-item>
+				<el-form-item label="文件上传(压缩文件)" class="fl" style="width: 80%;">
+					<el-upload ref="upload" action="http://fcpgpre.jstspg.com/rpt/index/upLoad" :on-preview="handlePreview" :on-remove="handleRemove"
+					 :before-remove="beforeRemove" :auto-upload="false" class="upload-demo" :limit="1" name="file"
+					 :on-exceed="handleExceed" :file-list="fileList2" accept=".doc,.docx" multiple>
+						<!-- <el-button slot="trigger" size="small" type="primary">选择文件</el-button> -->
+						<!-- <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div> -->
+					</el-upload>
+					<el-button @click="downloadZip()" v-show="zipShow">下载压缩文档</el-button>
+				</el-form-item>
 				<el-form-item label="审核:" style="display: block;">
 					<el-button type="success" @click="sealJump()">审核</el-button>
 					<!-- <el-button type="danger" @click="checkFail()">审核不通过</el-button>
 					<el-button @click="cancelForm(estateForm)">返回</el-button> -->
 				</el-form-item>
-				<!-- <el-form-item label="审核意见:" style="display: block;">
-					<el-input type="textarea" v-model="remark" style="width: 331px;"></el-input>
-				</el-form-item>
-				<el-form-item label="盖章:" style="display: block;">
-					<el-button type="primary" @click="sealJump()" v-permission="[305]">盖章</el-button>
-					<el-button type="success" @click="transferSeal()">转让盖章</el-button>
-				</el-form-item>
-				<el-form-item label="审核:" style="display: block;">
-					<el-button type="success" @click="checkSuccess()">审核通过</el-button>
-					<el-button type="danger" @click="checkFail()">审核不通过</el-button>
-					<el-button @click="cancelForm(estateForm)">返回</el-button>
-				</el-form-item> -->
 			</el-form>
 		</template>
 		<el-dialog :visible.sync="sealFormVisible" title="转让盖章">
@@ -96,6 +93,10 @@
 					name: '',
 					url:''
 				}],
+				fileList2: [{
+					name: '',
+					url: ''
+				}],
 				assessAimList: [{
 					"label": "出让",
 					"value": "出让"
@@ -124,6 +125,8 @@
 				}],
 				wordUrl: '',
 				pdfUrl: '',
+				upFileUrl: '',
+				zipShow: true,
 				valueTypeList: [{
 					"label": "出让",
 					"value": "出让"
@@ -155,12 +158,22 @@
 					this.estateForm = res.data;
 					this.wordUrl = this.estateForm.wordUri
 					this.pdfUrl = this.estateForm.pdfUri
+					this.upFileUrl = this.estateForm.upFileURI
 					let fileUrl = res.data.wordUri;
 					let fileIndex = fileUrl.lastIndexOf('\/');
 					let fileName = fileUrl.substring(fileIndex + 1, fileUrl.length);
 					console.log(fileName)
 					this.fileList[0].name = fileName;
 					this.fileList[0].url = fileUrl;
+					if(this.upFileURI != ""){
+						const zipUrl = this.estateForm.upFileURI
+						const zipIndex = zipUrl.lastIndexOf('\/')
+						const zipName = zipUrl.substring(fileIndex + 1, fileUrl.length)
+						this.fileList2[0].name = zipName
+						this.fileList2[0].url = zipUrl
+					}else{
+						this.zipShow = false
+					}
 				});
 			},
 			searchTable(editForm) {
@@ -324,6 +337,9 @@
 			},
 			previewPdf(){
 				window.open(this.pdfUrl,'_blank')
+			},
+			downloadZip(){
+				window.location.href = this.upFileUrl
 			}
 		}
 	}

@@ -12,12 +12,12 @@
 				</el-form-item>
 				<el-form-item label="项目名称:" style="width: 40%;" prop="projectName">
 					<template>
-						<el-input v-model="estateForm.projectName" ></el-input>
+						<el-input v-model="estateForm.projectName"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="估价报告编号:" style="width: 40%;" prop="assessReportNum">
 					<template>
-						<el-input v-model="estateForm.assessReportNum" ></el-input>
+						<el-input v-model="estateForm.assessReportNum"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="估价作业开始时间:" style="width: 40%;" prop="assessStartTime">
@@ -40,76 +40,60 @@
 				</el-form-item>
 				<el-form-item label="估价对象:" style="width: 40%;" prop="assessObject">
 					<template>
-						<el-input v-model="estateForm.assessObject" ></el-input>
+						<el-input v-model="estateForm.assessObject"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="估价目的:" style="width: 40%;" prop="assessAim">
 					<template>
-					  <el-select v-model="estateForm.assessAim" multiple placeholder="请选择">
-					    <el-option
-					      v-for="(item,index) in assess"
-					      :key="item.value"
-					      :label="item.label"
-					      :value="item.value"/>
-					  </el-select>
+						<el-select v-model="estateForm.assessAim" multiple placeholder="请选择">
+							<el-option v-for="(item,index) in assess" :key="item.value" :label="item.label" :value="item.value" />
+						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="估价方法:" style="width: 40%;" prop="assessMethod">
 					<template>
-					  <el-select v-model="estateForm.assessMethod"  placeholder="请选择">
-					    <el-option
-					      v-for="(item,index) in assessMethodList"
-					      :key="item.value"
-					      :label="item.label"
-					      :value="item.value"/>
-					  </el-select>
+						<el-select v-model="estateForm.assessMethod" placeholder="请选择">
+							<el-option v-for="(item,index) in assessMethodList" :key="item.value" :label="item.label" :value="item.value" />
+						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="价值类型:" style="width: 40%;" prop="valueType">
 					<template>
-					  <el-select v-model="estateForm.valueType" placeholder="请选择">
-					    <el-option
-					      v-for="(item,index) in valueTypeList"
-					      :key="item.value"
-					      :label="item.label"
-					      :value="item.value"/>
-					  </el-select>
+						<el-select v-model="estateForm.valueType" placeholder="请选择">
+							<el-option v-for="(item,index) in valueTypeList" :key="item.value" :label="item.label" :value="item.value" />
+						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="建筑面积(m2):" style="width: 40%;" prop="buildingArea">
 					<template>
-						<el-input v-model="estateForm.buildingArea" ></el-input>
+						<el-input v-model="estateForm.buildingArea"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="土地面积(m2):" style="width: 40%;" prop="floorArea">
 					<template>
-						<el-input v-model="estateForm.floorArea" ></el-input>
+						<el-input v-model="estateForm.floorArea"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="评估单价(万元):" style="width: 40%;" prop="assessUnitPrice">
 					<template>
-						<el-input v-model="estateForm.assessUnitPrice" ></el-input>
+						<el-input v-model="estateForm.assessUnitPrice"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="评估总价(万元):" style="width: 40%;" prop="assessTotalPrice">
 					<template>
-						<el-input v-model="estateForm.assessTotalPrice" ></el-input>
+						<el-input v-model="estateForm.assessTotalPrice"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="委托方:" style="width: 40%;" prop="client">
 					<template>
-						<el-input v-model="estateForm.client" ></el-input>
+						<el-input v-model="estateForm.client"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="第一报告人:" style="width: 40%;" prop="firstReporter">
 					<template>
-					  <el-select v-model="estateForm.firstReporter" placeholder="请选择" @change="selChange1(estateForm.firstReporter)">
-					    <el-option
-					      v-for="(item,index) in reportNameList"
-					      :key="item.value"
-					      :label="item.value"
-					      :value="item.value"/>
-					  </el-select>
+						<el-select v-model="estateForm.firstReporter" placeholder="请选择" @change="selChange1(estateForm.firstReporter)">
+							<el-option v-for="(item,index) in reportNameList" :key="item.value" :label="item.value" :value="item.value" />
+						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="第一报告人注册号:" style="width: 40%;" prop="firstReporterRgNum">
@@ -119,39 +103,31 @@
 				</el-form-item>
 				<el-form-item label="参与报告人1:" style="width: 40%;" prop="partReporter1">
 					<template>
-					  <el-select v-model="estateForm.partReporter1" placeholder="请选择" @change="selChange2(estateForm.partReporter1)">
-					    <el-option
-					      v-for="(item,index) in reportNameList"
-					      :key="item.value"
-					      :label="item.value"
-					      :value="item.value"/>
-					  </el-select>
+						<el-select v-model="estateForm.partReporter1" placeholder="请选择" @change="selChange2(estateForm.partReporter1)">
+							<el-option v-for="(item,index) in reportNameList" :key="item.value" :label="item.value" :value="item.value" />
+						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="参与报告人1注册号:" style="width: 40%;" prop="partReporter1RgNum">
 					<template>
-						<el-input v-model="estateForm.partReporter1RgNum" disabled ></el-input>
+						<el-input v-model="estateForm.partReporter1RgNum" disabled></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="参与报告人2:" style="width: 40%;" prop="partReporter2">
 					<template>
-					  <el-select v-model="estateForm.partReporter2" placeholder="请选择" @change="selChange3(estateForm.partReporter2)">
-					    <el-option
-					      v-for="(item,index) in reportNameList"
-					      :key="item.value"
-					      :label="item.value"
-					      :value="item.value"/>
-					  </el-select>
+						<el-select v-model="estateForm.partReporter2" placeholder="请选择" @change="selChange3(estateForm.partReporter2)">
+							<el-option v-for="(item,index) in reportNameList" :key="item.value" :label="item.value" :value="item.value" />
+						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="参与报告人2注册号:" style="width: 40%;" prop="partReporter2RgNum">
 					<template>
-						<el-input v-model="estateForm.partReporter2RgNum" disabled ></el-input>
+						<el-input v-model="estateForm.partReporter2RgNum" disabled></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="业务来源:" style="width: 40%;" prop="serviceSource">
 					<template>
-						<el-input v-model="estateForm.serviceSource" ></el-input>
+						<el-input v-model="estateForm.serviceSource"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="分公司:" style="width: 40%;" prop="branchOffice">
@@ -165,18 +141,14 @@
 				</el-form-item>
 				<el-form-item label="业务收费(万元):" style="width: 40%;" prop="serviceCharge">
 					<template>
-						<el-input v-model="estateForm.serviceCharge" ></el-input>
+						<el-input v-model="estateForm.serviceCharge"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="审核员:" style="width: 40%;" prop="checker">
 					<template>
-					  <el-select v-model="estateForm.checker" placeholder="请选择">
-					    <el-option
-					      v-for="(item,index) in checkerList"
-					      :key="item.value"
-					      :label="item.label"
-					      :value="item.value"/>
-					  </el-select>
+						<el-select v-model="estateForm.checker" placeholder="请选择">
+							<el-option v-for="(item,index) in checkerList" :key="item.value" :label="item.label" :value="item.value" />
+						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="评估机构:" style="width: 80%;" prop="assessOrg">
@@ -185,20 +157,28 @@
 					</template>
 				</el-form-item>
 				<el-form-item label="文件上传" class="fl">
-					<el-upload class="upload-demo" ref="upload" name="file" :action="UploadUrl ()" :data="uploadData" :on-preview="handlePreview"
-					 accept=".doc,.docx" :on-remove="handleRemove"
-					 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange" multiple :limit="2" :on-exceed="handleExceed"
-					 :file-list="fileList">
+					<el-upload class="upload-demo" ref="upload" name="file" :action="UploadUrl ()" :on-preview="handlePreview"
+					 accept=".doc,.docx" :on-remove="handleRemove" :before-remove="beforeRemove" :auto-upload="true" :on-success="handleSuccess"
+					 :on-change="handleChange" multiple :limit="1" :on-exceed="handleExceed" :file-list="fileList">
 						<div prop="fileCheck" v-show="false">{{fileCheck}}</div>
 						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
 						<div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
 					</el-upload>
 				</el-form-item>
+				<el-form-item label="文件上传(压缩文件)" class="fl">
+					<el-upload class="upload-demo" ref="upload2" name="file" :action="UploadUrl ()" :on-preview="handlePreview"
+					 accept=".rar,.zip" :on-remove="handleRemove" :before-remove="beforeRemove" :auto-upload="true" :on-success="handleSuccess2"
+					 :on-change="handleChange2" multiple :limit="1" :on-exceed="handleExceed" :file-list="fileList2">
+						<div prop="fileCheck" v-show="false">{{fileCheck}}</div>
+						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
+						<div slot="tip" class="el-upload__tip">支持扩展名：.rar,.zip</div>
+					</el-upload>
+				</el-form-item>
 				<el-form-item style="display: block;">
-					<el-button @click="submitForm()">提交</el-button>
+					<el-button @click="submitForm(estateForm)">提交</el-button>
 					<el-button @click="cancelForm(estateForm)">返回</el-button>
 					<el-button @click="restForm(estateForm)">重置</el-button>
-					
+
 				</el-form-item>
 			</el-form>
 		</template>
@@ -210,9 +190,12 @@
 	import {
 		postReportDatas,
 		uploadFileRequest,
-		getDictionary
+		getDictionary,
+		postsaveRpt
 	} from '@/api/entry'
-	import { mapGetters } from 'vuex'
+	import {
+		mapGetters
+	} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -242,39 +225,40 @@
 					branchOffice: '',
 					serviceCharge: '',
 					checker: '',
-					applicant:'',
+					applicant: '',
 					login: '',
+					pdfUri: '',
+					wordUri: '',
+					upFileURI: '',
 					assessOrg: '江苏天圣房地产土地资产评估测绘有限公司'
 				},
 				formData: '',
+				uploadStatus: false,
 				uploadFormData: '',
 				editFormVisible: false,
 				fileList: [],
+				fileList2: [],
 				assess: '',
-				cbranchOfficeList: [
-					{
+				cbranchOfficeList: [{
 					"label": "分公司1",
 					"value": "分公司1"
-					}, {
-						"label": "分公司2",
-						"value": "分公司2"
-					}
-				],
-				fileCheck:'',
+				}, {
+					"label": "分公司2",
+					"value": "分公司2"
+				}],
+				fileCheck: '',
 				assessMethodList: '',
 				valueTypeList: '',
-				firstReporterList:'',
-				partReporter1List:'',
-				partReporter2List:'',
-				checkerList:[
-					{
-						"label": "test",
-						"value": "test"
-					}, {
-						"label": "check",
-						"value": "check"
-					}
-				],
+				firstReporterList: '',
+				partReporter1List: '',
+				partReporter2List: '',
+				checkerList: [{
+					"label": "test",
+					"value": "test"
+				}, {
+					"label": "check",
+					"value": "check"
+				}],
 				fileName: '',
 				projectName: '',
 				file: '',
@@ -429,52 +413,50 @@
 						trigger: 'blur',
 						message: '不能为空'
 					}],
-					fileCheck: [ {required: true,trigger: 'blur',message: '不能为空'}]
+					fileCheck: [{
+						required: true,
+						trigger: 'blur',
+						message: '不能为空'
+					}]
 				},
-				arr1:[],
+				arr1: [],
 				nameList: '',
 				arr: [],
 				reportNameList: [],
-				regList: []
+				regList: [],
+				rptId: ''
 			}
 		},
 		computed: {
-			...mapGetters(['name','userInfo']),
-			uploadData: function() {
-				this.estateForm.applicant = this.name;
-				this.estateForm.login = localStorage.getItem('userId')
-				let parseData = JSON.stringify(this.estateForm);
-				let params = {
-					data: parseData
-				}
-				return params
-			}
+			...mapGetters(['name', 'userInfo'])
 		},
 		mounted() {
 			this.getTreeData()
+			this.estateForm.applicant = this.name
+			this.estateForm.login = localStorage.getItem('userId')
 		},
 
 		methods: {
-			getTreeData(){
+			getTreeData() {
 				this.estateForm.branchOffice = this.userInfo.department
-				getDictionary().then( (res) => {
+				getDictionary().then((res) => {
 					console.log(res);
 					let me = this
 					this.assess = res.data.fdc2019[2].gjmd.reverse()
 					this.assessMethodList = res.data.fdc2019[1].gjff.reverse()
 					this.valueTypeList = res.data.fdc2019[0].jzlx.reverse()
 					this.nameList = res.data.fdczcbg
-					this.nameList.forEach(function(e,c){
-						for(let key in e){
+					this.nameList.forEach(function(e, c) {
+						for (let key in e) {
 							me.arr.push(e[key])
 						}
 					})
-					this.arr.forEach(function(e,c){
+					this.arr.forEach(function(e, c) {
 						me.reportNameList.push(e[1])
 						// console.log(me.reportNameList)
 						me.regList.push(e[0])
 					})
-				})	
+				})
 			},
 			searchTable(editForm) {
 				this.$refs.editForm.validate((valid) => {
@@ -490,10 +472,10 @@
 				this.editFormVisible = true;
 			},
 			UploadUrl() {
-				return "http://fcpgpre.jstspg.com/rpt/index/saveRptOrFile"
+				return "http://fcpgpre.jstspg.com/rpt/index/upLoad"
 			},
 			submitUpload() {
-
+				this.UploadUrl()
 				this.$refs.upload.submit();
 			},
 			uploadFile(file) {
@@ -505,32 +487,54 @@
 				this.fileCheck = fileList
 				console.log(file)
 			},
-			submitForm() {
-				// this.uploadData = this.estateForm
+			handleChange2(file, fileList) {
+				this.fileList2 = fileList;
+				this.file = file;
+				this.fileCheck = fileList
+				console.log(file)
+			},
+			submitForm(estateForm) {
 				this.$refs.estateForm.validate((valid) => {
-				  if (valid) {
-						if(this.fileCheck == ""){
-												 this.$message({
-																message:'请上传文件!', 
-																type: 'warning'
-															})
-						}else{
+					if (valid) {
+						if (this.fileCheck == "") {
+							this.$message({
+								message: '请上传文件!',
+								type: 'warning'
+							})
+						} else {
 							this.$confirm('确认提交该记录吗?', '提示', {
 								type: 'warning'
 							}).then(() => {
-								this.$refs.upload.submit();
-								this.$router.push({path:'/entryList/index'})
+								// this.$refs.upload.submit();
+								// this.$router.push({
+								// 	path: '/entryList/index'
+								// })
+								// console.log(estateForm)
+								let para = estateForm
+								console.log(para)
+								postsaveRpt(para).then ( (res) => {
+									if(res.code == 200){
+										console.log(res)
+										this.rptId = res.data
+										this.$message({
+											message:'提交成功!', 
+											type: 'success'
+										})
+									}
+								})
 							}).catch(() => {
-								
+
 							});
 						}
-				  } else {
+					} else {
 						console.log('error submit!!');
-				  }
+					}
 				});
 			},
 			cancelForm(estateForm) {
-				this.$router.push({path:'/entryList/index'})
+				this.$router.push({
+					path: '/entryList/index'
+				})
 			},
 			restForm() {
 				this.$refs.estateForm.resetFields();
@@ -542,44 +546,63 @@
 			handlePreview(file) {
 				console.log(file);
 			},
+			handleSuccess(response, file, fileList) {
+				console.log(response);
+				if (response.code == 200) {
+					console.log(this.estateForm)
+					this.estateForm.pdfUri = response.data[0].pdfPath
+					this.estateForm.wordUri = response.data[0].wordPath
+				} else {
+					return;
+				}
+			},
+			handleSuccess2(response, file, fileList) {
+				console.log(response);
+				if (response.code == 200) {
+					console.log(this.estateForm)
+					this.estateForm.upFileURI = response.data[0].wordPath
+				} else {
+					return;
+				}
+			},
 			handleExceed(files, fileList) {
 				this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
 			},
 			beforeRemove(file, fileList) {
 				return this.$confirm(`确定移除 ${ file.name }？`);
 			},
-			selChange1(val){
+			selChange1(val) {
 				// alert(val)
 				console.log(this.reportNameList)
 				console.log(this.regList)
 				let me = this
-				this.reportNameList.forEach(function(e,c){
+				this.reportNameList.forEach(function(e, c) {
 					console.log(e)
-					if(e.value == val){
+					if (e.value == val) {
 						me.estateForm.firstReporterRgNum = me.regList[c].value
 					}
 				})
 			},
-			selChange2(val){
+			selChange2(val) {
 				// alert(val)
 				console.log(this.reportNameList)
 				console.log(this.regList)
 				let me = this
-				this.reportNameList.forEach(function(e,c){
+				this.reportNameList.forEach(function(e, c) {
 					console.log(e)
-					if(e.value == val){
+					if (e.value == val) {
 						me.estateForm.partReporter1RgNum = me.regList[c].value
 					}
 				})
 			},
-			selChange3(val){
+			selChange3(val) {
 				// alert(val)
 				console.log(this.reportNameList)
 				console.log(this.regList)
 				let me = this
-				this.reportNameList.forEach(function(e,c){
+				this.reportNameList.forEach(function(e, c) {
 					console.log(e)
-					if(e.value == val){
+					if (e.value == val) {
 						me.estateForm.partReporter2RgNum = me.regList[c].value
 					}
 				})
@@ -589,10 +612,11 @@
 </script>
 
 <style scoped>
-	.el-date-editor.el-input{
+	.el-date-editor.el-input {
 		width: 188px;
 	}
-	.el-select{
+
+	.el-select {
 		width: 188px !important;
 	}
 </style>

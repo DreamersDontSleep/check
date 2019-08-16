@@ -193,5 +193,18 @@ export const asyncRouterMap = [
       }
     ]
   },
+	{
+	  path: '/statistical',
+	  component: Layout,
+	  meta: { title: '报告统计', permissions: [305] },
+	  children: [
+	    {
+	      path: 'statistical/index',
+	      name: 'Statistical',
+	      component: () => import('@/views/statistical/index'),
+	      meta: { title: '报告统计', permissions: [305] }
+	    }
+	  ]
+	},
   { path: '*', redirect: '/404', hidden: true }
 ]

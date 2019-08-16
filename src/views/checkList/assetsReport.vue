@@ -18,15 +18,14 @@
 						<el-input v-model="estateForm.assessReportNum" disabled></el-input>
 					</template>
 				</el-form-item>
-				<el-form-item label="价值时点:" style="width: 40%;">
+				<el-form-item label="委托方:" style="width: 40%;" prop="client">
 					<template>
-						<el-input v-model="estateForm.valueTime" disabled></el-input>
-						<!-- <el-date-picker v-model="estateForm.valueTime" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd"></el-date-picker> -->
+						<el-input v-model="estateForm.client" disabled></el-input>
 					</template>
 				</el-form-item>
-				<el-form-item label="估价对象:" style="width: 40%;">
+				<el-form-item label="被评估单位名称:" style="width: 40%;" prop="assessedUnitName">
 					<template>
-						<el-input v-model="estateForm.assessObject" disabled></el-input>
+						<el-input v-model="estateForm.assessedUnitName" disabled></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="是否国有资产评估业务:" style="width: 40%;">
@@ -105,13 +104,22 @@
 						<!-- <el-radio></el-radio>无账面价值 -->
 					</template>
 				</el-form-item>
-				<el-form-item label="文件上传" class="fl">
+				<el-form-item label="文件上传" class="fl" style="width: 80%;">
 					<el-upload class="upload-demo" action="http://fcpgpre.jstspg.com/rpt/index/upLoad" :on-preview="handlePreview"
 					 accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF,.doc,.docx" :on-remove="handleRemove"
 					 :before-remove="beforeRemove" multiple :limit="3" :on-exceed="handleExceed" :file-list="fileList">
 					</el-upload>
 					<el-button @click="downloadWord()">下载word文档</el-button>
 					<el-button @click="previewPdf()">预览pdf文档</el-button>
+				</el-form-item>
+				<el-form-item label="文件上传(压缩文件)" class="fl" style="width: 80%;">
+					<el-upload ref="upload" action="http://fcpgpre.jstspg.com/rpt/index/upLoad" :on-preview="handlePreview" :on-remove="handleRemove"
+					 :before-remove="beforeRemove" :auto-upload="false" class="upload-demo" :limit="1" name="file"
+					 :on-exceed="handleExceed" :file-list="fileList2" accept=".doc,.docx" multiple>
+						<!-- <el-button slot="trigger" size="small" type="primary">选择文件</el-button> -->
+						<!-- <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div> -->
+					</el-upload>
+					<el-button @click="downloadZip()" v-show="zipShow">下载压缩文档</el-button>
 				</el-form-item>
 				<el-form-item label="审核:" style="display: block;">
 					<el-button type="success" @click="sealJump()">审核</el-button>
@@ -163,6 +171,10 @@
 						name: '',
 						url: ''
 					}],
+				fileList2: [{
+					name: '',
+					url: ''
+				}],
 				assessAimList: [{
 					"label": "出让",
 					"value": "出让"
@@ -205,6 +217,8 @@
 				status:'',
 				wordUrl: '',
 				pdfUrl: '',
+				upFileUrl: '',
+				zipShow: true
 			}
 		},
 		created() {
@@ -226,6 +240,7 @@
 					this.estateForm = res.data;
 					this.wordUrl = this.estateForm.wordUri
 					this.pdfUrl = this.estateForm.pdfUri
+					this.upFileUrl = this.estateForm.upFileURI
 					if(this.estateForm.isPrivateAsset == true){
 						this.estateForm.isPrivateAsset = "是"
 					}else{
@@ -242,6 +257,15 @@
 					console.log(fileName)
 					this.fileList[0].name = fileName;
 					this.fileList[0].url = fileUrl;
+					if(this.upFileURI != ""){
+						const zipUrl = this.estateForm.upFileURI
+						const zipIndex = zipUrl.lastIndexOf('\/')
+						const zipName = zipUrl.substring(fileIndex + 1, fileUrl.length)
+						this.fileList2[0].name = zipName
+						this.fileList2[0].url = zipUrl
+					}else{
+						this.zipShow = false
+					}
 				});
 			},
 			searchTable(editForm) {
@@ -405,6 +429,9 @@
 			},
 			previewPdf(){
 				window.open(this.pdfUrl,'_blank')
+			},
+			downloadZip(){
+				window.location.href = this.upFileUrl
 			}
 		}
 	}
