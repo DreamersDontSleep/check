@@ -54,7 +54,7 @@
 								{{ scope.row.branchOffice }}
 							</template>
 						</el-table-column>
-						<el-table-column label="评估目的">
+						<el-table-column label="目的">
 							<template slot-scope="scope">
 								{{ scope.row.assessAim }}
 							</template>
@@ -75,69 +75,29 @@
 								</div>
 							</template>
 						</el-table-column>
-						<el-table-column label="申请人">
+						<el-table-column label="业务来源">
 							<template slot-scope="scope">
-								{{ scope.row.applicant }}
+								{{ scope.row.serviceSource }}
 							</template>
 						</el-table-column>
-						<el-table-column label="申请时间">
+						<el-table-column label="面积">
 							<template slot-scope="scope">
 								{{ scope.row.applicationDate }}
 							</template>
 						</el-table-column>
-						<el-table-column label="报告审批状态">
+						<el-table-column label="评估值">
 							<template slot-scope="scope">
-								<div v-if="scope.row.state == 0">未提交</div>
-								<div v-else-if="scope.row.state == 1">待审核</div>
-								<div v-else>已审核</div>
+								{{ scope.row.applicationDate }}
 							</template>
 						</el-table-column>
-						<el-table-column label="报告盖章状态">
+						<el-table-column label="收费">
 							<template slot-scope="scope">
-								<div v-if="scope.row.stampState == '' || scope.row.stampState == null || scope.row.stampState == 0">
-									<span style="color: rgba(107, 107, 107, 0.647058823529412);">未盖章</span>
-								</div>
-								<div v-if="scope.row.stampState == 1">
-									<span style="color: rgba(107, 107, 107, 0.647058823529412);">已转交待盖章</span>
-								</div>
-								<div v-if="scope.row.stampState == 2">
-									<span style="color: rgba(107, 107, 107, 0.647058823529412);">已盖章</span>
-								</div>
+								{{ scope.row.serviceCharge }}
 							</template>
 						</el-table-column>
-						<!-- <el-table-column label="审核结果">
+						<el-table-column label="时间">
 							<template slot-scope="scope">
-								<div v-if="scope.row.state == 3" style="color: #409EFF;">审核通过</div>
-								<div v-else-if="scope.row.state == 4" style="color: red;">审核未通过</div>
-								<div v-else>未审核</div>
-							</template>
-						</el-table-column> -->
-						<el-table-column label="备注">
-							<template slot-scope="scope">
-								{{ scope.row.remark }}
-							</template>
-						</el-table-column>
-						<el-table-column label="操作">
-							<template slot-scope="scope">
-								<div v-if="scope.row.state == 3 || scope.row.state == 1">
-									<span style="color: rgb(51, 153, 204);cursor: pointer;" @click="getReportDetail(scope.$index,scope.row)">
-										查看
-									</span>
-								</div>
-								<div v-else>
-									<span v-permission="[300]" style="color: rgb(51, 153, 204);cursor: pointer;" @click="getReportDetail(scope.$index,scope.row)">
-										查看
-									</span>
-									<span v-permission="[298]" style="color: rgb(51, 153, 204);cursor: pointer;" @click="editReportDetail(scope.$index,scope.row)">
-										修改
-									</span>
-									<span v-permission="[297]" style="cursor: pointer;color: rgb(51, 153, 204);" @click="removeList(scope.$index, scope.row)">
-										删除
-									</span>
-									<span v-permission="[299]" style="cursor: pointer;color: rgb(51, 153, 204);" @click="postList(scope.$index, scope.row)">
-										提交审核
-									</span>
-								</div>
+								{{ scope.row.valueTime }}
 							</template>
 						</el-table-column>
 					</el-table>
@@ -296,8 +256,14 @@
 				// }
 				
 				postStaticsList(para).then((res) => {
-					this.totalPriceEvaluation = res.data.reverse()
-					console.log(res)
+					let stArr = res.data.reverse()
+					let me = this
+					stArr.forEach(function(e){
+						console.log(e)
+						me.totalPriceEvaluation.push(e.detailReport)
+					})
+					// this.totalPriceEvaluation = res.data.reverse()
+					console.log(this.totalPriceEvaluation)
 				})
 				getDictionary().then((res) => {
 					let dataList = res

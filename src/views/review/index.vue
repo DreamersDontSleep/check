@@ -103,7 +103,7 @@
                 <div v-else>未审核</div>
               </template>
             </el-table-column>
-            <el-table-column label="操作">
+            <!-- <el-table-column label="操作">
               <template slot-scope="scope">
                 <div v-if="scope.row.state == 3">
                   <span style="color: rgb(51, 153, 204);cursor: pointer;" @click="getReportDetail(scope.$index,scope.row)">
@@ -125,7 +125,7 @@
                   </span>
                 </div>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
 					<el-pagination
 					  @size-change="handleSizeChange"

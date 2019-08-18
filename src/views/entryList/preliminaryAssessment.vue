@@ -55,7 +55,7 @@
 					  <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx.rar</div>
 					</el-upload>
 				</el-form-item>
-				<el-form-item label="文件上传(压缩文件)" class="fl">
+				<el-form-item label="文件上传(压缩文件)" class="fl" style="width: 80%;">
 					<el-upload class="upload-demo" ref="upload2" name="file" :action="UploadUrl ()" :on-preview="handlePreview"
 					 accept=".rar,.zip" :on-remove="handleRemove" :before-remove="beforeRemove" :auto-upload="true" :on-success="handleSuccess2"
 					 :on-change="handleChange2" multiple :limit="1" :on-exceed="handleExceed" :file-list="fileList2">

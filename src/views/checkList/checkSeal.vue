@@ -3,7 +3,7 @@
 		<template>
 			<el-button type="warning" @click="button1_click()">重置审批文件</el-button>
 			<!-- <el-button type="primary" @click="button2_click()">关闭文件</el-button> -->
-			<!-- <el-button type="primary" @click="button3_click()">另存文件</el-button> -->
+			<el-button type="primary" @click="button3_click()">另存文件</el-button>
 			<el-button type="primary" @click="button4_click()">添加二维码</el-button>
 			<!-- <el-button type="primary" @click="button5_click()">上传盖章文件</el-button> -->
 			<el-button type="success" @click="checkSuccess()">审批通过</el-button>
@@ -145,12 +145,12 @@
 			    // var fTransparency = prompt("请输入二维码透明度", "200");
 			    // var fZoom = prompt("请输入二维码旋转角度", "0");
 			    // alert(XSReaderSDK1.FX_SignPDF_AddGenerateCode(content, page, X, Y, hight, width, fTransparency, fZoom));
-				let codeUrl = "http://fcpgpre.jstspg.com/sh?a=" + Math.random() + "&id=" + this.id + "&reportType=" + this.reportType
+				let codeUrl = "http://fcpgpre.jstspg.com/code?a=" + Math.random() + "&id=" + this.id + "&reportType=" + this.reportType
 				console.log(codeUrl)
-				XSReaderSDK1.FX_SignPDF_AddGenerateCode("http://fcpgpre.jstspg.com/sh", "0", X,Y, "100", "100", "200", "0");
+				XSReaderSDK1.FX_SignPDF_AddGenerateCode(codeUrl, "0", X,Y, "100", "100", "200", "0");
 			},
 			button5_click () {
-				this.button3_click();
+				// this.button3_click();
 				var XSReaderSDK1 = document.getElementById("ShareSunReaderSDKs");
 				XSReaderSDK1.XSUnlock("EA27C68108D462FC3C2829E937836D69B3ACC6C8070C919FB3CD72646A3FAAAE0C0D256FC9B00EA0A1126E7ABE143972833DFCCB4B4");
 				var postUrl = "http://fcpgpre.jstspg.com/rpt/index/upLoad/" + this.id;

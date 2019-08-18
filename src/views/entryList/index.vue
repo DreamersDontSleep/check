@@ -213,11 +213,8 @@
 					'label': '未审核',
 					'value': '未审核'
 				}, {
-					'label': '审核通过',
-					'value': '审核通过'
-				}, {
-					'label': '审核不通过',
-					'value': '审核不通过'
+					'label': '已审核',
+					'value': '已审核'
 				}],
 				linkArr: [{
 					'label': '房地产估价报告',
@@ -347,10 +344,8 @@
 							state = [0];
 						} else if (state == "待审核") {
 							state = [1];
-						} else if (state == "审核通过") {
-							state = [3];
-						} else if (state == "审核不通过") {
-							state = [4];
+						} else if (state == "已审核") {
+							state = [3, 4];
 						} else if (state == "全部" || state == "") {
 							state = [0, 1, 2, 3, 4];
 						}

@@ -69,7 +69,7 @@
 				<el-button @click="downloadWord()">下载word文档</el-button>
 				<el-button @click="previewPdf()">预览pdf文档</el-button>
 		    </el-form-item>
-			<el-form-item label="文件上传(压缩文件)" class="fl">
+			<el-form-item label="文件上传(压缩文件)" class="fl" style="width: 80%;">
 				<el-upload ref="upload" :action="UploadUrl ()" :on-preview="handlePreview" :on-remove="handleRemove"
 				 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange2" class="upload-demo" :limit="1" name="file"
 				 :on-exceed="handleExceed" :file-list="fileList2" accept=".doc,.docx" multiple v-if="lookOrEdit">
