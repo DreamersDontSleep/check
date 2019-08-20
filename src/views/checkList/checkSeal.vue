@@ -7,6 +7,7 @@
 			<el-button type="primary" @click="button4_click()">添加二维码</el-button>
 			<!-- <el-button type="primary" @click="button5_click()">上传盖章文件</el-button> -->
 			<el-button type="success" @click="checkSuccess()">审批通过</el-button>
+			<el-button type="success" @click="buttonTest()">test</el-button>
 			<el-button type="success" @click="checkSuccessAndSeal()">审批通过并转让盖章</el-button>
 			<el-select style="width: 250px;" placeholder="请选择" v-model="seal" v-show="sealFormVisible">
 			  <el-option v-for="(item,index) in sealList"
@@ -150,12 +151,23 @@
 				console.log(codeUrl)
 				XSReaderSDK1.FX_SignPDF_AddGenerateCode(codeUrl, "0", X,Y, "100", "100", "200", "0");
 			},
+			buttonTest(){
+				var sdk = document.getElementById("ShareSunReaderSDK");
+				let svUrl =  sdk.XSReadDocName()
+				svUrl = svUrl + '.pdf'
+				alert(svUrl)
+			},
 			button5_click () {
 				// this.button3_click();
 				var XSReaderSDK1 = document.getElementById("ShareSunReaderSDKs");
+				var sdk = document.getElementById("ShareSunReaderSDK");
 				XSReaderSDK1.XSUnlock("EA27C68108D462FC3C2829E937836D69B3ACC6C8070C919FB3CD72646A3FAAAE0C0D256FC9B00EA0A1126E7ABE143972833DFCCB4B4");
-				var postUrl = "http://fcpgpre.jstspg.com/rpt/index/upLoad/" + this.id;
-				var post = XSReaderSDK1.XSPostFileByHttpEX(postUrl, this.saveUrl);
+				let svUrl =  sdk.XSReadDocName()
+				// svUrl = svUrl + '.pdf'
+				alert(svUrl)
+				var postUrl = "http://fcpgpre.jstspg.com/rpt/index/upLoad/";
+				var post = XSReaderSDK1.XSPostFileByHttpEX(postUrl, svUrl);
+				console.log(post)
 				if (post == "") {
 					this.$message({
 						message:'上传失败!', 
@@ -200,7 +212,7 @@
 				postCheckId(id,state).then((res) => {
 					// this.fetchProjectList()
 					console.log(res);
-					this.$router.push({path:'/checkList/index'})
+					// this.$router.push({path:'/checkList/index'})
 				});
 			},
 			checkFail () {
