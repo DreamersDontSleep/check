@@ -117,8 +117,9 @@
 			button3_click() {
 				let XSReaderSDK1 = document.getElementById("ShareSunReaderSDK");
 				this.saveUrl = "d:\\" + this.fileName;
-			    // let value2 = prompt("请输入文件保存路径", this.saveUrl);
-				let value2 = this.saveUrl;
+			    let value2 = prompt("请输入文件保存路径", this.saveUrl);
+				alert(value2);
+				// let value2 = this.saveUrl;
 			   XSReaderSDK1.SaveAs(value2);
 			   var ifexits = XSReaderSDK1.FileExists(value2);
 			   if (ifexits == true) {
