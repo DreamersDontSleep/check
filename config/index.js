@@ -18,12 +18,12 @@ module.exports = {
         pathRewrite: {
         }
       },
-			'/auth': {
-			  target: 'http://fcpgpre.jstspg.com',
-			  changeOrigin: true,
-			  pathRewrite: {
-			  }
-			}
+		'/auth': {
+		  target: 'http://fcpgpre.jstspg.com',
+		  changeOrigin: true,
+		  pathRewrite: {
+		  }
+		}
     },
 
     // Various Dev Server settings
@@ -72,7 +72,7 @@ module.exports = {
      * then assetsPublicPath should be set to "/bar/".
      * In most cases please use '/' !!!
      */
-    assetsPublicPath: 'http://fcpgpre.jstspg.com',
+    assetsPublicPath: '/sh',
 		
 		proxyTable: process.env.MOCK_MODE ? {} : {
 		  // ! 匹配以 /ts 开头的 api 代理
@@ -81,7 +81,13 @@ module.exports = {
 		    changeOrigin: true,
 		    pathRewrite: {
 		    }
-		  }
+		  },
+			'/auth': {
+			  target: 'http://fcpgpre.jstspg.com',
+			  changeOrigin: true,
+			  pathRewrite: {
+			  }
+			}
 		},
 
     /**
