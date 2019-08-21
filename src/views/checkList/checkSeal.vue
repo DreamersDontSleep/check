@@ -3,11 +3,11 @@
 		<template>
 			<el-button type="warning" @click="button1_click()">重置审批文件</el-button>
 			<!-- <el-button type="primary" @click="button2_click()">关闭文件</el-button> -->
-			<el-button type="primary" @click="button3_click()">另存文件</el-button>
+			<!-- <el-button type="primary" @click="button3_click()">另存文件</el-button> -->
 			<el-button type="primary" @click="button4_click()">添加二维码</el-button>
 			<!-- <el-button type="primary" @click="button5_click()">上传盖章文件</el-button> -->
 			<el-button type="success" @click="checkSuccess()">审批通过</el-button>
-			<el-button type="success" @click="buttonTest()">test</el-button>
+			<!-- <el-button type="success" @click="buttonTest()">test</el-button> -->
 			<el-button type="success" @click="checkSuccessAndSeal()">审批通过并转让盖章</el-button>
 			<el-select style="width: 250px;" placeholder="请选择" v-model="seal" v-show="sealFormVisible">
 			  <el-option v-for="(item,index) in sealList"
@@ -55,13 +55,14 @@
 
 <script>
 	import {
-		postReportData, getReportData, postCheckId, postUpdateRemark, transferToId
+		postReportData, getReportData, postCheckId, postUpdateRemark, transferToId, postUpdateRpt
 	} from '@/api/entry'
 	export default {
 		data() {
 			return {
 				fileUrl: '',
 				fileName: '',
+				estForm: '',
 				saveUrl: '',
 				id: '',
 				reportType:'',
@@ -77,6 +78,7 @@
 		created() {
 			const content = this.$route.query.content
 			console.log(content)
+			// this.estForm = content
 			this.fileUrl = content.pdfUri
 			this.id = content.id;
 			this.reportType = content.reportType
@@ -96,10 +98,17 @@
 				  })
 				  // this.$router.push({path:'/checkList/index'})
 				}
-			this.hzonload_li1();
+			this.hzonload_li1()
 			this.button1_click()
+			this.getReportDetail()
 		},
 		methods: {
+			getReportDetail() {
+				getReportData(this.id, this.reportType).then((res) => {
+					console.log(res)
+					this.estForm = res.data
+				})
+			},
 			hzonload_li1(){
 				document.getElementById("ShareSunReaderSDK").FX_SignPDF_AddAboutLicense("xzu3X6dlBVyaBPw9L0eWazAXRbXsuXEn0y5DMEGbYXc8GLWYF8l7I6Xs1Z/seq2bkoNnomhWOmCRwtQMmdB1/kfI/E6GsKvL38o=");
 				// this.button1_click();
@@ -164,10 +173,16 @@
 				XSReaderSDK1.XSUnlock("EA27C68108D462FC3C2829E937836D69B3ACC6C8070C919FB3CD72646A3FAAAE0C0D256FC9B00EA0A1126E7ABE143972833DFCCB4B4");
 				let svUrl =  sdk.XSReadDocName()
 				// svUrl = svUrl + '.pdf'
-				alert(svUrl)
+				// alert(svUrl)
 				var postUrl = "http://fcpgpre.jstspg.com/rpt/index/upLoad/";
 				var post = XSReaderSDK1.XSPostFileByHttpEX(postUrl, svUrl);
 				console.log(post)
+				let psData = JSON.parse(post)
+				// let psData = {"code":"200","count":1,"data":[{"id":1566315115047,"pdfPath":"不","realPath":"/data/apps/service/report-approval-service/upLoad/1566315115047/1566315115047.pdf","uri":"1566315115047/1566315115047.pdf","wordPath":"http://fcpgpre.jstspg.com//rpt/open/1566315115047/1566315115047.pdf"}],"state":"execute sucess"}
+				// console.log(psData)
+				// console.log(psData.code)
+				this.estForm.pdfUri = psData.data[0].wordPath
+				console.log(this.estForm)
 				if (post == "") {
 					this.$message({
 						message:'上传失败!', 
@@ -212,6 +227,19 @@
 				postCheckId(id,state).then((res) => {
 					// this.fetchProjectList()
 					console.log(res);
+					if(res.code == 200){
+						this.estForm.state = 3
+						let param = this.estForm
+						console.log(param)
+						postUpdateRpt(param).then((res) => {
+							if (res.code == 200) {
+								this.$message({
+									message: '成功!',
+									type: 'success'
+								})
+							}
+						})
+					}
 					// this.$router.push({path:'/checkList/index'})
 				});
 			},

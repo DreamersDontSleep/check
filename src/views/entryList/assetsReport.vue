@@ -356,9 +356,10 @@
 							 			message:'提交成功!', 
 							 			type: 'success'
 							 		})
+									this.$router.push({path:'/entryList/index'})
 							 	}
 							 })
-						 	// this.$router.push({path:'/entryList/index'})
+						 	
 						 }).catch(() => {
 						 	
 						 }); 

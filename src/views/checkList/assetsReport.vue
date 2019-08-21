@@ -121,7 +121,7 @@
 					</el-upload>
 					<el-button @click="downloadZip()" v-show="zipShow">下载压缩文档</el-button>
 				</el-form-item>
-				<el-form-item label="审核:" style="display: block;">
+				<el-form-item label="审核:" style="display: block;" v-show="statuShow">
 					<el-button type="success" @click="sealJump()">审核</el-button>
 					<!-- <el-button type="danger" @click="checkFail()">审核不通过</el-button>
 					<el-button @click="cancelForm(estateForm)">返回</el-button> -->
@@ -164,6 +164,7 @@
 				checkForm: {
 					checkAccount: '12个'
 				},
+				statuShow: true,
 				remark: '',
 				idList: '',
 				editFormVisible: false,
@@ -223,6 +224,12 @@
 		},
 		created() {
 			const content = this.$route.query.content
+			const stateStatus = this.$route.query.status
+			if(stateStatus == 0){
+				this.statuShow = true
+			}else{
+				this.statuShow = false
+			}
 			console.log(content)
 			this.id = content.id
 			this.status = content.state

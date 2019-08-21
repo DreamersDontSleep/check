@@ -109,10 +109,10 @@
 					</el-table-column>
 					<el-table-column label="操作">
 					  <template slot-scope="scope">
-						<span v-if="scope.row.state == 1" @click="linkChange(scope.$index,scope.row)" style="color: rgb(51, 153, 204);cursor: pointer;">
+						<span v-if="scope.row.state == 1" @click="linkChange(scope.$index,scope.row,0)" style="color: rgb(51, 153, 204);cursor: pointer;">
 						  审核
 						</span>
-						<span v-if="scope.row.state == 3" @click="linkChange(scope.$index,scope.row)" style="color: rgb(51, 153, 204);cursor: pointer;">
+						<span v-if="scope.row.state == 3" @click="linkChange(scope.$index,scope.row,1)" style="color: rgb(51, 153, 204);cursor: pointer;">
 						  查看
 						</span>
 					  </template>
@@ -149,6 +149,7 @@ export default {
 			estateForm: {
 				
 			},
+			changeStatus: '',
 			currentPage: 1,
 			pageSize: 10,
 			fileList: [{
@@ -247,7 +248,7 @@ export default {
 						}
 					}
 					getCheckRpt(para).then((res) => {
-						this.totalPriceEvaluation = res.data
+						this.totalPriceEvaluation = res.data.reverse()
 						console.log(res);
 					})
 			  } else {
@@ -259,17 +260,18 @@ export default {
 		newAdd() {
 			this.editFormVisible = true;
 		},
-		linkChange(index,row){
+		linkChange(index,row,num){
 			let id = row.id;
+			this.changeStatus = num
 			console.log(row)
 			if(row.reportType == 1){
-				this.$router.push({path:'/checkList/realEstateReport', query: { 'content': row }})
+				this.$router.push({path:'/checkList/realEstateReport', query: { 'content': row, 'status': num }})
 			}else if(row.reportType == 2){
-				this.$router.push({path:'/checkList/landValuationReport', query: { 'content': row }})
+				this.$router.push({path:'/checkList/landValuationReport', query: { 'content': row, 'status': num }})
 			}else if(row.reportType == 3){
-				this.$router.push({path:'/checkList/assetsReport', query: { 'content': row }})
+				this.$router.push({path:'/checkList/assetsReport', query: { 'content': row, 'status': num }})
 			}else if(row.reportType == 4){
-				this.$router.push({path:'/checkList/preliminaryAssessment', query: { 'content': row }})
+				this.$router.push({path:'/checkList/preliminaryAssessment', query: { 'content': row, 'status': num }})
 			}
 		},
 		sealChange(index,row){
