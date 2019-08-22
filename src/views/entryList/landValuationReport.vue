@@ -413,7 +413,7 @@
 					clientPhone: [{
 						required: true,
 						trigger: 'blur',
-						validator:checkPhone
+						message: '不能为空'
 					}],
 					firstReporter: [{
 						required: true,
@@ -497,6 +497,7 @@
 					this.assessMethodList= res.data.tdbg2019[0].tdgjff.reverse()
 					this.assessAimList = res.data.tdbg2019[1].tdgjmd.reverse()
 					this.nameList = res.data.tdzcbg
+					this.checkerList = res.data.sh2019[0].list
 					this.nameList.forEach(function(e,c){
 						for(let key in e){
 							me.arr.push(e[key])
@@ -616,7 +617,7 @@
 				console.log(file);
 			},
 			handleExceed(files, fileList) {
-				this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+				this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
 			},
 			beforeRemove(file, fileList) {
 				return this.$confirm(`确定移除 ${ file.name }？`);

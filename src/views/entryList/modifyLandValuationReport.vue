@@ -428,6 +428,7 @@
 					this.assessMethodList= res.data.tdbg2019[0].tdgjff.reverse()
 					this.assessAimList = res.data.tdbg2019[1].tdgjmd.reverse()
 					this.nameList = res.data.tdzcbg
+					this.checkerList = res.data.sh2019[0].list
 					this.nameList.forEach(function(e,c){
 						for(let key in e){
 							me.arr.push(e[key])

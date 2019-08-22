@@ -96,7 +96,7 @@
 </template>
 
 <script>
-	import { postUpdateRpt } from '@/api/entry'
+	import { postUpdateRpt, getDictionary } from '@/api/entry'
 	export default {
 		data () {
 			return {
@@ -159,7 +159,16 @@
 		  	this.zipShow = false
 		  }
 		},
+		mounted() {
+			this.getTreeData()
+		},
 		methods:{
+			getTreeData(){
+				getDictionary().then( (res) => {
+					this.checkerList = res.data.sh2019[0].list
+					// console.log(this.assess)
+				})	
+			},
 			submitForm(estateForm) {
 			  this.$refs.estateForm.validate((valid) => {
 				  if (valid) {

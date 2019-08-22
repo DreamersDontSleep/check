@@ -18,6 +18,7 @@
 			</el-select>
 			<el-button type="primary" @click="changeSeal()" v-show="sealFormVisible">确定</el-button>
 			<el-button type="danger" @click="checkFail()">审批不通过</el-button>
+			<el-button type="danger" @click="checkBack()">返回</el-button>
 			<el-form style='margin-top: 20px;'>
 				<el-form-item label="审核意见:" style="display: block;">
 					<el-input type="textarea" v-model="remark" style="width: 331px;"></el-input>
@@ -208,6 +209,9 @@
 					// 	console.log(res)
 					// })
 				}
+			},
+			checkBack(){
+				this.$router.push({path:'/checkList/index'})
 			},
 			checkSuccess () {
 				let id = this.id;

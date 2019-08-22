@@ -51,7 +51,7 @@
 				<el-form-item label="估价目的:" style="width: 40%;">
 					<template>
 						<el-input v-if="lookOrEdit" v-model="estateForm.assessAim" disabled />
-						<el-select v-else v-model="estateForm.assessAim" placeholder="请选择">
+						<el-select v-else v-model="estateForm.assessAim" multiple placeholder="请选择">
 							<el-option v-for="(item,index) in assess" :key="item.value" :label="item.label" :value="item.value" />
 						</el-select>
 					</template>
@@ -308,6 +308,7 @@
 					this.assessMethodList = res.data.fdc2019[1].gjff.reverse()
 					this.valueTypeList = res.data.fdc2019[0].jzlx.reverse()
 					this.nameList = res.data.fdczcbg
+					this.checkerList = res.data.sh2019[0].list
 					this.nameList.forEach(function(e, c) {
 						for (let key in e) {
 							me.arr.push(e[key])

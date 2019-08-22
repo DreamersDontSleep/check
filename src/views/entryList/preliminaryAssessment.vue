@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { postReportData, postsaveRpt } from '@/api/entry'
+import { postReportData, postsaveRpt, getDictionary } from '@/api/entry'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -153,8 +153,16 @@ export default {
 		this.estateForm.branchOffice = this.userInfo.department
 		this.estateForm.applicant = this.name;
 		this.estateForm.login = localStorage.getItem('userId')
+		this.getTreeData()
 	},
 	methods:{
+		getTreeData(){
+			getDictionary().then( (res) => {
+				console.log(res);
+				this.checkerList = res.data.sh2019[0].list
+				// console.log(this.assess)
+			})	
+		},
 		searchTable(editForm){
 			this.$refs.editForm.validate((valid) => {
 			  if (valid) {
@@ -262,7 +270,7 @@ export default {
 			console.log(file);
 		},
 		handleExceed(files, fileList) {
-			this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+			this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
 		},
 		beforeRemove(file, fileList) {
 			return this.$confirm(`确定移除 ${ file.name }？`);

@@ -42,8 +42,7 @@
 				</el-form-item>
 				<el-form-item label="审核:" style="display: block;" v-show="statuShow">
 					<el-button type="success" @click="sealJump()">审核</el-button>
-					<!-- <el-button type="danger" @click="checkFail()">审核不通过</el-button>
-					<el-button @click="cancelForm(estateForm)">返回</el-button> -->
+					<el-button @click="cancelForm(estateForm)">返回</el-button>
 				</el-form-item>
 			</el-form>
 		</template>

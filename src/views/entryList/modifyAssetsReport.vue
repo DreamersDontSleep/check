@@ -299,6 +299,7 @@
 					this.assessObjList = res.data.zzpg2019[3].zcpgdx.reverse()
 					this.valueTypeList = res.data.zzpg2019[2].zcjzlx.reverse()
 					this.assessMethodList = res.data.zzpg2019[1].zcpgff.reverse()
+					this.checkerList = res.data.sh2019[0].list
 				})
 			},
 			submitForm(estateForm) {

@@ -285,6 +285,7 @@
 					this.assessObjList = res.data.zzpg2019[3].zcpgdx.reverse()
 					this.valueTypeList = res.data.zzpg2019[2].zcjzlx.reverse()
 					this.assessMethodList = res.data.zzpg2019[1].zcpgff.reverse()
+					this.checkerList = res.data.sh2019[0].list
 					// console.log(this.assess)
 				})	
 			},
@@ -402,7 +403,7 @@
 				console.log(file);
 			},
 			handleExceed(files, fileList) {
-				this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+				this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
 			},
 			beforeRemove(file, fileList) {
 				return this.$confirm(`确定移除 ${ file.name }？`);

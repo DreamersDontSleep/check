@@ -28,7 +28,15 @@ export default {
     message() {
       return '网管说这个页面你不能进......'
     }
-  }
+  },
+	mounted(){
+		this.reload()
+	},
+	methods:{
+		reload(){
+		  this.$router.push({path:'/entryList/index'})
+		}
+	}
 }
 </script>
 
