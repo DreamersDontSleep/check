@@ -52,7 +52,7 @@
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.assessAim" disabled/>
 						<!-- <el-input v-else v-model="estateForm.assessAim"/> -->
-		        <el-select v-else v-model="estateForm.assessAim" placeholder="请选择">
+		        <el-select v-else v-model="estateForm.assessAim" multiple placeholder="请选择">
 		          <el-option
 		            v-for="(item,index) in assessAimList"
 		            :key="item.value"
@@ -387,7 +387,14 @@
 		created() {
 		  const content = this.$route.query.contents
 		  console.log(content)
+		  let aimList = content.assessAim
+		  let aimArr = []
+		  for(let i = 0; i < aimList.split(',').length; i++){
+		  	aimArr.push(aimList.split(',')[i])
+		  }
+		  console.log(aimArr)
 		  this.estateForm = content
+		  this.estateForm.assessAim = aimArr
 		  this.lookOrEdit = this.$route.query.lookOrEdit
 			this.id = content.id
 			this.wordUrl = this.estateForm.wordUri

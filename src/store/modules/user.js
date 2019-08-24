@@ -71,7 +71,7 @@ const user = {
 		Login({
 			commit
 		}, userInfo) {
-			const username = userInfo.username.trim()
+			const username = encodeURI(userInfo.username.trim())
 			return new Promise((resolve, reject) => {
 				login(username, userInfo.password)
 					.then(response => {

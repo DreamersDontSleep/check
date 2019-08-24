@@ -250,6 +250,7 @@
 					"label": "check",
 					"value": "check"
 				}],
+				aimList: '',
 				wordUrl: '',
 				pdfUrl: '',
 				upFileUrl: '',
@@ -273,7 +274,14 @@
 		created() {
 			const content = this.$route.query.contents
 			console.log(content)
+			let aimList = content.assessAim
+			let aimArr = []
+			for(let i = 0; i < aimList.split(',').length; i++){
+				aimArr.push(aimList.split(',')[i])
+			}
+			console.log(aimArr)
 			this.estateForm = content
+			this.estateForm.assessAim = aimArr
 			this.lookOrEdit = this.$route.query.lookOrEdit
 			this.id = content.id
 			this.wordUrl = this.estateForm.wordUri

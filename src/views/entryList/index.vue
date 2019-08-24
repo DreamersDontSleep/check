@@ -298,14 +298,14 @@
 				getDictionary().then((res) => {
 					let dataList = res
 					let depData = dataList.data.fgs
-					console.log("数据树", dataList)
+					// console.log("数据树", dataList)
 					let depArr = [];
 					for (let i = 0; i < depData.length; i++) {
 						let obj = {
 							id: '',
 							name: ''
 						};
-						console.log(depData[0])
+						// console.log(depData[0])
 						// depData[i].forEach(function(e,c){
 						for (let key in depData[i]) {
 							// depArr.push(e[key])
@@ -315,7 +315,7 @@
 						}
 						// })
 					}
-					console.log("城市数据", depArr)
+					// console.log("城市数据", depArr)
 					depArr.unshift({
 						id: '',
 						name: "全部"

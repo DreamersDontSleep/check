@@ -55,7 +55,7 @@
 				<el-form-item label="评估目的:" style="width: 40%;" prop="assessAim">
 					<template>
 						<el-input v-if="lookOrEdit" v-model="estateForm.assessAim" disabled />
-						<el-select v-else v-model="estateForm.assessAim" placeholder="请选择">
+						<el-select v-else v-model="estateForm.assessAim" multiple placeholder="请选择">
 							<el-option v-for="(item,index) in assessAimList" :key="item.value" :label="item.label" :value="item.value" />
 						</el-select>
 					</template>
@@ -253,7 +253,14 @@
 		created() {
 			const content = this.$route.query.contents
 			console.log(content)
+			let aimList = content.assessAim
+			let aimArr = []
+			for(let i = 0; i < aimList.split(',').length; i++){
+				aimArr.push(aimList.split(',')[i])
+			}
+			console.log(aimArr)
 			this.estateForm = content
+			this.estateForm.assessAim = aimArr
 			if (this.estateForm.isStateAssets == true) {
 				this.estateForm.isStateAssets = "是"
 			} else {
