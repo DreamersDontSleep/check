@@ -276,7 +276,7 @@
 			},	
 			changeSeal () {
 				let id = this.id
-				let transferTo = this.seal
+				let transferTo = encodeURI(this.seal)
 				let state = 3
 				console.log(transferTo);
 				if(transferTo == ""){
