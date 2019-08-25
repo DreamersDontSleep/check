@@ -56,7 +56,7 @@
 
 <script>
 	import {
-		postReportData, getReportData, postCheckId, postUpdateRemark, transferToId, postUpdateRpt
+		postReportData, getReportData, postCheckId, postUpdateRemark, transferToId, postUpdateRpt, getDictionary
 	} from '@/api/entry'
 	export default {
 		data() {
@@ -102,8 +102,15 @@
 			this.hzonload_li1()
 			this.button1_click()
 			this.getReportDetail()
+			this.getTreeData()
 		},
 		methods: {
+			getTreeData(){
+				getDictionary().then( (res) => {
+					this.sealList = res.data.sh2019[0].list
+					// console.log(this.assess)
+				})	
+			},
 			getReportDetail() {
 				getReportData(this.id, this.reportType).then((res) => {
 					console.log(res)
