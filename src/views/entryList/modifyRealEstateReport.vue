@@ -51,7 +51,7 @@
 				<el-form-item label="估价目的:" style="width: 40%;">
 					<template>
 						<el-input v-if="lookOrEdit" v-model="estateForm.assessAim" disabled />
-						<el-select v-else v-model="estateForm.assessAim" multiple placeholder="请选择">
+						<el-select v-else v-model="estateForm.assessAim" placeholder="请选择">
 							<el-option v-for="(item,index) in assess" :key="item.value" :label="item.label" :value="item.value" />
 						</el-select>
 					</template>
@@ -59,7 +59,7 @@
 				<el-form-item label="估价方法:" style="width: 40%;">
 					<template>
 						<el-input v-if="lookOrEdit" v-model="estateForm.assessMethod" disabled />
-						<el-select v-else v-model="estateForm.assessMethod" placeholder="请选择">
+						<el-select v-else v-model="estateForm.assessMethod" multiple placeholder="请选择">
 							<el-option v-for="(item,index) in assessMethodList" :key="item.value" :label="item.label" :value="item.value" />
 						</el-select>
 					</template>
@@ -169,6 +169,12 @@
 						<el-input v-else v-model="estateForm.serviceCharge" />
 					</template>
 				</el-form-item>
+				<el-form-item label="产权人:" style="width: 40%;">
+					<template>
+						<el-input v-if="lookOrEdit" v-model="estateForm.propertyOwner"></el-input>
+						<el-input v-else v-model="estateForm.propertyOwner" />
+					</template>
+				</el-form-item>
 				<el-form-item label="审核员:" style="width: 40%;">
 					<template>
 						<el-input v-if="lookOrEdit" v-model="estateForm.checker" disabled />
@@ -274,14 +280,14 @@
 		created() {
 			const content = this.$route.query.contents
 			console.log(content)
-			let aimList = content.assessAim
+			let aimList = content.assessMethod
 			let aimArr = []
 			for(let i = 0; i < aimList.split(',').length; i++){
 				aimArr.push(aimList.split(',')[i])
 			}
 			console.log(aimArr)
 			this.estateForm = content
-			this.estateForm.assessAim = aimArr
+			this.estateForm.assessMethod = aimArr
 			this.lookOrEdit = this.$route.query.lookOrEdit
 			this.id = content.id
 			this.wordUrl = this.estateForm.wordUri

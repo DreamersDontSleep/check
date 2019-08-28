@@ -158,7 +158,7 @@
 			    // var content = prompt("请输入二维码内容", "http://www.17sucai.com/pins/27562.html");
 			    // var page = prompt("请输入添加二维码的页码（从0开始）", "0");           
 			    var X = prompt("请输入添加二维码左边距", "500");
-			    var Y = prompt("请输入添加二维码的底部距离", "750");
+			    var Y = prompt("请输入添加二维码的底部距离", "740");
 			    // var hight = prompt("请输入添加二维码的高度", "100");
 			    // var width = prompt("请输入添加二维码的宽度", "100");
 			    // var fTransparency = prompt("请输入二维码透明度", "200");

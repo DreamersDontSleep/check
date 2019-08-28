@@ -48,7 +48,7 @@
 				</el-form-item>
 				<el-form-item label="评估目的:" style="width: 40%;" prop="assessAim">
 					<template>
-						<el-select v-model="estateForm.assessAim" multiple placeholder="请选择">
+						<el-select v-model="estateForm.assessAim" placeholder="请选择">
 							<el-option v-for="(item,index) in assessAimList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
@@ -125,6 +125,11 @@
 					<template>
 						<el-input v-model="estateForm.netAssets"></el-input>
 						<!-- <el-radio></el-radio>无账面价值 -->
+					</template>
+				</el-form-item>
+				<el-form-item label="产权人:" style="width: 40%;" prop="propertyOwner">
+					<template>
+						<el-input v-model="estateForm.propertyOwner"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="审核员:" style="width: 40%;" prop="checker">

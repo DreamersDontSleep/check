@@ -1,5 +1,5 @@
 <template>
-	<div style="margin-left: 30px;">
+	<div style="margin-left: 30px;" ref="print" id="print">
 		<h3>基本信息</h3>
 		<template>
 			<el-form :inline="true" :model="estateForm" ref="estateForm" :rules="inputRule" label-width="180px">
@@ -45,14 +45,14 @@
 				</el-form-item>
 				<el-form-item label="估价目的:" style="width: 40%;" prop="assessAim">
 					<template>
-						<el-select v-model="estateForm.assessAim" multiple placeholder="请选择">
+						<el-select v-model="estateForm.assessAim" placeholder="请选择">
 							<el-option v-for="(item,index) in assess" :key="item.value" :label="item.label" :value="item.value" />
 						</el-select>
 					</template>
 				</el-form-item>
 				<el-form-item label="估价方法:" style="width: 40%;" prop="assessMethod">
 					<template>
-						<el-select v-model="estateForm.assessMethod" placeholder="请选择">
+						<el-select v-model="estateForm.assessMethod" multiple placeholder="请选择">
 							<el-option v-for="(item,index) in assessMethodList" :key="item.value" :label="item.label" :value="item.value" />
 						</el-select>
 					</template>
@@ -144,6 +144,11 @@
 						<el-input v-model="estateForm.serviceCharge"></el-input>
 					</template>
 				</el-form-item>
+				<el-form-item label="产权人:" style="width: 40%;" prop="propertyOwner">
+					<template>
+						<el-input v-model="estateForm.propertyOwner"></el-input>
+					</template>
+				</el-form-item>
 				<el-form-item label="审核员:" style="width: 40%;" prop="checker">
 					<template>
 						<el-select v-model="estateForm.checker" placeholder="请选择">
@@ -178,7 +183,7 @@
 					<el-button @click="submitForm(estateForm)">提交</el-button>
 					<el-button @click="cancelForm(estateForm)">返回</el-button>
 					<el-button @click="restForm(estateForm)">重置</el-button>
-
+					<el-button v-print="'#print'">打印</el-button>
 				</el-form-item>
 			</el-form>
 		</template>
@@ -452,6 +457,9 @@
 						me.regList.push(e[0])
 					})
 				})
+			},
+			start_print(){
+			        this.$print(this.$refs.print);//$refs的值要和html里的ref一致
 			},
 			searchTable(editForm) {
 				this.$refs.editForm.validate((valid) => {

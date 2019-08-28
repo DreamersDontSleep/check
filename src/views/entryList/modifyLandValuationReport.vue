@@ -52,7 +52,7 @@
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.assessAim" disabled/>
 						<!-- <el-input v-else v-model="estateForm.assessAim"/> -->
-		        <el-select v-else v-model="estateForm.assessAim" multiple placeholder="请选择">
+		        <el-select v-else v-model="estateForm.assessAim" placeholder="请选择">
 		          <el-option
 		            v-for="(item,index) in assessAimList"
 		            :key="item.value"
@@ -64,7 +64,7 @@
 		    <el-form-item label="估价方法:" style="width: 40%;">
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.assessMethod" disabled/>
-		        <el-select v-else v-model="estateForm.assessMethod" placeholder="请选择">
+		        <el-select v-else v-model="estateForm.assessMethod"multiple placeholder="请选择">
 		          <el-option
 		            v-for="(item,index) in assessMethodList"
 		            :key="item.value"
@@ -211,6 +211,12 @@
 						<el-option v-for="(item,index) in quarterList" :key="item.value" :label="item.label" :value="item.value">
 						</el-option>
 					</el-select>
+				</template>
+			</el-form-item>
+			<el-form-item label="产权人:" style="width: 40%;">
+				<template>
+					<el-input v-if="lookOrEdit" v-model="estateForm.propertyOwner"></el-input>
+					<el-input v-else v-model="estateForm.propertyOwner" />
 				</template>
 			</el-form-item>
 		    <el-form-item label="审核员:" style="width: 40%;">
@@ -387,14 +393,14 @@
 		created() {
 		  const content = this.$route.query.contents
 		  console.log(content)
-		  let aimList = content.assessAim
+		  let aimList = content.assessMethod
 		  let aimArr = []
 		  for(let i = 0; i < aimList.split(',').length; i++){
 		  	aimArr.push(aimList.split(',')[i])
 		  }
 		  console.log(aimArr)
 		  this.estateForm = content
-		  this.estateForm.assessAim = aimArr
+		  this.estateForm.assessMethod = aimArr
 		  this.lookOrEdit = this.$route.query.lookOrEdit
 			this.id = content.id
 			this.wordUrl = this.estateForm.wordUri

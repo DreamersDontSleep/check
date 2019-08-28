@@ -10,6 +10,33 @@
 						</div>
 					</template>
 				</el-form-item>
+				<el-form-item label="项目名称:" style="width: 40%;" prop="projectName">
+					<template>
+						<el-input v-model="estateForm.projectName"></el-input>
+					</template>
+				</el-form-item>
+				<el-form-item label="估价目的:" style="width: 40%;" prop="assessAim">
+					<template>
+						<el-select v-model="estateForm.assessAim" placeholder="请选择">
+							<el-option v-for="(item,index) in assess" :key="item.value" :label="item.label" :value="item.value" />
+						</el-select>
+					</template>
+				</el-form-item>
+				<el-form-item label="产权人:" style="width: 40%;" prop="propertyOwner">
+					<template>
+						<el-input v-model="estateForm.propertyOwner"></el-input>
+					</template>
+				</el-form-item>
+				<el-form-item label="建筑面积(m2):" style="width: 40%;" prop="buildingArea">
+					<template>
+						<el-input v-model="estateForm.buildingArea"></el-input>
+					</template>
+				</el-form-item>
+				<el-form-item label="评估总价(万元):" style="width: 40%;" prop="assessTotalPrice">
+					<template>
+						<el-input v-model="estateForm.assessTotalPrice"></el-input>
+					</template>
+				</el-form-item>
 				<el-form-item label="分公司:" style="width: 40%;" prop="branchOffice">
 					<template>
 						<!-- <el-input v-model="estateForm.assessMethod"></el-input> -->
@@ -94,6 +121,7 @@ export default {
 			checkForm:{
 				checkAccount: '12个'
 			},
+			assess: '',
 			editFormVisible: false,
 			fileList: [],
 			fileList2: [],
@@ -160,6 +188,7 @@ export default {
 			getDictionary().then( (res) => {
 				console.log(res);
 				this.checkerList = res.data.sh2019[0].list
+				this.assess = res.data.fdc2019[2].gjmd.reverse()
 				// console.log(this.assess)
 			})	
 		},

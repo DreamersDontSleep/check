@@ -42,7 +42,7 @@
 				</el-form-item>
 				<el-form-item label="估价目的:" style="width: 40%;" prop="assessAim">
 					<template>
-						<el-select v-model="estateForm.assessAim" multiple placeholder="请选择">
+						<el-select v-model="estateForm.assessAim" placeholder="请选择">
 							<el-option v-for="(item,index) in assessAimList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
@@ -51,7 +51,7 @@
 				<el-form-item label="估价方法:" style="width: 40%;" prop="assessMethod">
 					<template>
 						<!-- <el-input v-model="estateForm.assessMethod"></el-input> -->
-						<el-select v-model="estateForm.assessMethod" placeholder="请选择">
+						<el-select v-model="estateForm.assessMethod" multiple placeholder="请选择">
 							<el-option v-for="(item,index) in assessMethodList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
@@ -160,6 +160,11 @@
 							<el-option v-for="(item,index) in quarterList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
+					</template>
+				</el-form-item>
+				<el-form-item label="产权人:" style="width: 40%;" prop="propertyOwner">
+					<template>
+						<el-input v-model="estateForm.propertyOwner"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="业务收费(万元):" style="width: 40%;" prop="serviceCharge">

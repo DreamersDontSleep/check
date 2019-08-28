@@ -7,6 +7,38 @@
 		        <el-input v-model="estateForm.reportType" disabled/>
 		      </template>
 		    </el-form-item>
+			<el-form-item label="项目名称:" style="width: 80%;">
+				<template>
+					<el-input v-if="lookOrEdit" v-model="estateForm.projectName" disabled />
+					<el-input v-else v-model="estateForm.projectName" />
+				</template>
+			</el-form-item>
+			<el-form-item label="估价目的:" style="width: 80%;">
+				<template>
+					<el-input v-if="lookOrEdit" v-model="estateForm.assessAim" disabled />
+					<el-select v-else v-model="estateForm.assessAim" placeholder="请选择">
+						<el-option v-for="(item,index) in assess" :key="item.value" :label="item.label" :value="item.value" />
+					</el-select>
+				</template>
+			</el-form-item>
+			<el-form-item label="产权人:" style="width: 80%;">
+				<template>
+					<el-input v-if="lookOrEdit" v-model="estateForm.propertyOwner" disabled></el-input>
+					<el-input v-else v-model="estateForm.propertyOwner" />
+				</template>
+			</el-form-item>
+			<el-form-item label="建筑面积(m2):" style="width: 80%;">
+				<template>
+					<el-input v-if="lookOrEdit" v-model="estateForm.buildingArea" disabled />
+					<el-input v-else v-model="estateForm.buildingArea" />
+				</template>
+			</el-form-item>
+			<el-form-item label="评估总价:" style="width: 80%;">
+				<template>
+					<el-input v-if="lookOrEdit" v-model="estateForm.assessTotalPrice" disabled />
+					<el-input v-else v-model="estateForm.assessTotalPrice" />
+				</template>
+			</el-form-item>
 		    <el-form-item label="分公司:" style="width: 80%;">
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.branchOffice" disabled/>

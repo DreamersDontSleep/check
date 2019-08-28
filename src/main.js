@@ -12,12 +12,15 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import Print from 'vue-print-nb'
 
 // ! 对饿了么表格组件的简单封装
 import CommonTable from './components/CommonTable'
 Vue.component('v-table', CommonTable)
 
 Vue.use(ElementUI)
+
+Vue.use(Print)
 
 Vue.config.productionTip = false
 
