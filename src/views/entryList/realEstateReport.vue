@@ -183,7 +183,7 @@
 					<el-button @click="submitForm(estateForm)">提交</el-button>
 					<el-button @click="cancelForm(estateForm)">返回</el-button>
 					<el-button @click="restForm(estateForm)">重置</el-button>
-					<el-button v-print="'#print'">打印</el-button>
+					<el-button @click="print(estateForm)">打印</el-button>
 				</el-form-item>
 			</el-form>
 		</template>
@@ -458,8 +458,20 @@
 					})
 				})
 			},
-			start_print(){
-			        this.$print(this.$refs.print);//$refs的值要和html里的ref一致
+			print(estateForm){
+			    this.$refs.estateForm.validate((valid) => {
+			    	if (valid) {
+			    		// alert('submit!');
+			    		console.log(editForm);
+			    		this.$router.push({path:'/entryList/print',query:{'contents': estateForm}})
+			    	} else {
+			    		this.$message({
+			    			message: '请输入必填字段!',
+			    			type: 'warning'
+			    		})
+			    		return false;
+			    	}
+			    })
 			},
 			searchTable(editForm) {
 				this.$refs.editForm.validate((valid) => {
@@ -531,7 +543,10 @@
 							});
 						}
 					} else {
-						console.log('error submit!!');
+						this.$message({
+							message: '请输入必填字段!',
+							type: 'warning'
+						})
 					}
 				});
 			},
