@@ -249,7 +249,7 @@
 		        name="file"
 		        :on-exceed="handleExceed"
 		        :file-list="fileList"
-		        accept=".doc,.docx"
+		        accept=".doc,.docx,.pdf"
 		        multiple  v-if="lookOrEdit">
 		        <!-- <el-button slot="trigger" size="small" type="primary">选择文件</el-button> -->
 		        <!-- <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div> -->
@@ -268,10 +268,10 @@
 		        name="file"
 		        :on-exceed="handleExceed"
 		        :file-list="fileList"
-		        accept=".doc,.docx"
+		        accept=".doc,.docx,.pdf"
 		        multiple v-else>
 		        <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-		        <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
+		        <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx,.pdf</div>
 		      </el-upload>
 					<el-button @click="downloadWord()">下载word文档</el-button>
 					<el-button @click="previewPdf()">预览pdf文档</el-button>

@@ -68,7 +68,7 @@
 					  name="file"
 					  :action="UploadUrl ()"
 					  :on-preview="handlePreview"
-					  accept=".doc,.docx"
+					  accept=".doc,.docx,.pdf"
 					  :on-remove="handleRemove"
 					  :before-remove="beforeRemove"
 					  :on-success="handleSuccess"
@@ -79,7 +79,7 @@
 					  :file-list="fileList">
 					  <div prop="fileCheck" v-show="false">{{fileCheck}}</div>
 					  <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-					  <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx.rar</div>
+					  <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx,.pdf</div>
 					</el-upload>
 				</el-form-item>
 				<el-form-item label="文件上传(压缩文件)" class="fl" style="width: 80%;">

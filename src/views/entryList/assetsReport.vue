@@ -143,12 +143,12 @@
 				</el-form-item>
 				<el-form-item label="文件上传" class="fl" style="display: block;">
 					<el-upload class="upload-demo" ref="upload" name="file" :action="UploadUrl ()" :on-preview="handlePreview"
-					 accept=".doc,.docx" :on-remove="handleRemove"  :on-success="handleSuccess"
+					 accept=".doc,.docx,.pdf" :on-remove="handleRemove"  :on-success="handleSuccess"
 					 :before-remove="beforeRemove" :auto-upload="true" :on-change="handleChange" multiple :limit="1" :on-exceed="handleExceed"
 					 :file-list="fileList">
 						<div prop="fileCheck" v-show="false">{{fileCheck}}</div>
 						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-						<div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div>
+						<div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx,.pdf</div>
 					</el-upload>
 				</el-form-item>
 				<el-form-item label="文件上传(压缩文件)" class="fl" style="width: 80%;">
