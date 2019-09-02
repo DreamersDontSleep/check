@@ -189,7 +189,7 @@
 				// let psData = {"code":"200","count":1,"data":[{"id":1566315115047,"pdfPath":"不","realPath":"/data/apps/service/report-approval-service/upLoad/1566315115047/1566315115047.pdf","uri":"1566315115047/1566315115047.pdf","wordPath":"http://fcpgpre.jstspg.com//rpt/open/1566315115047/1566315115047.pdf"}],"state":"execute sucess"}
 				// console.log(psData)
 				// console.log(psData.code)
-				this.estForm.pdfUri = psData.data[0].wordPath
+				this.estForm.pdfUri = psData.data[0].pdfPath
 				console.log(this.estForm)
 				if (post == "") {
 					this.$message({
