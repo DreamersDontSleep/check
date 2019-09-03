@@ -104,6 +104,16 @@
 						<!-- <el-radio></el-radio>无账面价值 -->
 					</template>
 				</el-form-item>
+				<el-form-item label="产权人:" style="width: 40%;" prop="propertyOwner">
+					<template>
+						<el-input v-model="estateForm.propertyOwner" disabled></el-input>
+					</template>
+				</el-form-item>
+				<el-form-item label="审核员:" style="width: 40%;" prop="checker">
+					<template>
+						<el-input v-model="estateForm.checker"></el-input>
+					</template>
+				</el-form-item>
 				<el-form-item label="文件上传" class="fl" style="width: 80%;">
 					<el-upload class="upload-demo" action="http://fcpgpre.jstspg.com/rpt/index/upLoad" :on-preview="handlePreview"
 					 accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.JPG,.JPEG,.PBG,.GIF,.BMP,.PDF,.doc,.docx" :on-remove="handleRemove"

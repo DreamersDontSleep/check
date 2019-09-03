@@ -8,6 +8,31 @@
 						<el-input value="预评估" disabled></el-input>
 					</template>
 				</el-form-item>
+				<el-form-item label="项目名称:" style="width: 40%;">
+					<template>
+						<el-input v-model="estateForm.projectName" disabled />
+					</template>
+				</el-form-item>
+				<el-form-item label="估价目的:" style="width: 40%;">
+					<template>
+						<el-input v-model="estateForm.assessAim" disabled />
+					</template>
+				</el-form-item>
+				<el-form-item label="产权人:" style="width: 40%;">
+					<template>
+						<el-input v-model="estateForm.propertyOwner" disabled></el-input>
+					</template>
+				</el-form-item>
+				<el-form-item label="建筑面积(m2):" style="width: 40%;">
+					<template>
+						<el-input v-model="estateForm.buildingArea" disabled />
+					</template>
+				</el-form-item>
+				<el-form-item label="评估总价:" style="width: 40%;">
+					<template>
+						<el-input v-model="estateForm.assessTotalPrice" disabled />
+					</template>
+				</el-form-item>
 				<el-form-item label="分公司:" style="width: 40%;">
 					<template>
 						<el-input v-model="estateForm.branchOffice" disabled></el-input>

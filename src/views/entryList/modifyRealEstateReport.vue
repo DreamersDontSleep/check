@@ -171,7 +171,7 @@
 				</el-form-item>
 				<el-form-item label="产权人:" style="width: 40%;">
 					<template>
-						<el-input v-if="lookOrEdit" v-model="estateForm.propertyOwner"></el-input>
+						<el-input v-if="lookOrEdit" v-model="estateForm.propertyOwner" disabled></el-input>
 						<el-input v-else v-model="estateForm.propertyOwner" />
 					</template>
 				</el-form-item>

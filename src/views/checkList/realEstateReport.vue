@@ -126,6 +126,11 @@
 						<el-input v-model="estateForm.serviceCharge" disabled></el-input>
 					</template>
 				</el-form-item>
+				<el-form-item label="产权人:" style="width: 40%;" prop="propertyOwner">
+					<template>
+						<el-input v-model="estateForm.propertyOwner" disabled></el-input>
+					</template>
+				</el-form-item>
 				<el-form-item label="审核员:" style="width: 40%;">
 					<template>
 						<el-input v-model="estateForm.checker" disabled></el-input>

@@ -139,6 +139,16 @@
 						<el-input v-model="estateForm.branchOffice" disabled></el-input>
 					</template>
 				</el-form-item>
+				<el-form-item label="季度:" style="width: 40%;" prop="quarter">
+					<template>
+						<el-input v-model="estateForm.quarter" disabled></el-input>
+					</template>
+				</el-form-item>
+				<el-form-item label="产权人:" style="width: 40%;" prop="propertyOwner">
+					<template>
+						<el-input v-model="estateForm.propertyOwner" disabled></el-input>
+					</template>
+				</el-form-item>
 				<el-form-item label="业务收费:" style="width: 40%;">
 					<template>
 						<el-input v-model="estateForm.serviceCharge" disabled></el-input>
