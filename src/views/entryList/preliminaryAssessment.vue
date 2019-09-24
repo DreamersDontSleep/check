@@ -3,7 +3,7 @@
 		<h3>基本信息</h3>
 		<template>
 			<el-form :model="estateForm" ref="estateForm" :rules="inputRule" label-width="180px">
-				<el-form-item label="业务来源:" style="width: 40%;" prop="reportType">
+				<el-form-item label="报告类型:" style="width: 40%;" prop="reportType">
 					<template>
 						<div v-if="estateForm.reportType == 4">
 							<el-input value="预评估" disabled></el-input>
@@ -165,7 +165,7 @@ export default {
 				}
 			],
 			inputRule:{
-				projectName: [{ required: true, trigger: 'blur', message: '不能为空' }],
+				projectName: [{ required: false, trigger: 'blur', message: '不能为空' }],
 				branchOffice: [{ required: true, trigger: 'blur', message: '不能为空' }],
 				checker: [{ required: true, trigger: 'blur', message: '不能为空' }],
 				assessOrg: [{ required: true, trigger: 'blur', message: '不能为空' }],

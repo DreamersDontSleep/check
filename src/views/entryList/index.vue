@@ -80,7 +80,8 @@
 							<template slot-scope="scope">
 								<div v-if="scope.row.state == 0">未提交</div>
 								<div v-else-if="scope.row.state == 1">待审核</div>
-								<div v-else>已审核</div>
+								<div v-else-if="scope.row.state == 3">已审核（通过）</div>
+								<div v-else-if="scope.row.state == 4">已审核（未通过）</div>
 							</template>
 						</el-table-column>
 						<el-table-column label="报告盖章状态">

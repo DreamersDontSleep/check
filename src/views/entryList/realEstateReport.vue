@@ -462,7 +462,7 @@
 			    this.$refs.estateForm.validate((valid) => {
 			    	if (valid) {
 			    		// alert('submit!');
-			    		console.log(editForm);
+			    		console.log(estateForm);
 			    		this.$router.push({path:'/entryList/print',query:{'contents': estateForm}})
 			    	} else {
 			    		this.$message({

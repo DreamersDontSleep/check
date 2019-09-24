@@ -102,7 +102,7 @@
 						  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">审核通过</span>
 						  </div>
 						  <div v-if="scope.row.state == 4">
-						  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">未提交</span>
+						  	<span style="color: rgba(107, 107, 107, 0.647058823529412);">审核未通过</span>
 						  </div>
 						<!-- {{scope.row.checkResult}} -->
 					  </template>
@@ -113,6 +113,9 @@
 						  审核
 						</span>
 						<span v-if="scope.row.state == 3" @click="linkChange(scope.$index,scope.row,1)" style="color: rgb(51, 153, 204);cursor: pointer;">
+						  查看
+						</span>
+						<span v-if="scope.row.state == 4" @click="linkChange(scope.$index,scope.row,1)" style="color: rgb(51, 153, 204);cursor: pointer;">
 						  查看
 						</span>
 					  </template>
@@ -225,7 +228,7 @@ export default {
 					if( state == "待审核" || state == "" ){
 						state = [1];
 					}else if( state == "已审核" ){
-						state = [3];
+						state = [3,4];
 					}else if( state == "全部" ){
 						state = [1,3];
 					}

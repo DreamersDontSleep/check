@@ -257,9 +257,9 @@
 			checkFail () {
 				let id = this.id;
 				let state = 4;
-				this.$confirm('确认审核未通过吗?', '提示', {
-					type: 'warning'
-				}).then(() => {
+				// this.$confirm('确认审核未通过吗?', '提示', {
+				// 	type: 'warning'
+				// }).then(() => {
 					postCheckId(id,state).then((res) => {
 						// this.listLoading = false;
 						// this.lookFormVisible = true;
@@ -270,9 +270,9 @@
 						this.$router.push({path:'/checkList/index'})
 						console.log(res);
 					});
-				}).catch(() => {
+				// }).catch(() => {
 					
-				});
+				// });
 			},	
 			changeSeal () {
 				let id = this.id
