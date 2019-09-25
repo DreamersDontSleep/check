@@ -4,7 +4,7 @@
 		  <el-form ref="estateForm" :inline="true" :model="estateForm" label-width="180px">
 		    <el-form-item label="报告类型:" style="width: 80%;">
 		      <template>
-		        <el-input v-model="estateForm.reportType" disabled/>
+		        <el-input value="预评估" disabled/>
 		      </template>
 		    </el-form-item>
 			<el-form-item label="项目名称:" style="width: 80%;">

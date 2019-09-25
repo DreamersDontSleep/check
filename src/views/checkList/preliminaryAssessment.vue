@@ -3,7 +3,7 @@
 		<h3>基本信息</h3>
 		<template>
 			<el-form :model="estateForm" ref="estateForm" label-width="180px">
-				<el-form-item label="业务来源:" style="width: 40%;">
+				<el-form-item label="报告类型:" style="width: 40%;">
 					<template>
 						<el-input value="预评估" disabled></el-input>
 					</template>
