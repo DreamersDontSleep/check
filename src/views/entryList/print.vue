@@ -30,10 +30,10 @@
 				</tr>
 				<tr>
 					<td width="16.6%">评估价值</td>
-					<td width="16.6%">{{estForm.valueType}}</td>
-					<td width="16.6%">建筑面积</td>
+					<td width="16.6%">{{estForm.assessTotalPrice}}</td>
+					<td width="16.6%">建筑面积（m²）</td>
 					<td width="16.6%">{{estForm.buildingArea}}</td>
-					<td width="16.6%">土地面积</td>
+					<td width="16.6%">土地面积（m²）</td>
 					<td>{{estForm.floorArea}}</td>
 				</tr>
 				<tr>
@@ -100,7 +100,7 @@
 					<td></td>
 				</tr>
 				<tr>
-					<td colspan="2">审核人签字</td>
+					<td colspan="2">审核人（签字）</td>
 					<td></td>
 					<td></td>
 					<td></td>

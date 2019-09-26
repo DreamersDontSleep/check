@@ -66,22 +66,22 @@
 				</el-form-item>
 				<el-form-item label="建筑面积(m2):" style="width: 40%;" prop="buildingArea">
 					<template>
-						<el-input v-model="estateForm.buildingArea"></el-input>
+						<el-input v-model.number="estateForm.buildingArea"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="土地面积(m2):" style="width: 40%;" prop="floorArea">
 					<template>
-						<el-input v-model="estateForm.floorArea"></el-input>
+						<el-input v-model.number="estateForm.floorArea"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="评估单价(万元):" style="width: 40%;" prop="assessUnitPrice">
 					<template>
-						<el-input v-model="estateForm.assessUnitPrice"></el-input>
+						<el-input v-model.number="estateForm.assessUnitPrice"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="评估总价(万元):" style="width: 40%;" prop="assessTotalPrice">
 					<template>
-						<el-input v-model="estateForm.assessTotalPrice"></el-input>
+						<el-input v-model.number="estateForm.assessTotalPrice"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="委托方:" style="width: 40%;" prop="client">
@@ -301,7 +301,7 @@
 						required: true,
 						trigger: 'blur',
 						message: '不能为空'
-					}],
+					}, { type:'number', message: '必须是数字' }],
 					assessAim: [{
 						required: true,
 						trigger: 'blur',
@@ -316,12 +316,12 @@
 						required: true,
 						trigger: 'blur',
 						message: '不能为空'
-					}],
+					}, { type:'number', message: '必须是数字' }],
 					assessTotalPrice: [{
 						required: true,
 						trigger: 'blur',
 						message: '不能为空'
-					}],
+					}, { type:'number', message: '必须是数字' }],
 					landSite: [{
 						required: true,
 						trigger: 'blur',
@@ -341,7 +341,7 @@
 						required: true,
 						trigger: 'blur',
 						message: '不能为空'
-					}],
+					}, { type:'number', message: '必须是数字' }],
 					client: [{
 						required: true,
 						trigger: 'blur',

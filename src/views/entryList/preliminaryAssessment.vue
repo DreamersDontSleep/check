@@ -29,12 +29,12 @@
 				</el-form-item>
 				<el-form-item label="建筑面积(m2):" style="width: 40%;" prop="buildingArea">
 					<template>
-						<el-input v-model="estateForm.buildingArea"></el-input>
+						<el-input v-model.number="estateForm.buildingArea"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="评估总价(万元):" style="width: 40%;" prop="assessTotalPrice">
 					<template>
-						<el-input v-model="estateForm.assessTotalPrice"></el-input>
+						<el-input v-model.number="estateForm.assessTotalPrice"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="分公司:" style="width: 40%;" prop="branchOffice">
@@ -169,7 +169,9 @@ export default {
 				branchOffice: [{ required: true, trigger: 'blur', message: '不能为空' }],
 				checker: [{ required: true, trigger: 'blur', message: '不能为空' }],
 				assessOrg: [{ required: true, trigger: 'blur', message: '不能为空' }],
-				fileCheck: [ {required: true,trigger: 'blur',message: '不能为空'}]
+				fileCheck: [ {required: true,trigger: 'blur',message: '不能为空'}],
+				buildingArea: [ {required: true,trigger: 'blur',message: '不能为空'}, { type:'number', message: '必须是数字' }],
+				assessTotalPrice: [ {required: true,trigger: 'blur',message: '不能为空'}, { type:'number', message: '必须是数字' }]
 			},
 			testFile: ''
 	  }
