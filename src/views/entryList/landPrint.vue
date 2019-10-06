@@ -32,9 +32,9 @@
 					<td width="16.6%">评估价值（万元）</td>
 					<td width="16.6%">{{estForm.assessTotalPrice}}</td>
 					<td width="16.6%">建筑面积（m²）</td>
-					<td width="16.6%">{{estForm.buildingArea}}</td>
+					<td width="16.6%"></td>
 					<td width="16.6%">土地面积（m²）</td>
-					<td>{{estForm.floorArea}}</td>
+					<td>{{estForm.landArea}}</td>
 				</tr>
 				<tr>
 					<td colspan="6">以下审核人员填写“是、否、有、无”</td>

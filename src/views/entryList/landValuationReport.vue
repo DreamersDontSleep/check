@@ -520,7 +520,7 @@
 					if (valid) {
 						// alert('submit!');
 						console.log(estateForm);
-						this.$router.push({path:'/entryList/print',query:{'contents': estateForm}})
+						this.$router.push({path:'/entryList/landPrint',query:{'contents': estateForm}})
 					} else {
 						this.$message({
 							message: '请输入必填字段!',

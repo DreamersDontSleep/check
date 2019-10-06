@@ -97,6 +97,13 @@ export const asyncRouterMap = [
 			  meta: { title: '打印', icon: '', permissions: [296, 297, 298, 299, 300] }
 			},
 			{
+			  path: 'landPrint',
+			  name: 'LandPrint',
+			  hidden: true,
+			  component: () => import('@/views/entryList/landPrint'),
+			  meta: { title: '打印', icon: '', permissions: [296, 297, 298, 299, 300] }
+			},
+			{
 			  path: 'modifyRealEstateReport',
 			  name: 'ModifyRealEstateReport',
 			  hidden: true,
