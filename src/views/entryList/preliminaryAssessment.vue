@@ -50,7 +50,7 @@
 				<el-form-item label="审核员:" style="width: 40%;" prop="checker">
 					<template>
 						<!-- <el-input v-model="estateForm.assessMethod"></el-input> -->
-						<el-select v-model="estateForm.checker" placeholder="请选择" style="width: 331px;">
+						<el-select v-model="estateForm.checker" filterable placeholder="请选择" style="width: 331px;">
 							<el-option v-for="(item,index) in checkerList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>

@@ -49,7 +49,7 @@
 		      <template>
 		        <el-input v-if="lookOrEdit" v-model="estateForm.checker" disabled/>
 		        <!-- <el-input v-else v-model="estateForm.checker"/> -->
-						<el-select v-else v-model="estateForm.checker" placeholder="请选择" style="width: 331px;">
+						<el-select v-else v-model="estateForm.checker" filterable placeholder="请选择" style="width: 331px;">
 							<el-option v-for="(item,index) in checkerList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>

@@ -91,7 +91,7 @@
 				</el-form-item>
 				<el-form-item label="第一报告人:" style="width: 40%;" prop="firstReporter">
 					<template>
-						<el-select v-model="estateForm.firstReporter" placeholder="请选择" @change="selChange1(estateForm.firstReporter)">
+						<el-select v-model="estateForm.firstReporter" filterable placeholder="请选择" @change="selChange1(estateForm.firstReporter)">
 							<el-option v-for="(item,index) in reportNameList" :key="item.value" :label="item.value" :value="item.value" />
 						</el-select>
 					</template>
@@ -103,7 +103,7 @@
 				</el-form-item>
 				<el-form-item label="参与报告人1:" style="width: 40%;" prop="partReporter1">
 					<template>
-						<el-select v-model="estateForm.partReporter1" placeholder="请选择" @change="selChange2(estateForm.partReporter1)">
+						<el-select v-model="estateForm.partReporter1" filterable placeholder="请选择" @change="selChange2(estateForm.partReporter1)">
 							<el-option v-for="(item,index) in reportNameList" :key="item.value" :label="item.value" :value="item.value" />
 						</el-select>
 					</template>
@@ -115,7 +115,7 @@
 				</el-form-item>
 				<el-form-item label="参与报告人2:" style="width: 40%;" prop="partReporter2">
 					<template>
-						<el-select v-model="estateForm.partReporter2" placeholder="请选择" @change="selChange3(estateForm.partReporter2)">
+						<el-select v-model="estateForm.partReporter2" filterable placeholder="请选择" @change="selChange3(estateForm.partReporter2)">
 							<el-option v-for="(item,index) in reportNameList" :key="item.value" :label="item.value" :value="item.value" />
 						</el-select>
 					</template>
@@ -151,7 +151,7 @@
 				</el-form-item>
 				<el-form-item label="审核员:" style="width: 40%;" prop="checker">
 					<template>
-						<el-select v-model="estateForm.checker" placeholder="请选择">
+						<el-select v-model="estateForm.checker" filterable placeholder="请选择">
 							<el-option v-for="(item,index) in checkerList" :key="item.value" :label="item.label" :value="item.value" />
 						</el-select>
 					</template>
