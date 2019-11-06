@@ -193,13 +193,13 @@
 				<el-form-item label="文件上传" class="fl" style="width: 80%;">
 					<el-upload ref="upload" :action="UploadUrl ()" :on-preview="handlePreview" :on-remove="handleRemove"
 					 :before-remove="beforeRemove" :auto-upload="false" :on-change="handleChange" class="upload-demo" :limit="1" name="file"
-					 :on-exceed="handleExceed" :file-list="fileList" accept=".doc,.docx,.pdf" multiple v-if="lookOrEdit">
+					 :on-exceed="handleExceed" :file-list="fileList" accept=".pdf" multiple v-if="lookOrEdit">
 						<!-- <el-button slot="trigger" size="small" type="primary">选择文件</el-button> -->
 						<!-- <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div> -->
 					</el-upload>
 					<el-upload ref="upload" :action="UploadUrl ()" :on-preview="handlePreview" :on-remove="handleRemove"
 					 :before-remove="beforeRemove" :on-change="handleChange" :on-success="handleSuccess" class="upload-demo" :limit="1"
-					 name="file" :on-exceed="handleExceed" :file-list="fileList" accept=".doc,.docx,.pdf" multiple v-else>
+					 name="file" :on-exceed="handleExceed" :file-list="fileList" accept=".pdf" multiple v-else>
 						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
 						<div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx,.pdf</div>
 					</el-upload>

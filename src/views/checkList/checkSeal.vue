@@ -1,29 +1,31 @@
 <template>
 	<div>
 		<template>
-			<el-button type="warning" @click="button1_click()">重置审批文件</el-button>
-			<!-- <el-button type="primary" @click="button2_click()">关闭文件</el-button> -->
-			<!-- <el-button type="primary" @click="button3_click()">另存文件</el-button> -->
-			<el-button type="primary" @click="button4_click()">添加二维码</el-button>
-			<!-- <el-button type="primary" @click="button5_click()">上传盖章文件</el-button> -->
-			<el-button type="success" @click="checkSuccess()">审批通过</el-button>
-			<!-- <el-button type="success" @click="buttonTest()">test</el-button> -->
-			<el-button type="success" @click="checkSuccessAndSeal()">审批通过并转让盖章</el-button>
-			<el-select style="width: 250px;" placeholder="请选择" v-model="seal" v-show="sealFormVisible">
-			  <el-option v-for="(item,index) in sealList"
-			  :key="item.value"
-			  :label="item.label"
-			  :value="item.value"/>
-			  </el-option>
-			</el-select>
-			<el-button type="primary" @click="changeSeal()" v-show="sealFormVisible">确定</el-button>
-			<el-button type="danger" @click="checkFail()">审批不通过</el-button>
-			<el-button type="danger" @click="checkBack()">返回</el-button>
-			<el-form style='margin-top: 60px;margin-bottom: 60px;'>
-				<el-form-item label="审核意见:" style="display: block;">
-					<el-input type="textarea" v-model="remark" style="width: 331px;"></el-input>
-				</el-form-item>
-			</el-form>
+			<div>
+				<el-button type="warning" @click="button1_click()">重置审批文件</el-button>
+				<!-- <el-button type="primary" @click="button2_click()">关闭文件</el-button> -->
+				<!-- <el-button type="primary" @click="button3_click()">另存文件</el-button> -->
+				<el-button type="primary" @click="button4_click()">添加二维码</el-button>
+				<!-- <el-button type="primary" @click="button5_click()">上传盖章文件</el-button> -->
+				<el-button type="success" @click="checkSuccess()">审批通过</el-button>
+				<!-- <el-button type="success" @click="buttonTest()">test</el-button> -->
+				<el-button type="success" @click="checkSuccessAndSeal()">审批通过并转让盖章</el-button>
+				<el-select style="width: 250px;" placeholder="请选择" v-model="seal" v-show="sealFormVisible">
+				  <el-option v-for="(item,index) in sealList"
+				  :key="item.value"
+				  :label="item.label"
+				  :value="item.value"/>
+				  </el-option>
+				</el-select>
+				<el-button type="primary" @click="changeSeal()" v-show="sealFormVisible">确定</el-button>
+				<el-button type="danger" @click="checkFail()">审批不通过</el-button>
+				<el-button type="danger" @click="checkBack()">返回</el-button>
+				<el-form style='margin-top: 60px;margin-bottom: 60px;'>
+					<el-form-item label="审核意见:" style="display: block;">
+						<el-input type="textarea" v-model="remark" style="width: 331px;"></el-input>
+					</el-form-item>
+				</el-form>
+			</div>
 			<div style="min-width:900px; width:74%;margin-left: 100px;z-index: -1;">
 				<object classid="CLSID:358327D8-B2C5-402F-B1F5-DD89FAA68BFF" id="ShareSunReaderSDK" style="height: 800px;z-index: -1; width:108%; margin-top: 0px;"
 				 align="right">

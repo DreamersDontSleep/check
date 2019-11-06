@@ -75,7 +75,7 @@
 		        name="file"
 		        :on-exceed="handleExceed"
 		        :file-list="fileList"
-		        accept=".doc,.docx,.pdf"
+		        accept=".pdf"
 		        multiple  v-if="lookOrEdit">
 		        <!-- <el-button slot="trigger" size="small" type="primary">选择文件</el-button> -->
 		        <!-- <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx</div> -->
@@ -93,7 +93,7 @@
 				  name="file"
 				  :on-exceed="handleExceed"
 				  :file-list="fileList"
-				  accept=".doc,.docx,.pdf"
+				  accept=".pdf"
 				  multiple v-else>
 				  <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
 				  <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx,.pdf</div>

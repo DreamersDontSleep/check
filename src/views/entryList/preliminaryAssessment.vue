@@ -68,7 +68,7 @@
 					  name="file"
 					  :action="UploadUrl ()"
 					  :on-preview="handlePreview"
-					  accept=".doc,.docx,.pdf"
+					  accept=".pdf"
 					  :on-remove="handleRemove"
 					  :before-remove="beforeRemove"
 					  :on-success="handleSuccess"
@@ -79,7 +79,7 @@
 					  :file-list="fileList">
 					  <div prop="fileCheck" v-show="false">{{fileCheck}}</div>
 					  <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
-					  <div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx,.pdf</div>
+					  <div slot="tip" class="el-upload__tip">支持扩展名：.pdf</div>
 					</el-upload>
 				</el-form-item>
 				<el-form-item label="文件上传(压缩文件)" class="fl" style="width: 80%;">
@@ -167,6 +167,8 @@ export default {
 			inputRule:{
 				projectName: [{ required: false, trigger: 'blur', message: '不能为空' }],
 				branchOffice: [{ required: true, trigger: 'blur', message: '不能为空' }],
+				assessAim: [{ required: true, trigger: 'blur', message: '不能为空' }],
+				propertyOwner: [{ required: true, trigger: 'blur', message: '不能为空' }],
 				checker: [{ required: true, trigger: 'blur', message: '不能为空' }],
 				assessOrg: [{ required: true, trigger: 'blur', message: '不能为空' }],
 				fileCheck: [ {required: true,trigger: 'blur',message: '不能为空'}],
