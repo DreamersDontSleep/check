@@ -30,11 +30,6 @@
 					<el-table ref="table" :data="totalPriceEvaluation.slice((currentPage-1)*pageSize,currentPage*pageSize)"
 					 tooltip-effect="dark" border stripe style="width: 95%;margin: 0 auto;">
 						<el-table-column type="index" label="序号" width="60" />
-						<el-table-column label="主体序号" style="display: none;">
-							<template slot-scope="scope" style="display: none;">
-								{{ scope.row.id }}
-							</template>
-						</el-table-column>
 						<el-table-column label="申请编号" align="center">
 							<template slot-scope="scope">
 								{{ scope.row.applicationNum }}
@@ -50,25 +45,9 @@
 								{{ scope.row.assessAim }}
 							</template>
 						</el-table-column>
-						<el-table-column label="报告类型">
+						<el-table-column label="产权人">
 							<template slot-scope="scope">
-								<div v-if="scope.row.reportType == 1">
-									<span style="color: rgba(107, 107, 107, 0.647058823529412);">房地产估价报告</span>
-								</div>
-								<div v-if="scope.row.reportType == 2">
-									<span style="color: #FFAA00;">土地估价报告</span>
-								</div>
-								<div v-if="scope.row.reportType == 3">
-									<span style="color: rgba(255, 0, 0, 0.647058823529412);">资产评估报告</span>
-								</div>
-								<div v-if="scope.row.reportType == 4">
-									<span style="color: rgba(255, 0, 0, 0.647058823529412);">预评估</span>
-								</div>
-							</template>
-						</el-table-column>
-						<el-table-column label="申请人">
-							<template slot-scope="scope">
-								{{ scope.row.applicant }}
+								{{ scope.row.propertyOwner }}
 							</template>
 						</el-table-column>
 						<el-table-column label="申请时间">
@@ -87,13 +66,13 @@
 						<el-table-column label="报告盖章状态">
 							<template slot-scope="scope">
 								<div v-if="scope.row.stampState == '' || scope.row.stampState == null || scope.row.stampState == 0">
-									<span style="color: rgba(107, 107, 107, 0.647058823529412);">未盖章</span>
+									<span style="color: #999">未盖章</span>
 								</div>
 								<div v-if="scope.row.stampState == 1">
 									<span style="color: rgba(107, 107, 107, 0.647058823529412);">已转交待盖章</span>
 								</div>
 								<div v-if="scope.row.stampState == 2">
-									<span style="color: rgba(107, 107, 107, 0.647058823529412);">已盖章</span>
+									<span style="color: #666">已盖章</span>
 								</div>
 							</template>
 						</el-table-column>

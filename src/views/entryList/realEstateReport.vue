@@ -416,7 +416,8 @@
 						required: true,
 						trigger: 'blur',
 						message: '不能为空'
-					}]
+					}],
+					propertyOwner: [{ required: true, trigger: 'blur', message: '不能为空' }],
 				},
 				arr1: [],
 				nameList: '',

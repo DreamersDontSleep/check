@@ -15,6 +15,11 @@
 						<el-input v-model="estateForm.projectName"></el-input>
 					</template>
 				</el-form-item>
+				<el-form-item label="估价报告编号:" style="width: 40%;" prop="assessReportNum">
+					<template>
+						<el-input v-model="estateForm.assessReportNum"></el-input>
+					</template>
+				</el-form-item>
 				<el-form-item label="估价目的:" style="width: 40%;" prop="assessAim">
 					<template>
 						<el-select v-model="estateForm.assessAim" placeholder="请选择">
@@ -110,6 +115,7 @@ export default {
 			estateForm:{
 				reportType: '4',
 				branchOffice: '',
+				assessReportNum: '苏天房估',
 				checker: '',
 				applicant: '',
 				login: '',
@@ -166,6 +172,7 @@ export default {
 			],
 			inputRule:{
 				projectName: [{ required: false, trigger: 'blur', message: '不能为空' }],
+				assessReportNum: [{ required: false, trigger: 'blur', message: '不能为空' }],
 				branchOffice: [{ required: true, trigger: 'blur', message: '不能为空' }],
 				assessAim: [{ required: true, trigger: 'blur', message: '不能为空' }],
 				propertyOwner: [{ required: true, trigger: 'blur', message: '不能为空' }],

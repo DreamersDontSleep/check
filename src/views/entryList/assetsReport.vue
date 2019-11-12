@@ -269,7 +269,8 @@
 					debtFee: [ {required: true,trigger: 'blur',message: '不能为空'}],
 					checker: [{required: true,trigger: 'blur',message: '不能为空'}],
 					netAssets: [ {required: true,trigger: 'blur',message: '不能为空'}],
-					fileCheck: [ {required: true,trigger: 'blur',message: '不能为空'}]
+					fileCheck: [ {required: true,trigger: 'blur',message: '不能为空'}],
+					propertyOwner: [{ required: true, trigger: 'blur', message: '不能为空' }],
 				}
 			}
 		},

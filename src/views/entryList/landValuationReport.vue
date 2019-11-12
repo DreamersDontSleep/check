@@ -477,7 +477,8 @@
 						message: '不能为空'
 					}],
 					fileCheck: [ {required: true,trigger: 'blur',message: '不能为空'}],
-					quarter: [ {required: true,trigger: 'blur',message: '不能为空'}]
+					quarter: [ {required: true,trigger: 'blur',message: '不能为空'}],
+					propertyOwner: [{ required: true, trigger: 'blur', message: '不能为空' }],
 				},
 				arr1:[],
 				nameList: '',
