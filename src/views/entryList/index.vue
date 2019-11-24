@@ -45,9 +45,25 @@
 								{{ scope.row.assessAim }}
 							</template>
 						</el-table-column>
-						<el-table-column label="产权人">
+						<el-table-column  label="报告类型">
+						  <template slot-scope="scope">
+							<div v-if="scope.row.reportType == 1">
+								<span style="color: rgba(107, 107, 107, 0.647058823529412);">房地产估价报告</span>
+							</div>
+							<div v-if="scope.row.reportType == 2">
+								<span style="color: #FFAA00;">土地估价报告</span>
+							</div>
+							<div v-if="scope.row.reportType == 3">
+								<span style="color: rgba(255, 0, 0, 0.647058823529412);">资产评估报告</span>
+							</div>
+							<div v-if="scope.row.reportType == 4">
+								<span style="color: rgba(255, 0, 0, 0.647058823529412);">预评估</span>
+							</div>
+						  </template>
+						</el-table-column>
+						<el-table-column label="申请人">
 							<template slot-scope="scope">
-								{{ scope.row.propertyOwner }}
+								{{ scope.row.applicant }}
 							</template>
 						</el-table-column>
 						<el-table-column label="申请时间">
@@ -72,7 +88,7 @@
 									<span style="color: rgba(107, 107, 107, 0.647058823529412);">已转交待盖章</span>
 								</div>
 								<div v-if="scope.row.stampState == 2">
-									<span style="color: #666">已盖章</span>
+									<span style="color: red">已盖章</span>
 								</div>
 							</template>
 						</el-table-column>

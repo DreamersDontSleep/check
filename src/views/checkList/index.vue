@@ -59,7 +59,12 @@
 						{{scope.row.branchOffice}}
 					  </template>
 					</el-table-column>
-					<el-table-column label="评估目的">
+					<el-table-column label="产权人">
+						<template slot-scope="scope">
+							{{ scope.row.propertyOwner }}
+						</template>
+					</el-table-column>
+					<!-- <el-table-column label="评估目的">
 					  <template slot-scope="scope">
 						{{scope.row.assessAim}}
 					  </template>
@@ -84,7 +89,7 @@
 					  <template slot-scope="scope">
 						{{scope.row.applicant}}
 					  </template>
-					</el-table-column>
+					</el-table-column> -->
 					<el-table-column label="申请时间">
 					  <template slot-scope="scope">
 						{{scope.row.applicationDate}}
