@@ -189,7 +189,7 @@ export default {
 	  ...mapGetters(['name','userInfo'])
     },
 	mounted() {
-		this.estateForm.branchOffice = this.userInfo.department
+		// this.estateForm.branchOffice = this.userInfo.department
 		this.estateForm.applicant = this.name;
 		this.estateForm.login = localStorage.getItem('userId')
 		this.getTreeData()
@@ -197,7 +197,28 @@ export default {
 	methods:{
 		getTreeData(){
 			getDictionary().then( (res) => {
-				console.log(res);
+				let me = this
+				console.log("权限数据源",res);
+				// 重新匹配分公司数据
+				let depData = res.data.fgs
+				let depArr = [];
+				for(let i = 0; i < depData.length; i++){
+					let obj = {id: '',name: ''};
+					console.log(depData[0])
+						for(let key in depData[i]){
+							obj.id = depData[i][key][0].value;
+							obj.name = depData[i][key][1].value;
+							depArr.push(obj);
+						}
+				}
+				console.log("城市数据",depArr)
+				depArr.forEach(function(e) {
+					if (e.id == me.userInfo.department) {
+						me.estateForm.branchOffice = e.name
+					}else{
+						me.estateForm.branchOffice = me.userInfo.department
+					}
+				})
 				this.checkerList = res.data.sh2019[0].list
 				this.assess = res.data.fdc2019[2].gjmd.reverse()
 				// console.log(this.assess)

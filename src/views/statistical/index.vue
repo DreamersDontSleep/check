@@ -235,7 +235,7 @@
 					"branchOffice": "",
 					"reportType": "",
 					"assessAim": "",
-					"applicationDate": "2019-08-12 19:59:50"
+					"applicationDate": ""
 				}
 				// if (localStorage.getItem('userId') == "root") {
 				// 	para = {

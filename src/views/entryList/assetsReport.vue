@@ -284,9 +284,30 @@
 		},
 		methods: {
 			getTreeData(){
-				this.estateForm.branchOffice = this.userInfo.department
 				getDictionary().then( (res) => {
-					console.log(res);
+					let that = this;
+					console.log("权限数据源",res);
+					// 重新匹配分公司数据
+					let depData = res.data.fgs
+					let depArr = [];
+					for(let i = 0; i < depData.length; i++){
+						let obj = {id: '',name: ''};
+						console.log(depData[0])
+							for(let key in depData[i]){
+								obj.id = depData[i][key][0].value;
+								obj.name = depData[i][key][1].value;
+								depArr.push(obj);
+							}
+					}
+					console.log("城市数据",depArr)
+					depArr.forEach(function(e) {
+						if (e.id == that.userInfo.department) {
+							that.estateForm.branchOffice = e.name
+						}else{
+							that.estateForm.branchOffice = that.userInfo.department
+						}
+					})
+					
 					this.assessAimList = res.data.zzpg2019[4].zcpgmd.reverse()
 					this.assessObjList = res.data.zzpg2019[3].zcpgdx.reverse()
 					this.valueTypeList = res.data.zzpg2019[2].zcjzlx.reverse()

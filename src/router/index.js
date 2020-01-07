@@ -220,5 +220,18 @@ export const asyncRouterMap = [
 	    }
 	  ]
 	},
+	{
+		path: '/dataImport',
+		component: Layout,
+		meta: { title: '数据导入', permissions: [305] },
+		children: [
+		  {
+		    path: 'dataImport/index',
+		    name: 'DataImport',
+		    component: () => import('@/views/dataImport/index'),
+		    meta: { title: '数据导入', permissions: [305] }
+		  }
+		]
+	},
   { path: '*', redirect: '/404', hidden: true }
 ]
