@@ -373,7 +373,7 @@
 				console.log(file, fileList)
 			},
 			UploadUrl() {
-				let upUrl = 'http://fcpgpre.jstspg.com/rpt/index/upLoad'
+				let upUrl = 'rpt/index/upLoad'
 				return upUrl
 			},
 			handleChange(file, fileList) {

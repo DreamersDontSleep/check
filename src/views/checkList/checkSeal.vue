@@ -156,16 +156,9 @@
 				
 			},
 			button4_click() {
-				var XSReaderSDK1 = document.getElementById("ShareSunReaderSDK");
-			    // var content = prompt("请输入二维码内容", "http://www.17sucai.com/pins/27562.html");
-			    // var page = prompt("请输入添加二维码的页码（从0开始）", "0");           
+				var XSReaderSDK1 = document.getElementById("ShareSunReaderSDK");       
 			    var X = prompt("请输入添加二维码左边距", "500");
 			    var Y = prompt("请输入添加二维码的底部距离", "740");
-			    // var hight = prompt("请输入添加二维码的高度", "100");
-			    // var width = prompt("请输入添加二维码的宽度", "100");
-			    // var fTransparency = prompt("请输入二维码透明度", "200");
-			    // var fZoom = prompt("请输入二维码旋转角度", "0");
-			    // alert(XSReaderSDK1.FX_SignPDF_AddGenerateCode(content, page, X, Y, hight, width, fTransparency, fZoom));
 				let codeUrl = "http://fcpgpre.jstspg.com/code?a=" + Math.random() + "&id=" + this.id + "&reportType=" + this.reportType
 				console.log(codeUrl)
 				XSReaderSDK1.FX_SignPDF_AddGenerateCode(codeUrl, "0", X,Y, "100", "100", "200", "0");
@@ -177,20 +170,14 @@
 				alert(svUrl)
 			},
 			button5_click () {
-				// this.button3_click();
 				var XSReaderSDK1 = document.getElementById("ShareSunReaderSDKs");
 				var sdk = document.getElementById("ShareSunReaderSDK");
 				XSReaderSDK1.XSUnlock("EA27C68108D462FC3C2829E937836D69B3ACC6C8070C919FB3CD72646A3FAAAE0C0D256FC9B00EA0A1126E7ABE143972833DFCCB4B4");
 				let svUrl =  sdk.XSReadDocName()
-				// svUrl = svUrl + '.pdf'
-				// alert(svUrl)
 				var postUrl = "http://fcpgpre.jstspg.com/rpt/index/upLoad/";
 				var post = XSReaderSDK1.XSPostFileByHttpEX(postUrl, svUrl);
 				console.log(post)
 				let psData = JSON.parse(post)
-				// let psData = {"code":"200","count":1,"data":[{"id":1566315115047,"pdfPath":"不","realPath":"/data/apps/service/report-approval-service/upLoad/1566315115047/1566315115047.pdf","uri":"1566315115047/1566315115047.pdf","wordPath":"http://fcpgpre.jstspg.com//rpt/open/1566315115047/1566315115047.pdf"}],"state":"execute sucess"}
-				// console.log(psData)
-				// console.log(psData.code)
 				this.estForm.pdfUri = psData.data[0].pdfPath
 				console.log(this.estForm)
 				if (post == "") {
@@ -209,14 +196,6 @@
 						message:'盖章成功!', 
 						type: 'success'
 					})
-					// let para = {
-					// 	"stampState": 2,
-					// 	"id": this.id,
-					// 	"remark":this.remark
-					// }
-					// postUpdateRemark(para).then( (res) => {
-					// 	console.log(res)
-					// })
 				}
 			},
 			checkBack(){
@@ -225,9 +204,6 @@
 			checkSuccess () {
 				let id = this.id;
 				let state = 3;
-				// this.$confirm('确认审核通过吗?', '提示', {
-				// 	type: 'warning'
-				// }).then(() => {
 				this.button5_click()
 				let para = {
 					"stampState": 2,
@@ -238,7 +214,6 @@
 					console.log(res)
 				})
 				postCheckId(id,state).then((res) => {
-					// this.fetchProjectList()
 					console.log(res);
 					if(res.code == 200){
 						this.estForm.state = 3
@@ -250,31 +225,19 @@
 									message: '成功!',
 									type: 'success'
 								})
+								this.$router.push({path:'/checkList/index'})
 							}
 						})
 					}
-					// this.$router.push({path:'/checkList/index'})
 				});
 			},
 			checkFail () {
 				let id = this.id;
 				let state = 4;
-				// this.$confirm('确认审核未通过吗?', '提示', {
-				// 	type: 'warning'
-				// }).then(() => {
 					postCheckId(id,state).then((res) => {
-						// this.listLoading = false;
-						// this.lookFormVisible = true;
-						// this.searchForm = res.body;
-						// console.log(res.body);
-						// this.fetchProjectList();
-						// this.fetchProjectList()
 						this.$router.push({path:'/checkList/index'})
 						console.log(res);
 					});
-				// }).catch(() => {
-					
-				// });
 			},	
 			changeSeal () {
 				let id = this.id

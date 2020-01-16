@@ -174,7 +174,7 @@
 					<el-upload class="upload-demo" ref="upload2" name="file" :action="UploadUrl ()" :on-preview="handlePreview"
 					 accept=".rar,.zip" :on-remove="handleRemove" :before-remove="beforeRemove" :auto-upload="true" :on-success="handleSuccess2"
 					 :on-change="handleChange2" multiple :limit="1" :on-exceed="handleExceed" :file-list="fileList2">
-						<div prop="fileCheck" v-show="false">{{fileCheck}}</div>
+						<div prop="fileCheck2" v-show="false">{{fileCheck2}}</div>
 						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
 						<div slot="tip" class="el-upload__tip">支持扩展名：.rar,.zip</div>
 					</el-upload>
@@ -252,6 +252,7 @@
 					"value": "分公司2"
 				}],
 				fileCheck: '',
+				fileCheck2: '',
 				assessMethodList: '',
 				valueTypeList: '',
 				firstReporterList: '',
@@ -510,7 +511,7 @@
 				this.editFormVisible = true;
 			},
 			UploadUrl() {
-				return "http://fcpgpre.jstspg.com/rpt/index/upLoad"
+				return "rpt/index/upLoad"
 			},
 			submitUpload() {
 				this.UploadUrl()
@@ -528,7 +529,7 @@
 			handleChange2(file, fileList) {
 				this.fileList2 = fileList;
 				this.file = file;
-				this.fileCheck = fileList
+				this.fileCheck2 = fileList
 				console.log(file)
 			},
 			submitForm(estateForm) {
