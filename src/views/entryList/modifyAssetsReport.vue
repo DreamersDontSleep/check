@@ -373,8 +373,15 @@
 				console.log(file, fileList)
 			},
 			UploadUrl() {
-				let upUrl = 'rpt/index/upLoad'
-				return upUrl
+				let $url = window.location.href.substring(7,11);
+				console.log($url)
+				if($url == "loca"){
+					return "rpt/index/upLoad"
+				}else if($url == "fcpg"){
+					return "http://fcpgpre.jstspg.com/rpt/index/upLoad"
+				}else{
+					return "http://bgsp.jstspg.com/rpt/index/upLoad"
+				}
 			},
 			handleChange(file, fileList) {
 				// this.fileList = fileList

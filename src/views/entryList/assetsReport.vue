@@ -332,7 +332,15 @@
 				this.editFormVisible = true;
 			},
 			UploadUrl() {
-				return "rpt/index/upLoad"
+				let $url = window.location.href.substring(7,11);
+				console.log($url)
+				if($url == "loca"){
+					return "rpt/index/upLoad"
+				}else if($url == "fcpg"){
+					return "http://fcpgpre.jstspg.com/rpt/index/upLoad"
+				}else{
+					return "http://bgsp.jstspg.com/rpt/index/upLoad"
+				}
 			},
 			submitUpload() {
 				this.$refs.upload.submit();
