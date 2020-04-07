@@ -73,7 +73,7 @@ export const asyncRouterMap = [
         name: 'RealEstateReport',
         hidden: true,
         component: () => import('@/views/entryList/realEstateReport'),
-        meta: { title: '房地产估计报告', icon: '', permissions: [296, 297, 298, 299, 300] }
+        meta: { title: '房地产估价报告', icon: '', permissions: [296, 297, 298, 299, 300] }
       },
       {
         path: 'assetsReport',
@@ -169,7 +169,7 @@ export const asyncRouterMap = [
         name: 'RealEstateReport',
         hidden: true,
         component: () => import('@/views/checkList/realEstateReport'),
-        meta: { title: '房地产估计报告', icon: '', permissions: [302, 303] }
+        meta: { title: '房地产估价报告', icon: '', permissions: [302, 303] }
       },
       {
         path: 'assetsReport',

@@ -78,7 +78,7 @@
 						</el-select>
 					</template>
 				</el-form-item>
-				<el-form-item label="评估结论(万元):" style="width: 40%;" prop="assessResult">
+				<el-form-item label="评估结论(元):" style="width: 40%;" prop="assessResult">
 					<template>
 						<el-input v-model="estateForm.assessResult"></el-input>
 					</template>
@@ -88,7 +88,7 @@
 						<el-date-picker v-model="estateForm.assessDate" type="date" placeholder="选择日期时间" value-format="yyyy-MM-dd"></el-date-picker>
 					</template>
 				</el-form-item>
-				<el-form-item label="实际收费金额(万元):" style="width: 40%;" prop="actualFee">
+				<el-form-item label="实际收费金额(元):" style="width: 40%;" prop="actualFee">
 					<template>
 						<el-input v-model="estateForm.actualFee"></el-input>
 					</template>
@@ -139,6 +139,11 @@
 							<el-option v-for="(item,index) in checkerList" :key="item.value" :label="item.label" :value="item.value">
 							</el-option>
 						</el-select>
+					</template>
+				</el-form-item>
+				<el-form-item label="文件名:" style="width: 40%;" prop="realName">
+					<template>
+						<el-input v-model="estateForm.realName"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="文件上传" class="fl" style="display: block;">
@@ -206,7 +211,8 @@
 					pdfUri: '',
 					wordUri: '',
 					upFileURI: '',
-					assessObj: ''
+					assessObj: '',
+				realName: ''
 				},
 				checkForm: {
 					checkAccount: '12个'
@@ -338,7 +344,7 @@
 					return "rpt/index/upLoad"
 				}else if($url == "fcpg"){
 					return "http://fcpgpre.jstspg.com/rpt/index/upLoad"
-				}else{
+				}else if($url == 'bgsp'){
 					return "http://bgsp.jstspg.com/rpt/index/upLoad"
 				}
 			},
@@ -422,6 +428,7 @@
 					console.log(this.estateForm)
 					this.estateForm.pdfUri = response.data[0].pdfPath
 					this.estateForm.wordUri = response.data[0].wordPath
+					this.estateForm.realName = file.name.substring(0,file.name.length-4)
 				} else {
 					return;
 				}

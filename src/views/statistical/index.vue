@@ -1,41 +1,72 @@
 <template>
 	<div>
-		<el-form ref="editForm" :inline="true" :model="editForm" style="float: left;margin-left: 20px;">
+		<el-form ref="editForm1" :inline="true" :model="editForm1" style="margin-left: 50px;">
+			<!-- <el-form-item label="统计条件选择:">
+				<el-select v-model="editForm1.condition" @change="onselected" style="width: 250px;" placeholder="请选择">
+					<el-option v-for="(item,index) in conditionType" :key="item.value" :label="item.label" :value="item.value" />
+				</el-select>
+			</el-form-item> -->
 			<el-form-item label="分公司名称:">
 				<template>
-					<el-select v-model="editForm.branchName" style="width: 250px;" placeholder="请选择">
+					<el-select v-model="editForm1.branchName" style="width: 250px;" placeholder="请选择">
 						<el-option v-for="(item,index) in companySel" :key="item.name" :label="item.name" :value="item.name" />
 					</el-select>
 				</template>
 			</el-form-item>
 			<el-form-item label="报告名称:">
 				<template>
-					<el-select v-model="editForm.status" style="width: 250px;" placeholder="请选择">
+					<el-select v-model="editForm1.status" style="width: 250px;" placeholder="请选择">
 						<el-option v-for="(item,index) in checkOr" :key="item.value" :label="item.label" :value="item.value" />
 					</el-select>
 				</template>
 			</el-form-item>
 			<el-form-item label="估价目的:">
 				<template>
-					<el-select v-model="editForm.status" style="width: 250px;" placeholder="请选择">
-						<el-option v-for="(item,index) in checkOr" :key="item.value" :label="item.label" :value="item.value" />
+					<el-select v-model="editForm1.method" style="width: 250px;" placeholder="请选择">
+						<el-option v-for="(item,index) in assessAimList" :key="item.value" :label="item.label" :value="item.value" />
 					</el-select>
 				</template>
 			</el-form-item>
-			<!-- <el-form-item label="时间:">
-				<template>
-					<el-select v-model="editForm.status" style="width: 250px;" placeholder="请选择">
-						<el-option v-for="(item,index) in checkOr" :key="item.value" :label="item.label" :value="item.value" />
-					</el-select>
-				</template>
-			</el-form-item> -->
 			<el-form-item>
-				<el-button @click="searchTable(editForm)">搜索</el-button>
+				<el-button @click="searchTable1(editForm1)">搜索</el-button>
 			</el-form-item>
 		</el-form>
 		<div>
 			<template>
+				<div>
+					<el-table :data="sticData" style="width: 100%;margin-bottom: 30px;">
+						<el-table-column prop="reportType" label="报告名称" style="width: 20%">
+							<template slot-scope="scope">
+								<div v-if="scope.row.reportType == 1">
+									<span style="color: rgba(107, 107, 107, 0.647058823529412);">房地产估价报告</span>
+								</div>
+								<div v-if="scope.row.reportType == 2">
+									<span style="color: #FFAA00;">土地估价报告</span>
+								</div>
+								<div v-if="scope.row.reportType == 3">
+									<span style="color: rgba(255, 0, 0, 0.647058823529412);">资产评估报告</span>
+								</div>
+								<div v-if="scope.row.reportType == 4">
+									<span style="color: rgba(255, 0, 0, 0.647058823529412);">预评估（房地产）</span>
+								</div>
+								<div v-if="scope.row.reportType == 5">
+									<span style="color: rgba(255, 0, 0, 0.647058823529412);">预评估（土地）</span>
+								</div>
+							</template>
+						</el-table-column>
+						<el-table-column prop="num" label="报告数量" style="width: 20%">
+						</el-table-column>
+						<el-table-column prop="floorArea" label="土地面积合计" style="width: 20%">
+						</el-table-column>
+						<el-table-column prop="buildingArea" label="建筑面积合计" style="width: 20%">
+						</el-table-column>
+						<el-table-column prop="assessTotalPrice" label="评估总值合计" style="width: 20%">
+						</el-table-column>
+
+					</el-table>
+				</div>
 				<div class="table">
+
 					<el-table ref="table" :data="totalPriceEvaluation.slice((currentPage-1)*pageSize,currentPage*pageSize)"
 					 tooltip-effect="dark" border stripe style="width: 95%;margin: 0 auto;">
 						<el-table-column type="index" label="序号" width="60" />
@@ -82,12 +113,12 @@
 						</el-table-column>
 						<el-table-column label="面积">
 							<template slot-scope="scope">
-								{{ scope.row.applicationDate }}
+								{{ scope.row.floorArea }}
 							</template>
 						</el-table-column>
 						<el-table-column label="评估值">
 							<template slot-scope="scope">
-								{{ scope.row.applicationDate }}
+								{{ scope.row.assessTotalPrice }}
 							</template>
 						</el-table-column>
 						<el-table-column label="收费">
@@ -118,7 +149,8 @@
 		postCheckId,
 		getReportData,
 		getDictionary,
-		postStaticsList
+		postStaticsList,
+		postStaticsData
 	} from '@/api/entry'
 	import {
 		mapGetters
@@ -141,6 +173,16 @@
 					status: '',
 					linkSel: ''
 				},
+				editForm1: {
+					// condition: '',
+					branchName: '',
+					status: '',
+					method: ''
+				},
+				sticData: [],
+				companyFlag: false,
+				reportFlag: false,
+				methodFlag: false,
 				checkForm: {
 					checkAccount: '12个'
 				},
@@ -158,21 +200,31 @@
 					name: '',
 					url: ''
 				}],
+				conditionType: [{
+					'label': '分公司名称统计',
+					'value': '1'
+				}, {
+					'label': '按报告类型累计',
+					'value': '2'
+				}, {
+					'label': '按估价目的统计',
+					'value': '3'
+				}, ],
 				checkOr: [{
-					'label': '全部',
-					'value': '全部'
+					'label': '房地产估价报告',
+					'value': '1'
 				}, {
-					'label': '待审核',
-					'value': '待审核'
+					'label': '土地估价报告',
+					'value': '2'
 				}, {
-					'label': '未审核',
-					'value': '未审核'
+					'label': '资产评估报告',
+					'value': '3'
 				}, {
-					'label': '审核通过',
-					'value': '审核通过'
+					'label': '预评估(房地产)',
+					'value': '4'
 				}, {
-					'label': '审核不通过',
-					'value': '审核不通过'
+					'label': '预评估(土地)',
+					'value': '5'
 				}],
 				linkArr: [{
 					'label': '房地产估价报告',
@@ -193,8 +245,23 @@
 					'label': '出让',
 					'value': '出让'
 				}, {
-					'label': '不出让',
-					'value': '不出让'
+					'label': '转让',
+					'value': '转让'
+				}, {
+					'label': '抵押',
+					'value': '抵押'
+				}, {
+					'label': '征收',
+					'value': '征收'
+				}, {
+					'label': '司法',
+					'value': '司法'
+				}, {
+					'label': '咨询',
+					'value': '咨询'
+				}, {
+					'label': '其他',
+					'value': '其他'
 				}],
 				assessMethodList: [{
 					'label': '出让',
@@ -209,7 +276,10 @@
 				}, {
 					'label': '不出让',
 					'value': '不出让'
-				}]
+				}],
+				total1: 0,
+				total2: 0,
+				total3: 0
 			}
 		},
 		computed: {
@@ -237,33 +307,27 @@
 					"assessAim": "",
 					"applicationDate": ""
 				}
-				// if (localStorage.getItem('userId') == "root") {
-				// 	para = {
-				// 		"state": [],
-				// 		"branchOffice": "",
-				// 		"login": "",
-				// 		"applicant": "",
-				// 		"checker": ""
-				// 	}
-				// } else {
-				// 	para = {
-				// 		"state": [],
-				// 		"branchOffice": branchOffice,
-				// 		"login": "",
-				// 		"applicant": this.name,
-				// 		"checker": ""
-				// 	}
-				// }
-				
 				postStaticsList(para).then((res) => {
 					let stArr = res.data.reverse()
 					let me = this
-					stArr.forEach(function(e){
+					stArr.forEach(function(e) {
 						console.log(e)
-						me.totalPriceEvaluation.push(e.detailReport)
+						if (e.detailReport != null) {
+							me.totalPriceEvaluation.push(e.detailReport)
+							if (e.detailReport.buildingArea != null) {
+								me.total1 = me.total1 + Math.floor(e.detailReport.buildingArea)
+							}
+							if (e.detailReport.serviceCharge != null) {
+								me.total2 = me.total2 + Math.floor(e.detailReport.serviceCharge)
+							}
+							if (e.detailReport.assessTotalPrice != null) {
+								me.total3 = me.total3 + Math.floor(e.detailReport.assessTotalPrice)
+							}
+						}
+
 					})
 					// this.totalPriceEvaluation = res.data.reverse()
-					console.log(this.totalPriceEvaluation)
+					console.log(me.total1)
 				})
 				getDictionary().then((res) => {
 					let dataList = res
@@ -350,8 +414,37 @@
 					}
 				})
 			},
+			searchTable1(editForm1) {
+				console.log(editForm1)
+				postStaticsData(editForm1).then((res) => {
+					console.log(res)
+					this.sticData = res.data
+				})
+			},
 			newAdd() {
 				this.editFormVisible = true
+			},
+			onselected(value) {
+				console.log(value)
+				if (value == 1) {
+					this.companyFlag = true
+					this.reportFlag = false
+					this.methodFlag = false
+					this.editForm1.status = ''
+					this.editForm1.method = ''
+				} else if (value == 2) {
+					this.companyFlag = false
+					this.reportFlag = true
+					this.methodFlag = false
+					this.editForm1.branchName = ''
+					this.editForm1.method = ''
+				} else if (value == 3) {
+					this.companyFlag = false
+					this.reportFlag = false
+					this.methodFlag = true
+					this.editForm1.branchName = ''
+					this.editForm1.status = ''
+				}
 			},
 			confirmLink(editForm) {
 				let linkVal = editForm.linkSel

@@ -278,7 +278,7 @@ export default {
 				this.$router.push({path:'/checkList/landValuationReport', query: { 'content': row, 'status': num }})
 			}else if(row.reportType == 3){
 				this.$router.push({path:'/checkList/assetsReport', query: { 'content': row, 'status': num }})
-			}else if(row.reportType == 4){
+			}else{
 				this.$router.push({path:'/checkList/preliminaryAssessment', query: { 'content': row, 'status': num }})
 			}
 		},

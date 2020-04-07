@@ -66,7 +66,7 @@
 						<el-input v-model="estateForm.assessMethod" disabled></el-input>
 					</template>
 				</el-form-item>
-				<el-form-item label="评估结论(万元):" style="width: 40%;">
+				<el-form-item label="评估结论(元):" style="width: 40%;">
 					<template>
 						<el-input v-model="estateForm.assessResult" disabled></el-input>
 					</template>
@@ -76,7 +76,7 @@
 						<el-input v-model="estateForm.assessDate" disabled></el-input>
 					</template>
 				</el-form-item>
-				<el-form-item label="实际收费金额(万元):" style="width: 40%;">
+				<el-form-item label="实际收费金额(元):" style="width: 40%;">
 					<template>
 						<el-input v-model="estateForm.actualFee" disabled></el-input>
 					</template>

@@ -29,7 +29,7 @@
 					<td colspan="2">{{estForm.assessEndTime.substring(0,10)}}</td>
 				</tr>
 				<tr>
-					<td width="16.6%">评估价值（万元）</td>
+					<td width="16.6%">评估价值（元）</td>
 					<td width="16.6%">{{estForm.assessTotalPrice}}</td>
 					<td width="16.6%">建筑面积（m²）</td>
 					<td width="16.6%">{{estForm.buildingArea}}</td>

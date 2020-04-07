@@ -5,9 +5,17 @@
 			<el-form :model="estateForm" ref="estateForm" :rules="inputRule" label-width="180px">
 				<el-form-item label="报告类型:" style="width: 40%;" prop="reportType">
 					<template>
-						<div v-if="estateForm.reportType == 4">
-							<el-input value="预评估" disabled></el-input>
-						</div>
+				<!-- 		<div v-if="estateForm.reportType == 4">
+							<el-input value="预评估" disabled></el-input> -->
+							<el-select v-model="estateForm.reportType" placeholder="请选择">
+							    <el-option
+							      v-for="item in options"
+							      :key="item.value"
+							      :label="item.label"
+							      :value="item.value">
+							    </el-option>
+							  </el-select>
+						<!-- </div> -->
 					</template>
 				</el-form-item>
 				<el-form-item label="项目名称:" style="width: 40%;" prop="projectName">
@@ -37,6 +45,11 @@
 						<el-input v-model.number="estateForm.buildingArea"></el-input>
 					</template>
 				</el-form-item>
+				<el-form-item label="土地面积(m2):" style="width: 40%;" prop="buildingArea">
+					<template>
+						<el-input v-model.number="estateForm.floorArea"></el-input>
+					</template>
+				</el-form-item>
 				<el-form-item label="评估总价(万元):" style="width: 40%;" prop="assessTotalPrice">
 					<template>
 						<el-input v-model.number="estateForm.assessTotalPrice"></el-input>
@@ -64,6 +77,11 @@
 				<el-form-item label="评估机构:" style="width: 40%;" prop="assessOrg">
 					<template>
 						<el-input v-model="estateForm.assessOrg"></el-input>
+					</template>
+				</el-form-item>
+				<el-form-item label="文件名:" style="width: 40%;" prop="realName">
+					<template>
+						<el-input v-model="estateForm.realName"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="文件上传" class="fl" style="display: block;">
@@ -122,7 +140,9 @@ export default {
 				pdfUri: '',
 				wordUri: '',
 				upFileURI: '',
-				assessOrg: '江苏天圣房地产土地资产评估测绘有限公司'
+				floorArea: '',
+				assessOrg: '江苏天圣房地产土地资产评估测绘有限公司',
+				realName: ''
 			},
 			checkForm:{
 				checkAccount: '12个'
@@ -144,6 +164,13 @@ export default {
 				},{
 					"label": "不出让",
 					"value": "不出让"
+			}],
+			options:[{
+				"label": "预评估(房地产)",
+				"value": "4"
+			},{
+				"label": "预评估(土地)",
+				"value": "5"
 			}],
 			fileCheck:'',
 			fileCheck2: '',
@@ -246,7 +273,7 @@ export default {
 				return "rpt/index/upLoad"
 			}else if($url == "fcpg"){
 				return "http://fcpgpre.jstspg.com/rpt/index/upLoad"
-			}else{
+			}else if($url == 'bgsp'){
 				return "http://bgsp.jstspg.com/rpt/index/upLoad"
 			}
 		},
@@ -317,11 +344,12 @@ export default {
 			// this.$refs.upload.clearFiles();
 		},
 		handleSuccess(response, file, fileList) {
-			// console.log(response);
+			console.log(file.name.substring(0,file.name.length-4));
 			if (response.code == 200) {
 				console.log(this.estateForm)
 				this.estateForm.pdfUri = response.data[0].pdfPath
 				this.estateForm.wordUri = response.data[0].wordPath
+				this.estateForm.realName = file.name.substring(0,file.name.length-4)
 			} else {
 				return;
 			}

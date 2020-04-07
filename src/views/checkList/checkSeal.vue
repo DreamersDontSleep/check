@@ -174,18 +174,21 @@
 				var sdk = document.getElementById("ShareSunReaderSDK");
 				XSReaderSDK1.XSUnlock("EA27C68108D462FC3C2829E937836D69B3ACC6C8070C919FB3CD72646A3FAAAE0C0D256FC9B00EA0A1126E7ABE143972833DFCCB4B4");
 				let svUrl =  sdk.XSReadDocName()
-				var postUrl = "http://fcpgpre.jstspg.com/rpt/index/upLoad/";
+				console.log('svUrl',svUrl)
+				var postUrl = "";
 				let $url = window.location.href.substring(7,11);
-				console.log($url)
+				console.log("$url",$url)
 				if($url == "loca"){
 					postUrl = "http://fcpgpre.jstspg.com/rpt/index/upLoad/"
 				}else if($url == "fcpg"){
-					postUrl = "http://fcpgpre.jstspg.com/rpt/index/upLoad"
+					postUrl = "http://fcpgpre.jstspg.com/rpt/index/upLoad/"
 				}else{
 					postUrl = "http://bgsp.jstspg.com/rpt/index/upLoad/"
 				}
+				console.log("$url",$url)
+				console.log("postUrl",postUrl)
 				var post = XSReaderSDK1.XSPostFileByHttpEX(postUrl, svUrl);
-				console.log(post)
+				console.log("post",post)
 				let psData = JSON.parse(post)
 				this.estForm.pdfUri = psData.data[0].pdfPath
 				console.log(this.estForm)

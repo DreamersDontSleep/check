@@ -72,12 +72,12 @@
 						<el-input v-model.number="estateForm.landAmount"></el-input>
 					</template>
 				</el-form-item>
-				<el-form-item label="评估单价(万元):" style="width: 40%;" prop="assessUnitPrice">
+				<el-form-item label="评估单价(元):" style="width: 40%;" prop="assessUnitPrice">
 					<template>
 						<el-input v-model.number="estateForm.assessUnitPrice"></el-input>
 					</template>
 				</el-form-item>
-				<el-form-item label="评估总价:(万元)" style="width: 40%;" prop="assessTotalPrice">
+				<el-form-item label="评估总价:(元)" style="width: 40%;" prop="assessTotalPrice">
 					<template>
 						<el-input v-model.number="estateForm.assessTotalPrice"></el-input>
 					</template>
@@ -109,6 +109,11 @@
 				<el-form-item label="第一报告人注册号:" style="width: 40%;" prop="firstReporterRgNum">
 					<template>
 						<el-input v-model="estateForm.firstReporterRgNum" disabled></el-input>
+					</template>
+				</el-form-item>
+				<el-form-item label="文件名:" style="width: 40%;" prop="realName">
+					<template>
+						<el-input v-model="estateForm.realName"></el-input>
 					</template>
 				</el-form-item>
 				<el-form-item label="参与报告人1:" style="width: 40%;" prop="partReporter1">
@@ -167,7 +172,7 @@
 						<el-input v-model="estateForm.propertyOwner"></el-input>
 					</template>
 				</el-form-item>
-				<el-form-item label="业务收费(万元):" style="width: 40%;" prop="serviceCharge">
+				<el-form-item label="业务收费(元):" style="width: 40%;" prop="serviceCharge">
 					<template>
 						<el-input v-model="estateForm.serviceCharge"></el-input>
 					</template>
@@ -296,7 +301,8 @@
 					pdfUri: '',
 					wordUri: '',
 					upFileURI: '',
-					assessOrg: '江苏天圣房地产土地资产评估测绘有限公司'
+					assessOrg: '江苏天圣房地产土地资产评估测绘有限公司',
+				realName: ''
 				},
 				checkForm: {
 					checkAccount: '12个'
@@ -576,7 +582,7 @@
 					return "rpt/index/upLoad"
 				}else if($url == "fcpg"){
 					return "http://fcpgpre.jstspg.com/rpt/index/upLoad"
-				}else{
+				}else if($url == 'bgsp'){
 					return "http://bgsp.jstspg.com/rpt/index/upLoad"
 				}
 			},
@@ -654,6 +660,7 @@
 					console.log(this.estateForm)
 					this.estateForm.pdfUri = response.data[0].pdfPath
 					this.estateForm.wordUri = response.data[0].wordPath
+					this.estateForm.realName = file.name.substring(0,file.name.length-4)
 				} else {
 					return;
 				}

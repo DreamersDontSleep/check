@@ -40,9 +40,9 @@
 								{{ scope.row.branchOffice }}
 							</template>
 						</el-table-column>
-						<el-table-column label="评估目的">
+						<el-table-column label="产权人">
 							<template slot-scope="scope">
-								{{ scope.row.assessAim }}
+								{{ scope.row.propertyOwner }}
 							</template>
 						</el-table-column>
 						<el-table-column  label="报告类型">
@@ -57,7 +57,10 @@
 								<span style="color: rgba(255, 0, 0, 0.647058823529412);">资产评估报告</span>
 							</div>
 							<div v-if="scope.row.reportType == 4">
-								<span style="color: rgba(255, 0, 0, 0.647058823529412);">预评估</span>
+								<span style="color: rgba(255, 0, 0, 0.647058823529412);">预评估(房地产)</span>
+							</div>
+							<div v-if="scope.row.reportType == 5">
+								<span style="color: rgba(255, 0, 0, 0.647058823529412);">预评估(土地)</span>
 							</div>
 						  </template>
 						</el-table-column>
@@ -428,7 +431,7 @@
 								'lookOrEdit': this.lookOrEdit
 							}
 						})
-					} else if (reportType == 4) {
+					} else {
 						this.$router.push({
 							path: '/entryList/modifyPreliminaryAssessment',
 							query: {

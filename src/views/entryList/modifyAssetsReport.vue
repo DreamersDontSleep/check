@@ -89,7 +89,7 @@
 						</el-select>
 					</template>
 				</el-form-item>
-				<el-form-item label="评估结论(万元):" style="width: 40%;" prop="assessResult">
+				<el-form-item label="评估结论(元):" style="width: 40%;" prop="assessResult">
 					<template>
 						<el-input v-if="lookOrEdit" v-model="estateForm.assessResult" disabled />
 						<el-input v-else v-model="estateForm.assessResult" />
@@ -102,7 +102,7 @@
 						<!-- <el-date-picker v-else type="date" v-model="estateForm.assessDate" placeholder="选择日期时间" value-format="yyyy-MM-dd">{{estateForm.assessDate | formatDate}}</el-date-picker> -->
 					</template>
 				</el-form-item>
-				<el-form-item label="实际收费金额(万元):" style="width: 40%;" prop="actualFee">
+				<el-form-item label="实际收费金额(元):" style="width: 40%;" prop="actualFee">
 					<template>
 						<el-input v-if="lookOrEdit" v-model="estateForm.actualFee" disabled />
 						<el-input v-else v-model="estateForm.actualFee" />
@@ -170,7 +170,7 @@
 						<el-button slot="trigger" size="small" type="primary">选择文件</el-button>
 						<div slot="tip" class="el-upload__tip">支持扩展名：.doc .docx,.pdf</div>
 					</el-upload>
-					<el-button @click="downloadWord()">下载word文档</el-button>
+					<el-button @click="downloadWord()">下载pdf文档</el-button>
 					<el-button @click="previewPdf()">预览pdf文档</el-button>
 				</el-form-item>
 				<el-form-item label="文件上传(压缩文件)" class="fl" style="width: 80%;">
@@ -289,7 +289,7 @@
 			const fileIndex = fileUrl.lastIndexOf('\/')
 			const fileName = fileUrl.substring(fileIndex + 1, fileUrl.length)
 			console.log(fileName)
-			this.fileList[0].name = fileName
+			this.fileList[0].name = this.estateForm.realName + '.pdf'
 			this.fileList[0].url = fileUrl
 			if (this.upFileURI != "") {
 				const zipUrl = this.estateForm.upFileURI
@@ -379,7 +379,7 @@
 					return "rpt/index/upLoad"
 				}else if($url == "fcpg"){
 					return "http://fcpgpre.jstspg.com/rpt/index/upLoad"
-				}else{
+				}else if($url == 'bgsp'){
 					return "http://bgsp.jstspg.com/rpt/index/upLoad"
 				}
 			},
@@ -406,7 +406,16 @@
 				window.location.href = this.upFileUrl
 			},
 			downloadWord() {
-				window.location.href = this.wordUrl
+				let $uri = this.estateForm.pdfUri
+				let index = $uri.lastIndexOf("\//")
+				console.log($uri.substr($uri.lastIndexOf('/', $uri.lastIndexOf('/') - 1) + 1))
+				let para = {
+					realName: this.estateForm.realName,
+					uri: $uri.substr($uri.lastIndexOf('/', $uri.lastIndexOf('/') - 1) + 1)
+				}
+				// getDownload(para).then((res) => {
+					window.location.href = $uri.substring(0,index+1)+'rpt/index/download?uri='+ para.uri +'&realName=' + para.realName
+				// })
 			},
 			previewPdf() {
 				window.open(this.pdfUrl, '_blank')

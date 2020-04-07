@@ -117,3 +117,19 @@ export function postStaticsList(para) {
     data: para
   })
 }
+
+export function getDownload(para) {
+  return request({
+    url: '/rpt/index/download?uri='+ para.uri + '&realName=' + para.realName,
+    method: 'get',
+    data: {}
+  })
+}
+
+export function postStaticsData(para) {
+  return request({
+    url: '/rpt/index/statics',
+    method: 'post',
+    data: para
+  })
+}
