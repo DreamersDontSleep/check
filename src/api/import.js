@@ -18,3 +18,10 @@ export function getCheckRpt(para) {
   })
 }
 
+export function getExcelList(para) {
+  return request({
+    url: '/rpt/index/getexecl?starttime=' + para.starttime + '&endtime=' + para.endtime,
+    method: 'post',
+    data: para
+  })
+}

@@ -3,6 +3,17 @@
 		<el-tabs v-model="activeName" type="card" @tab-click="handleClick">
 			<el-tab-pane label="录入数据" name="first">
 				<el-button @click="exportData()">导出</el-button>
+				<el-date-picker
+				      v-model="value2"
+				      type="daterange"
+				      align="right"
+				      unlink-panels
+				      range-separator="至"
+				      start-placeholder="开始日期"
+				      end-placeholder="结束日期"
+				      :picker-options="pickerOptions"
+					  value-format="yyyy-MM-dd">
+				</el-date-picker>
 				<el-table :data="tableData" style="width: 100%">
 					<el-table-column type="index" label="序号" width="60" />
 					<el-table-column label="申请编号" align="center">
@@ -143,7 +154,7 @@
 </template>
 
 <script>
-	import { getImportList } from '@/api/import'
+	import { getImportList, getExcelList } from '@/api/import'
 	import { getEntryList } from '@/api/entry'
 	export default {
 		data() {
@@ -152,7 +163,36 @@
 				tableData1: [],
 				activeName: 'first',
 				fileListUpload: [],
-				fileTemp: ''
+				fileTemp: '',
+				value2: '',
+				value1: '',
+				pickerOptions: {
+				          shortcuts: [{
+				            text: '最近一周',
+				            onClick(picker) {
+				              const end = new Date();
+				              const start = new Date();
+				              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+				              picker.$emit('pick', [start, end]);
+				            }
+				          }, {
+				            text: '最近一个月',
+				            onClick(picker) {
+				              const end = new Date();
+				              const start = new Date();
+				              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+				              picker.$emit('pick', [start, end]);
+				            }
+				          }, {
+				            text: '最近三个月',
+				            onClick(picker) {
+				              const end = new Date();
+				              const start = new Date();
+				              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+				              picker.$emit('pick', [start, end]);
+				            }
+				          }]
+				        },
 			}
 		},
 		
@@ -188,22 +228,60 @@
 					}
 				})
 			},
+			
+			getDateData(para){
+				getExcelList(para).then((res) => {
+					console.log(res.data)
+					if(res.code == 200){
+						this.tableData = res.data.reverse()
+						require.ensure([], () => {
+							const {
+								export_json_to_excel
+							} = require('../../Export2Excel.js')
+							const tHeader = ['序号', '申请编号', '分公司', '评估目的', '报告类型',
+								'申请人', '申请时间', '报告审批状态', '报告盖章状态', '备注',
+							]
+							const filterVal = ['projectName', 'applicationNum', 'branchOffice', 'assessAim', 'reportType',
+								'applicant', 'applicationDate', 'state', 'stampState', 'remark']
+							const list = this.tableData
+							const data = this.formatJson(filterVal, list)
+							export_json_to_excel(tHeader, data, '导出列表名称')
+						})
+					}
+				})
+			},
 
 			exportData() {
 				console.log(2)
-				require.ensure([], () => {
-					const {
-						export_json_to_excel
-					} = require('../../Export2Excel.js')
-					const tHeader = ['序号', '申请编号', '分公司', '评估目的', '报告类型',
-						'申请人', '申请时间', '报告审批状态', '报告盖章状态', '备注',
-					]
-					const filterVal = ['projectName', 'applicationNum', 'branchOffice', 'assessAim', 'reportType',
-						'applicant', 'applicationDate', 'state', 'stampState', 'remark']
-					const list = this.tableData
-					const data = this.formatJson(filterVal, list)
-					export_json_to_excel(tHeader, data, '导出列表名称')
-				})
+				console.log(this.value2)
+				console.log(this.value1)
+				if(this.value2 !== ""){
+					let para = {
+						starttime: this.value2[0],
+						endtime: this.value2[1]
+					} 
+					this.getDateData(para)
+				}else{
+					let para = {
+						starttime: "",
+						endtime: ""
+					} 
+					this.getDateData(para)
+				}
+				
+				// require.ensure([], () => {
+				// 	const {
+				// 		export_json_to_excel
+				// 	} = require('../../Export2Excel.js')
+				// 	const tHeader = ['序号', '申请编号', '分公司', '评估目的', '报告类型',
+				// 		'申请人', '申请时间', '报告审批状态', '报告盖章状态', '备注',
+				// 	]
+				// 	const filterVal = ['projectName', 'applicationNum', 'branchOffice', 'assessAim', 'reportType',
+				// 		'applicant', 'applicationDate', 'state', 'stampState', 'remark']
+				// 	const list = this.tableData
+				// 	const data = this.formatJson(filterVal, list)
+				// 	export_json_to_excel(tHeader, data, '导出列表名称')
+				// })
 			},
 			
 			exportData2() {
