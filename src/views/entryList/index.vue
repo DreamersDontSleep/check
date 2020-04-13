@@ -132,7 +132,7 @@
 						</el-table-column>
 					</el-table>
 					<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-					 :page-sizes="[5,10, 20, 30, 40]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="totalPriceEvaluation.length"
+					 :page-sizes="[5,10, 20, 30, 40]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="count"
 					 style="width: 95%;margin: 10px auto;">
 					</el-pagination>
 				</div>
@@ -198,6 +198,7 @@
 				lookOrEdit: false,
 				estateForm: {},
 				stateArr: [],
+				count: 0,
 				fileList: [{
 					name: '',
 					url: ''
@@ -290,8 +291,14 @@
 						"checker": ""
 					}
 				}
-				getEntryList(para).then((res) => {
-					this.totalPriceEvaluation = res.data.reverse()
+				let params = {
+					para: para,
+					pageNum: 1,
+					pageSize: 10
+				}
+				getEntryList(params).then((res) => {
+					this.totalPriceEvaluation = res.data
+					this.count = res.count
 					console.log(res)
 				})
 				getDictionary().then((res) => {
@@ -326,6 +333,7 @@
 				const para = {
 					token: getToken()
 				}
+				this.editForm = editForm
 				console.log(para)
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
@@ -352,7 +360,7 @@
 						let para
 						if (localStorage.getItem('userId') == "root") {
 							para = {
-								"state": [],
+								"state": state,
 								"branchOffice": branchOffice,
 								"login": "",
 								"applicant": "",
@@ -367,8 +375,13 @@
 								"checker": ""
 							}
 						}
-						getEntryList(para).then((res) => {
-							this.totalPriceEvaluation = res.data.reverse()
+						let params = {
+							para: para,
+							pageNum: 1,
+							pageSize: 10
+						}
+						getEntryList(params).then((res) => {
+							this.totalPriceEvaluation = res.data
 							console.log(res)
 						})
 					} else {
@@ -520,7 +533,51 @@
 			},
 			handleCurrentChange(val) {
 				console.log(`当前页: ${val}`);
-				this.currentPage = val;
+				// this.currentPage = val;
+				let state = this.editForm.status
+				let branchOffice = this.editForm.branchName
+				let para
+				
+				if (branchOffice == "全部" || branchOffice == "") {
+					branchOffice = '';
+				}
+				
+				if (state == "未审核") {
+					state = [0];
+				} else if (state == "待审核") {
+					state = [1];
+				} else if (state == "已审核") {
+					state = [3, 4];
+				} else if (state == "全部" || state == "") {
+					state = [0, 1, 2, 3, 4];
+				}
+				if (localStorage.getItem('userId') == "root") {
+					para = {
+						"state": state,
+						"branchOffice": "",
+						"login": "",
+						"applicant": "",
+						"checker": ""
+					}
+				} else {
+					para = {
+						"state": state,
+						"branchOffice": branchOffice,
+						"login": localStorage.getItem('userId'),
+						"applicant": this.name,
+						"checker": ""
+					}
+				}
+				let params = {
+					para: para,
+					pageNum: val,
+					pageSize: 10
+				}
+				getEntryList(params).then((res) => {
+					this.totalPriceEvaluation = res.data
+					this.count = res.count
+					console.log(res)
+				})
 			}
 		}
 	}

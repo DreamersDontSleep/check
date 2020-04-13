@@ -2,11 +2,11 @@ import request from '@/utils/request'
 import axios from "axios"
 import { getToken } from '@/utils/auth'
 
-export function getEntryList(para) {
+export function getEntryList(params) {
   return request({
-    url: '/rpt/index/getReports',
+    url: '/rpt/index/getReports?pageNum=' + params.pageNum + "&pageSize=" + params.pageSize,
     method: 'post',
-    data: para
+    data: params.para
   })
 }
 

@@ -211,7 +211,12 @@
 						"applicant": "",
 						"checker": ""
 					}
-				getEntryList(para).then((res) => {
+					let params = {
+						para: para,
+						pageNum: 1,
+						pageSize: 1000000
+					}
+				getEntryList(params).then((res) => {
 					this.tableData = res.data.reverse()
 					console.log(res)
 				})

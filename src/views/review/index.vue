@@ -269,7 +269,12 @@ export default {
 				"applicant": "",
 				"checker": ""
 			}
-      getEntryList(para).then((res) => {
+			let params = {
+				para: para,
+				pageNum: 1,
+				pageSize: 10
+			}
+      getEntryList(params).then((res) => {
         this.totalPriceEvaluation = res.data
         console.log(res)
       })
