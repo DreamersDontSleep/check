@@ -10,11 +10,11 @@ export function getEntryList(params) {
   })
 }
 
-export function getCheckRpt(para) {
+export function getCheckRpt(params) {
   return request({
-    url: '/rpt/index/getCheckReports',
+    url: '/rpt/index/getCheckReports?pageNum=' + params.pageNum + '&pageSize=' + params.pageSize,
     method: 'post',
-    data: para
+    data: params.para
   })
 }
 
@@ -112,9 +112,9 @@ export function getDictionary() {
 
 export function postStaticsList(para) {
   return request({
-    url: '/rpt/index/getStaticsList',
+    url: '/rpt/index/getStaticsList?pageNum=' + para.pageNum + '&pageSize=' + para.pageSize,
     method: 'post',
-    data: para
+    data: para.para
   })
 }
 

@@ -133,7 +133,7 @@
 						</el-table-column>
 					</el-table>
 					<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-					 :page-sizes="[5,10, 20, 30, 40]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="totalPriceEvaluation.length"
+					 :page-sizes="[5,10, 20, 30, 40]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="count"
 					 style="width: 95%;margin: 10px auto;">
 					</el-pagination>
 				</div>
@@ -279,7 +279,8 @@
 				}],
 				total1: 0,
 				total2: 0,
-				total3: 0
+				total3: 0,
+				count: 0
 			}
 		},
 		computed: {
@@ -307,9 +308,15 @@
 					"assessAim": "",
 					"applicationDate": ""
 				}
-				postStaticsList(para).then((res) => {
+				let params = {
+					para: para,
+					pageNum: 1,
+					pageSize: 10
+				}
+				postStaticsList(params).then((res) => {
 					let stArr = res.data.reverse()
 					let me = this
+					this.count = res.count
 					stArr.forEach(function(e) {
 						console.log(e)
 						if (e.detailReport != null) {
@@ -326,7 +333,7 @@
 						}
 
 					})
-					// this.totalPriceEvaluation = res.data.reverse()
+					// this.totalPriceEvaluation = res.data
 					console.log(me.total1)
 				})
 				getDictionary().then((res) => {
@@ -586,7 +593,36 @@
 			},
 			handleCurrentChange(val) {
 				console.log(`当前页: ${val}`);
-				this.currentPage = val;
+				// this.currentPage = val;
+				let state = this.editForm.status
+				let branchOffice = this.editForm.branchName
+				let para = {
+					"branchOffice": "",
+					"reportType": "",
+					"assessAim": "",
+					"applicationDate": ""
+				}
+				let params = {
+					para: para,
+					pageNum: val,
+					pageSize: 10
+				}
+				postStaticsList(params).then((res) => {
+					let stArr = res.data
+					let me = this
+					this.count = res.count
+					me.totalPriceEvaluation = []
+					stArr.forEach(function(e) {
+						console.log(e)
+						if (e.detailReport != null) {
+							
+							me.totalPriceEvaluation.push(e.detailReport)
+						}
+				
+					})
+					// this.totalPriceEvaluation = res.data.reverse()
+					console.log(me.totalPriceEvaluation)
+				})
 			}
 		}
 	}

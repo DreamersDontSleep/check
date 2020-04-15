@@ -133,7 +133,7 @@
 				    :page-sizes="[5,10, 20, 30, 40]"
 				    :page-size="pageSize"
 				    layout="total, sizes, prev, pager, next, jumper"
-				    :total="totalPriceEvaluation.length" style="width: 95%;margin: 10px auto;">
+				    :total="count" style="width: 95%;margin: 10px auto;">
 				  </el-pagination>
 				</div>
 			</template>
@@ -185,7 +185,8 @@ export default {
 					"label": "分公司2",
 					"value": "分公司2"
 			}],
-			totalPriceEvaluation: []
+			totalPriceEvaluation: [],
+			count: 0
 	  }
   },
   mounted() {
@@ -213,7 +214,13 @@ export default {
 					"transferTo": ""
 				}
 			}
-			getCheckRpt(para).then((res) => {
+			let params = {
+				para: para,
+				pageNum: 1,
+				pageSize: 10
+			}
+			getCheckRpt(params).then((res) => {
+				this.count = res.count
 				let checkData = res.data.reverse()
 				this.totalPriceEvaluation = checkData
 				this.checkForm.checkAccount = res.count
@@ -255,7 +262,12 @@ export default {
 							"checker": localStorage.getItem('userId')
 						}
 					}
-					getCheckRpt(para).then((res) => {
+					let params = {
+						para: para,
+						pageNum: 1,
+						pageSize: 10
+					}
+					getCheckRpt(params).then((res) => {
 						this.totalPriceEvaluation = res.data.reverse()
 						console.log(res);
 					})
@@ -298,7 +310,47 @@ export default {
 			},
 			handleCurrentChange(val) {
 			  console.log(`当前页: ${val}`);
-			  this.currentPage = val;
+			  // this.currentPage = val;
+			  let state = this.editForm.status;
+			  let branchOffice = this.editForm.branchName;
+			  if(branchOffice == "全部" || branchOffice == ""){
+			  	branchOffice = '';
+			  }
+			  
+			  if( state == "待审核" || state == "" ){
+			  	state = [1];
+			  }else if( state == "已审核" ){
+			  	state = [3,4];
+			  }else if( state == "全部" ){
+			  	state = [1,3];
+			  }
+			  let para
+			  if(localStorage.getItem('userId') == "root"){
+			  	para = {
+			  		"state": state,
+			  		"branchOffice": branchOffice,
+			  		"login": "",
+			  		"applicant": "",
+			  		"checker": ""
+			  	}
+			  }else{
+			  	para = {
+			  		"state": state,
+			  		"branchOffice": branchOffice,
+			  		"login": "",
+			  		"applicant": "",
+			  		"checker": localStorage.getItem('userId')
+			  	}
+			  }
+			  let params = {
+			  	para: para,
+			  	pageNum: val,
+			  	pageSize: 10
+			  }
+			  getCheckRpt(params).then((res) => {
+			  	this.totalPriceEvaluation = res.data.reverse()
+			  	console.log(res);
+			  })
 			}  
 	}
 }
