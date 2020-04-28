@@ -134,7 +134,7 @@
 					  :page-sizes="[5,10, 20, 30, 40]"
 					  :page-size="pageSize"
 					  layout="total, sizes, prev, pager, next, jumper"
-					  :total="totalPriceEvaluation.length" style="width: 95%;margin: 10px auto;">
+					  :total="count" style="width: 95%;margin: 10px auto;">
 					</el-pagination>
         </div>
       </template>
@@ -222,6 +222,7 @@ export default {
         amountTenantCompensation: '那你',
         notes: '111'
       }],
+	  count: 0,
       assessAimList: [{
         'label': '出让',
         'value': '出让'
@@ -276,6 +277,7 @@ export default {
 			}
       getEntryList(params).then((res) => {
         this.totalPriceEvaluation = res.data
+		this.count = res.count
         console.log(res)
       })
     },
@@ -466,7 +468,26 @@ export default {
 			},
 			handleCurrentChange(val) {
 			  console.log(`当前页: ${val}`);
-			  this.currentPage = val;
+			  // this.currentPage = val;
+			  const state = this.editForm.status
+			  const branchOffice = this.editForm.branchName
+			  			let para = {
+			  				"state": [],
+			  				"branchOffice": "",
+			  				"login": "",
+			  				"applicant": "",
+			  				"checker": ""
+			  			}
+			  			let params = {
+			  				para: para,
+			  				pageNum: val,
+			  				pageSize: 10
+			  			}
+			  getEntryList(params).then((res) => {
+			    this.totalPriceEvaluation = res.data
+			  		this.count = res.count
+			    console.log(res)
+			  })
 			}  
   }
 }
