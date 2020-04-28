@@ -15,6 +15,16 @@
 					</el-select>
 				</template>
 			</el-form-item>
+			<el-form-item label="报告编号:">
+				<template>
+					<el-input v-model="editForm.applicationNum"></el-input>
+				</template>
+			</el-form-item>
+			<el-form-item label="产权人:">
+				<template>
+					<el-input v-model="editForm.propertyOwner"></el-input>
+				</template>
+			</el-form-item>
 			<el-form-item>
 				<el-button @click="searchTable(editForm)">搜索</el-button>
 			</el-form-item>
@@ -183,7 +193,9 @@
 				editForm: {
 					branchName: '',
 					status: '',
-					linkSel: ''
+					linkSel: '',
+					applicationNum: '',
+					propertyOwner: '',
 				},
 				checkForm: {
 					checkAccount: '12个'
@@ -333,6 +345,7 @@
 				const para = {
 					token: getToken()
 				}
+				console.log(editForm)
 				this.editForm = editForm
 				console.log(para)
 				this.$refs.editForm.validate((valid) => {
@@ -342,7 +355,7 @@
 						let state = editForm.status
 
 						let branchOffice = editForm.branchName
-
+							
 						if (branchOffice == "全部" || branchOffice == "") {
 							branchOffice = '';
 						}
@@ -364,7 +377,9 @@
 								"branchOffice": branchOffice,
 								"login": "",
 								"applicant": "",
-								"checker": ""
+								"checker": "",
+								"applicationNum": editForm.applicationNum,
+								"propertyOwner": editForm.propertyOwner
 							}
 						} else {
 							para = {
@@ -372,7 +387,9 @@
 								"branchOffice": branchOffice,
 								"login": localStorage.getItem('userId'),
 								"applicant": this.name,
-								"checker": ""
+								"checker": "",
+								"applicationNum": editForm.applicationNum,
+								"propertyOwner": editForm.propertyOwner
 							}
 						}
 						let params = {
@@ -380,8 +397,10 @@
 							pageNum: 1,
 							pageSize: 10
 						}
+						console.log('para',para)
 						getEntryList(params).then((res) => {
 							this.totalPriceEvaluation = res.data
+							this.count = res.count
 							console.log(res)
 						})
 					} else {
@@ -557,7 +576,9 @@
 						"branchOffice": "",
 						"login": "",
 						"applicant": "",
-						"checker": ""
+						"checker": "",
+						"applicationNum": this.editForm.applicationNum,
+						"propertyOwner": this.editForm.propertyOwner
 					}
 				} else {
 					para = {
@@ -565,7 +586,9 @@
 						"branchOffice": branchOffice,
 						"login": localStorage.getItem('userId'),
 						"applicant": this.name,
-						"checker": ""
+						"checker": "",
+						"applicationNum": this.editForm.applicationNum,
+						"propertyOwner": this.editForm.propertyOwner
 					}
 				}
 				let params = {

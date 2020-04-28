@@ -6,21 +6,21 @@
 					<el-option v-for="(item,index) in conditionType" :key="item.value" :label="item.label" :value="item.value" />
 				</el-select>
 			</el-form-item> -->
-			<el-form-item label="分公司名称:">
+			<el-form-item label="分公司名称:" prop="branchName">
 				<template>
 					<el-select v-model="editForm1.branchName" style="width: 250px;" placeholder="请选择">
 						<el-option v-for="(item,index) in companySel" :key="item.name" :label="item.name" :value="item.name" />
 					</el-select>
 				</template>
 			</el-form-item>
-			<el-form-item label="报告名称:">
+			<el-form-item label="报告名称:" prop="status">
 				<template>
 					<el-select v-model="editForm1.status" style="width: 250px;" placeholder="请选择">
 						<el-option v-for="(item,index) in checkOr" :key="item.value" :label="item.label" :value="item.value" />
 					</el-select>
 				</template>
 			</el-form-item>
-			<el-form-item label="估价目的:">
+			<el-form-item label="估价目的:" prop="method">
 				<template>
 					<el-select v-model="editForm1.method" style="width: 250px;" placeholder="请选择">
 						<el-option v-for="(item,index) in assessAimList" :key="item.value" :label="item.label" :value="item.value" />
@@ -29,6 +29,7 @@
 			</el-form-item>
 			<el-form-item>
 				<el-button @click="searchTable1(editForm1)">搜索</el-button>
+				<el-button @click="reset('editForm1')">重置</el-button>
 			</el-form-item>
 		</el-form>
 		<div>
@@ -67,8 +68,7 @@
 				</div>
 				<div class="table">
 
-					<el-table ref="table" :data="totalPriceEvaluation.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-					 tooltip-effect="dark" border stripe style="width: 95%;margin: 0 auto;">
+					<el-table ref="table" :data="totalPriceEvaluation.slice((currentPage-1)*pageSize,currentPage*pageSize)" tooltip-effect="dark" border stripe style="width: 95%;margin: 0 auto;">
 						<el-table-column type="index" label="序号" width="60" />
 						<el-table-column label="主体序号" style="display: none;">
 							<template slot-scope="scope" style="display: none;">
@@ -132,9 +132,7 @@
 							</template>
 						</el-table-column>
 					</el-table>
-					<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-					 :page-sizes="[5,10, 20, 30, 40]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="count"
-					 style="width: 95%;margin: 10px auto;">
+					<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[5,10, 20, 30, 40]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="count" style="width: 95%;margin: 10px auto;">
 					</el-pagination>
 				</div>
 			</template>
@@ -319,15 +317,15 @@
 					this.count = res.count
 					stArr.forEach(function(e) {
 						console.log(e)
-						if (e.detailReport != null) {
+						if(e.detailReport != null) {
 							me.totalPriceEvaluation.push(e.detailReport)
-							if (e.detailReport.buildingArea != null) {
+							if(e.detailReport.buildingArea != null) {
 								me.total1 = me.total1 + Math.floor(e.detailReport.buildingArea)
 							}
-							if (e.detailReport.serviceCharge != null) {
+							if(e.detailReport.serviceCharge != null) {
 								me.total2 = me.total2 + Math.floor(e.detailReport.serviceCharge)
 							}
-							if (e.detailReport.assessTotalPrice != null) {
+							if(e.detailReport.assessTotalPrice != null) {
 								me.total3 = me.total3 + Math.floor(e.detailReport.assessTotalPrice)
 							}
 						}
@@ -341,14 +339,14 @@
 					let depData = dataList.data.fgs
 					console.log("数据树", dataList)
 					let depArr = [];
-					for (let i = 0; i < depData.length; i++) {
+					for(let i = 0; i < depData.length; i++) {
 						let obj = {
 							id: '',
 							name: ''
 						};
 						console.log(depData[0])
 						// depData[i].forEach(function(e,c){
-						for (let key in depData[i]) {
+						for(let key in depData[i]) {
 							// depArr.push(e[key])
 							obj.id = depData[i][key][0].value;
 							obj.name = depData[i][key][1].value;
@@ -370,31 +368,32 @@
 				}
 				console.log(para)
 				this.$refs.editForm.validate((valid) => {
-					if (valid) {
+					if(valid) {
 						// alert('submit!');
 						console.log(editForm)
+						this.editForm1 = editForm
 						let state = editForm.status
 
 						let branchOffice = editForm.branchName
 
-						if (branchOffice == "全部" || branchOffice == "") {
+						if(branchOffice == "全部" || branchOffice == "") {
 							branchOffice = '';
 						}
 
-						if (state == "未审核") {
+						if(state == "未审核") {
 							state = [0];
-						} else if (state == "待审核") {
+						} else if(state == "待审核") {
 							state = [1];
-						} else if (state == "审核通过") {
+						} else if(state == "审核通过") {
 							state = [3];
-						} else if (state == "审核不通过") {
+						} else if(state == "审核不通过") {
 							state = [4];
-						} else if (state == "全部" || state == "") {
+						} else if(state == "全部" || state == "") {
 							state = [0, 1, 2, 3, 4];
 						}
 						// this.stateArr = state
 						let para
-						if (localStorage.getItem('userId') == "root") {
+						if(localStorage.getItem('userId') == "root") {
 							para = {
 								"state": [],
 								"branchOffice": branchOffice,
@@ -427,25 +426,67 @@
 					console.log(res)
 					this.sticData = res.data
 				})
+				let para = {
+					branchOffice: editForm1.branchName,
+					reportType: editForm1.status,
+					method: editForm1.method,
+				}
+				let params = {
+					para: para,
+					pageNum: 1,
+					pageSize: 10
+				}
+				postStaticsList(params).then((res) => {
+					let stArr = res.data.reverse()
+					let me = this
+					this.count = res.count
+					me.totalPriceEvaluation = []
+					stArr.forEach(function(e) {
+						console.log(e)
+						if(e.detailReport != null) {
+							me.totalPriceEvaluation.push(e.detailReport)
+							if(e.detailReport.buildingArea != null) {
+								me.total1 = me.total1 + Math.floor(e.detailReport.buildingArea)
+							}
+							if(e.detailReport.serviceCharge != null) {
+								me.total2 = me.total2 + Math.floor(e.detailReport.serviceCharge)
+							}
+							if(e.detailReport.assessTotalPrice != null) {
+								me.total3 = me.total3 + Math.floor(e.detailReport.assessTotalPrice)
+							}
+						}
+
+					})
+					// this.totalPriceEvaluation = res.data
+					console.log(me.totalPriceEvaluation)
+				})
 			},
 			newAdd() {
 				this.editFormVisible = true
 			},
+			reset(editForm1) {
+				this.$nextTick(() => {
+
+					this.$refs[editForm1].resetFields();
+
+				})
+				
+			},
 			onselected(value) {
 				console.log(value)
-				if (value == 1) {
+				if(value == 1) {
 					this.companyFlag = true
 					this.reportFlag = false
 					this.methodFlag = false
 					this.editForm1.status = ''
 					this.editForm1.method = ''
-				} else if (value == 2) {
+				} else if(value == 2) {
 					this.companyFlag = false
 					this.reportFlag = true
 					this.methodFlag = false
 					this.editForm1.branchName = ''
 					this.editForm1.method = ''
-				} else if (value == 3) {
+				} else if(value == 3) {
 					this.companyFlag = false
 					this.reportFlag = false
 					this.methodFlag = true
@@ -455,19 +496,19 @@
 			},
 			confirmLink(editForm) {
 				let linkVal = editForm.linkSel
-				if (linkVal == "房地产估价报告") {
+				if(linkVal == "房地产估价报告") {
 					this.$router.push({
 						path: '/entryList/realEstateReport'
 					})
-				} else if (linkVal == "土地估价报告") {
+				} else if(linkVal == "土地估价报告") {
 					this.$router.push({
 						path: '/entryList/landValuationReport'
 					})
-				} else if (linkVal == "资产评估报告") {
+				} else if(linkVal == "资产评估报告") {
 					this.$router.push({
 						path: '/entryList/assetsReport'
 					})
-				} else if (linkVal == "预评估") {
+				} else if(linkVal == "预评估") {
 					this.$router.push({
 						path: '/entryList/preliminaryAssessment'
 					})
@@ -480,7 +521,7 @@
 					console.log(res)
 					this.lookOrEdit = true
 					this.estateForm = res.data
-					if (reportType == 1) {
+					if(reportType == 1) {
 						this.$router.push({
 							path: '/entryList/modifyRealEstateReport',
 							query: {
@@ -488,7 +529,7 @@
 								'lookOrEdit': this.lookOrEdit
 							}
 						})
-					} else if (reportType == 2) {
+					} else if(reportType == 2) {
 						this.$router.push({
 							path: '/entryList/modifyLandValuationReport',
 							query: {
@@ -496,7 +537,7 @@
 								'lookOrEdit': this.lookOrEdit
 							}
 						})
-					} else if (reportType == 3) {
+					} else if(reportType == 3) {
 						this.$router.push({
 							path: '/entryList/modifyAssetsReport',
 							query: {
@@ -504,7 +545,7 @@
 								'lookOrEdit': this.lookOrEdit
 							}
 						})
-					} else if (reportType == 4) {
+					} else if(reportType == 4) {
 						this.$router.push({
 							path: '/entryList/modifyPreliminaryAssessment',
 							query: {
@@ -522,7 +563,7 @@
 					this.estateForm = res.data
 					console.log(res)
 					this.lookOrEdit = false
-					if (reportType == 1) {
+					if(reportType == 1) {
 						this.$router.push({
 							path: '/entryList/modifyRealEstateReport',
 							query: {
@@ -530,7 +571,7 @@
 								'lookOrEdit': this.lookOrEdit
 							}
 						})
-					} else if (reportType == 2) {
+					} else if(reportType == 2) {
 						this.$router.push({
 							path: '/entryList/modifyLandValuationReport',
 							query: {
@@ -538,7 +579,7 @@
 								'lookOrEdit': this.lookOrEdit
 							}
 						})
-					} else if (reportType == 3) {
+					} else if(reportType == 3) {
 						this.$router.push({
 							path: '/entryList/modifyAssetsReport',
 							query: {
@@ -546,7 +587,7 @@
 								'lookOrEdit': this.lookOrEdit
 							}
 						})
-					} else if (reportType == 4) {
+					} else if(reportType == 4) {
 						this.$router.push({
 							path: '/entryList/modifyPreliminaryAssessment',
 							query: {
@@ -594,13 +635,15 @@
 			handleCurrentChange(val) {
 				console.log(`当前页: ${val}`);
 				// this.currentPage = val;
-				let state = this.editForm.status
-				let branchOffice = this.editForm.branchName
+				let state = this.editForm1.status
+				let branchOffice = this.editForm1.branchName
+				let method = this.editForm1.method
+				let status = this.editForm1.status
+				console.log(this.editForm)
 				let para = {
-					"branchOffice": "",
-					"reportType": "",
-					"assessAim": "",
-					"applicationDate": ""
+					"branchName": branchOffice,
+					"method": method,
+					"status": status
 				}
 				let params = {
 					para: para,
@@ -614,11 +657,11 @@
 					me.totalPriceEvaluation = []
 					stArr.forEach(function(e) {
 						console.log(e)
-						if (e.detailReport != null) {
-							
+						if(e.detailReport != null) {
+
 							me.totalPriceEvaluation.push(e.detailReport)
 						}
-				
+
 					})
 					// this.totalPriceEvaluation = res.data.reverse()
 					console.log(me.totalPriceEvaluation)
