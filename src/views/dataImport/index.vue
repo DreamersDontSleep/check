@@ -234,7 +234,7 @@ export default {
 		importData(para) {
 			console.log(1);
 			getExportExcel(para).then(res => {
-				console.log(res)
+				// console.log(res)
 				// this.getDateData(res)
 				
 			})
