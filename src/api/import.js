@@ -20,8 +20,16 @@ export function getCheckRpt(para) {
 
 export function getExcelList(para) {
   return request({
-    url: '/rpt/index/getexecl?starttime=' + para.starttime + '&endtime=' + para.endtime,
+    url: '/rpt/index/getexecl?starttime=' + para.starttime + '&endtime=' + para.endtime + '&pageSize=' + para.pageSize + '&pageNum=' + para.pageNum,
     method: 'post',
-    data: para
+    data: {}
   })
+}
+
+export function getExportExcel(para){
+	return request({
+	  url: '/rpt/test/exportExcel?starttime=' + para.starttime + '&endtime=' + para.endtime + '&reportType=' + para.reportType,
+	  method: 'get',
+	  data: {}
+	})
 }

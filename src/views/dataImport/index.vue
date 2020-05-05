@@ -140,7 +140,7 @@
 </template>
 
 <script>
-import { getImportList, getExcelList } from '@/api/import';
+import { getImportList, getExcelList, getExportExcel } from '@/api/import';
 import { getEntryList } from '@/api/entry';
 export default {
 	data() {
@@ -214,33 +214,30 @@ export default {
 			let para = {
 				starttime:'',
 				endtime: '',
-				reportType: ''
-			};
-			let params = {
-				para: para,
+				reportType: '',
 				pageNum: 1,
 				pageSize: 10
 			};
 			
-			getExcelList(para).then(res => {
-				this.tableData = res.data;
-					this.count = res.count
-			})
 			
-			// getEntryList(params).then(res => {
-			// 	this.tableData = res.data;
-			// 	this.count = res.count
-			// 	console.log(res);
-			// });
+			this.getTableList(para)
 		},
 		
 		//初始获取表格数据
-		getTableList(){
-			
+		getTableList(para){
+			getExcelList(para).then(res => {
+				this.tableData = res.data;
+				this.count = res.count
+			})
 		},
 		
-		importData() {
+		importData(para) {
 			console.log(1);
+			getExportExcel(para).then(res => {
+				console.log(res)
+				// this.getDateData(res)
+				
+			})
 		},
 
 		getAllList(para) {
@@ -286,34 +283,29 @@ export default {
 			console.log('value2',this.value2);
 			console.log('value1',this.value1);
 			console.log('reportType',this.reportType)
-			if (this.value2 !== '') {
+			if(this.reportType == ''){
+				this.$message({
+					type:'warning',
+					message:'请选择需要下载的报告类型！'
+				})
+			}else{
 				let para = {
 					starttime: this.value2[0],
 					endtime: this.value2[1],
-					reportType: this.reportType
+					reportType: this.reportType,
 				};
-				this.getDateData(para);
-			} else {
-				let para = {
-					starttime: '',
-					endtime: ''
+				// this.importData(para);
+				window.location.href = 'http://fcpgpre.jstspg.com/rpt/test/exportExcel?reportType=' + para.reportType + '&starttime=' + para.starttime + '&endtime=' + para.endtime
+				let params = {
+					starttime: this.value2[0],
+					endtime: this.value2[1],
+					reportType: this.reportType,
+					pageNum: 1,
+					pageSize: 10
 				};
-				this.getDateData(para);
+				this.getTableList(params)
 			}
-
-			// require.ensure([], () => {
-			// 	const {
-			// 		export_json_to_excel
-			// 	} = require('../../Export2Excel.js')
-			// 	const tHeader = ['序号', '申请编号', '分公司', '评估目的', '报告类型',
-			// 		'申请人', '申请时间', '报告审批状态', '报告盖章状态', '备注',
-			// 	]
-			// 	const filterVal = ['projectName', 'applicationNum', 'branchOffice', 'assessAim', 'reportType',
-			// 		'applicant', 'applicationDate', 'state', 'stampState', 'remark']
-			// 	const list = this.tableData
-			// 	const data = this.formatJson(filterVal, list)
-			// 	export_json_to_excel(tHeader, data, '导出列表名称')
-			// })
+			
 		},
 
 		exportData2() {
@@ -517,55 +509,18 @@ export default {
 		},
 		handleCurrentChange(val) {
 			console.log(`当前页: ${val}`);
-			// this.currentPage = val;
-			let state = this.editForm.status;
-			let branchOffice = this.editForm.branchName;
-			let para;
-
-			if (branchOffice == '全部' || branchOffice == '') {
-				branchOffice = '';
-			}
-
-			if (state == '未审核') {
-				state = [0];
-			} else if (state == '待审核') {
-				state = [1];
-			} else if (state == '已审核') {
-				state = [3, 4];
-			} else if (state == '全部' || state == '') {
-				state = [0, 1, 2, 3, 4];
-			}
-			if (localStorage.getItem('userId') == 'root') {
-				para = {
-					state: state,
-					branchOffice: '',
-					login: '',
-					applicant: '',
-					checker: '',
-					applicationNum: this.editForm.applicationNum,
-					propertyOwner: this.editForm.propertyOwner
-				};
-			} else {
-				para = {
-					state: state,
-					branchOffice: branchOffice,
-					login: localStorage.getItem('userId'),
-					applicant: this.name,
-					checker: '',
-					applicationNum: this.editForm.applicationNum,
-					propertyOwner: this.editForm.propertyOwner
-				};
-			}
-			let params = {
-				para: para,
+			
+			
+			let para = {
+				starttime: this.value2[0],
+				endtime: this.value2[1],
+				reportType: this.reportType,
 				pageNum: val,
 				pageSize: 10
 			};
-			getEntryList(params).then(res => {
-				this.totalPriceEvaluation = res.data;
-				this.count = res.count;
-				console.log(res);
-			});
+			
+			this.getTableList(para)
+		
 		}
 	}
 };
