@@ -197,26 +197,26 @@ export const asyncRouterMap = [
 	{
 	  path: '/statistical',
 	  component: Layout,
-	  meta: { title: '报告统计', permissions: [305] },
+	  meta: { title: '报告统计', permissions: [306,309] },
 	  children: [
 	    {
 	      path: 'statistical/index',
 	      name: 'Statistical',
 	      component: () => import('@/views/statistical/index'),
-	      meta: { title: '报告统计', permissions: [305] }
+	      meta: { title: '报告统计', permissions: [306,309] }
 	    }
 	  ]
 	},
 	{
 		path: '/dataImport',
 		component: Layout,
-		meta: { title: '数据导入', permissions: [305] },
+		meta: { title: '数据导入', permissions: [308,310] },
 		children: [
 		  {
 		    path: 'dataImport/index',
 		    name: 'DataImport',
 		    component: () => import('@/views/dataImport/index'),
-		    meta: { title: '数据导入', permissions: [305] }
+		    meta: { title: '数据导入', permissions: [308,310] }
 		  }
 		]
 	},
