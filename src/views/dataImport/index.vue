@@ -295,7 +295,16 @@ export default {
 					reportType: this.reportType,
 				};
 				// this.importData(para);
-				window.location.href = 'http://fcpgpre.jstspg.com/rpt/test/exportExcel?reportType=' + para.reportType + '&starttime=' + para.starttime + '&endtime=' + para.endtime
+				let $url = window.location.href.substring(7, 11);
+				console.log($url);
+				if ($url == 'loca') {
+					window.location.href = 'http://fcpgpre.jstspg.com/rpt/test/exportExcel?reportType=' + para.reportType + '&starttime=' + para.starttime + '&endtime=' + para.endtime
+				} else if ($url == 'fcpg') {
+					window.location.href = 'http://fcpgpre.jstspg.com/rpt/test/exportExcel?reportType=' + para.reportType + '&starttime=' + para.starttime + '&endtime=' + para.endtime
+				} else {
+					window.location.href = 'http://bgsp.jstspg.com/rpt/test/exportExcel?reportType=' + para.reportType + '&starttime=' + para.starttime + '&endtime=' + para.endtime
+				}
+				
 				let params = {
 					starttime: this.value2[0],
 					endtime: this.value2[1],

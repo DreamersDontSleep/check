@@ -641,9 +641,9 @@
 				let status = this.editForm1.status
 				console.log(this.editForm)
 				let para = {
-					"branchName": branchOffice,
+					"branchOffice": branchOffice,
 					"method": method,
-					"status": status
+					"reportType": status
 				}
 				let params = {
 					para: para,
